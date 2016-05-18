@@ -1,0 +1,32 @@
+{
+  "name": "angular-key-value-editor",
+  "version": "0.0.1",
+  "description": "A simple UI for editing key-value pairs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjaminapetersen/angular-key-value-editor.git"
+  },
+  "authors": [
+    "benjaminapetersen <admin@benjaminapetersen.me>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benjaminapetersen/angular-key-value-editor/issues"
+  },
+  "homepage": "https://github.com/benjaminapetersen/angular-key-value-editor#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-filesize": "0.0.6",
+    "gulp-jshint": "^2.0.1",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0"
+  }
+}

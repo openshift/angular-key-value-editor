@@ -1,0 +1,21 @@
+{
+  "name": "angular-key-value-editor",
+  "description": "A simple UI for editing key-value pairs",
+  "version": "0.0.1",
+  "main": "index.js",
+  "authors": [
+    "benjaminapetersen <admin@benjaminapetersen.me>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/benjaminapetersen/angular-key-value-editor",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "^1.5.5"
+  }
+}
