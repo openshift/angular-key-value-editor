@@ -1,0 +1,46 @@
+<html ng-app="demo">
+  <head></head>
+  <body>
+    Hello World.
+
+    <div ng-controller="demoCtrl">
+      <!-- an element -->
+      <key-value-list></key-value-list>
+      <!-- or an attribute of another node -->
+      <div key-value-list></div>
+    </div>
+
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../src/key-value-editor.js"></script>
+    <script src="../src/directives/key-value-list.js"></script>
+    <script>
+      // quick hack getting demo up and running
+      angular
+        .module('demo', [
+          'key-value-editor'
+        ])
+        .controller('demoCtrl', [
+          '$scope',
+          function($scope) {
+            console.log('demoCtrl');
+            // an array of arrays,
+            // but we need to make sure that the implementation can easily
+            // support dealing with various data types...
+            $scope.list = [
+              ['key', 'vaue'],
+              ['array', 'of key values'],
+              ['or should it be', 'objects?']
+            ];
+          }
+        ])
+        .run([
+          '$timeout',
+          function($timeout) {
+            $timeout(function() {
+              console.log('demo is running');
+            },1200);
+          }
+        ]);
+    </script>
+  </body>
+</html>
