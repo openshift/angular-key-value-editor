@@ -85,7 +85,7 @@ gulp.task('jshint', function() {
           .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('templates', ['clean'], function () {
+gulp.task('templates', function () {
   return cacheTemplates();
 });
 
@@ -97,6 +97,8 @@ gulp.task('min', ['build', 'templates'], function() {
     return minifyDist();
 });
 
+gulp.task('min-and-reload', ['min'], reload);
+
 gulp.task('serve', function() {
   browserSync({
      server: {
@@ -105,7 +107,7 @@ gulp.task('serve', function() {
    });
 
    // TODO: live-reloading for demo not working yet.
-   gulp.watch([srcAll, distAll, demoAll], reload);
+   gulp.watch([srcAll, distAll, demoAll], ['min-and-reload']);
 });
 
 
