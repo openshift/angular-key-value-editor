@@ -64,11 +64,27 @@
       angular
         .module('demo', [
           'key-value-editor'
-        ])
+        ]);
+    </script>
+    <script src="./dc.js"></script>
+    <script>
+      angular
+        .module('demo')
         .controller('demoCtrl', [
           '$scope',
-          function($scope) {
-            console.log('demoCtrl');
+          'dc',
+          function($scope, dc) {
+
+            dc
+              .get()
+              .then(function(response) {
+                // TODO:
+                // gotta loop the items, then get the containers, then make
+                // key-value-editors for each env var...
+                // $scope.dc.items[].spec.template.spec.containers[].env[]
+                $scope.dc = response;
+              });
+
             // an array of arrays,
             // but we need to make sure that the implementation can easily
             // support dealing with various data types...
@@ -83,13 +99,13 @@
             $scope.keyPlaceholder = 'this is a key';
             $scope.valuePlaceholder = 'this is a value';
 
+            // for the form
             var on = function() {
               console.log('Have the lists been edited?');
               console.log('list1', $scope.list1);
               console.log('list2', $scope.list2);
               // no way to get at the unnamed list in the 3rd directive
             };
-
             $scope.onSubmit = on;
             $scope.onClick = on;
 
