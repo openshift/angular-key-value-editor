@@ -11,8 +11,8 @@
       <!-- an element -->
       <key-value-editor
         pairs="list"
-        key-placeholder="key"
-        value-placeholder="value"
+        key-placeholder="{{keyPlaceholder}}"
+        value-placeholder="{{valuePlaceholder}}"
       ></key-value-editor>
       <hr>
       <!-- or an attribute of another node -->
@@ -41,8 +41,8 @@
               ['array', 'of key values'],
               ['or should it be', 'objects?']
             ];
-            $scope.keyPlaceholder = 'abc';
-            $scope.valuePlaceholder = 'abc';
+            $scope.keyPlaceholder = 'this is a key';
+            $scope.valuePlaceholder = 'this is a value';
           }
         ])
         .run([

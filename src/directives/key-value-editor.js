@@ -11,14 +11,14 @@
           restrict: 'AE',
           scope: {
             pairs: '=',
-            keyPlaceholder: '=',
-            valuePlaceholder: '='
+            keyPlaceholder: '@',
+            valuePlaceholder: '@'
           },
           // this will prob not work till we use the
           // angular template cacher to cache the templates....
           // templateUrl: 'key-value-editor.html',
           link: function($scope, $elem, $attrs) {
-            console.log('key-value-editor.link');
+            console.log('key-value-editor.link', $attrs);
           },
           controller: [
             function() {
