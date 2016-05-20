@@ -20,9 +20,17 @@
       <hr>
       <div data-key-value-editor data-pairs="list"></div>
     </div>
+
+    <!-- dependencies -->
     <script src="../bower_components/angular/angular.js"></script>
+    <!-- /src files, if editing directly
     <script src="../src/key-value-editor.js"></script>
     <script src="../src/directives/key-value-editor.js"></script>
+    -->
+    <!-- /dist files, if building -->
+    <script src="../dist/angular-key-value-editor.js"></script>
+    <!-- always need the template from dist, so be sure to run 'gulp templates' if these are changed -->
+    <script src="../dist/compiled-templates.js"></script>
     <script>
       // quick hack getting demo up and running
       angular
