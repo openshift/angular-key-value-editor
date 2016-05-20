@@ -14,28 +14,42 @@
   <body>
     <div class="container" data-ng-controller="demoCtrl">
 
-      <strong>As element</strong>
-      <!-- an element -->
-      <key-value-editor
-        pairs="list1"
-        key-placeholder="{{keyPlaceholder}}"
-        value-placeholder="{{valuePlaceholder}}"
-      ></key-value-editor>
-      <hr>
+      <ng-form
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
 
-      <strong>As attribute</strong>
-      <!-- or an attribute of another node -->
-      <div
-        key-value-editor
-        pairs="list2"></div>
+        <strong>As element</strong>
+        <!-- an element -->
+        <key-value-editor
+          pairs="list1"
+          key-placeholder="{{keyPlaceholder}}"
+          value-placeholder="{{valuePlaceholder}}"
+        ></key-value-editor>
+        <hr>
 
-      <!-- using data-* attribs -->
-      <hr>
-      <strong>With data-* bindings</strong>
-      <div
-        data-key-value-editor
-        data-key-placeholder="KEY"
-        data-value-placeholder="VALUE"></div>
+        <strong>As attribute</strong>
+        <!-- or an attribute of another node -->
+        <div
+          key-value-editor
+          pairs="list2"></div>
+
+        <!-- using data-* attribs -->
+        <hr>
+        <strong>With data-* bindings</strong>
+        <div
+          data-key-value-editor
+          data-key-placeholder="KEY"
+          data-value-placeholder="VALUE"></div>
+
+        <button
+          type="submit"
+          id="submit"
+          value="submit"
+          class="btn btn-primary"
+          ng-click="onClick()">Submit</button>
+
+      </ng-form>
 
     </div>
 
@@ -68,6 +82,17 @@
 
             $scope.keyPlaceholder = 'this is a key';
             $scope.valuePlaceholder = 'this is a value';
+
+            var on = function() {
+              console.log('Have the lists been edited?');
+              console.log('list1', $scope.list1);
+              console.log('list2', $scope.list2);
+              // no way to get at the unnamed list in the 3rd directive
+            };
+
+            $scope.onSubmit = on;
+            $scope.onClick = on;
+
           }
         ])
         .run([

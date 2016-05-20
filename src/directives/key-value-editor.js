@@ -6,10 +6,19 @@
     // convention: key-value-editor in html is keyValueList in directive
     .directive('keyValueEditor', [
       function() {
-        console.log('key-value-editor load?');
+        // a few utils
+        var last = function(array) {
+          return array[array.length-1];
+        };
+        var first = function(array) {
+          return array[0];
+        };
         return {
           restrict: 'AE',
           scope: {
+            // TODO: add an attribute for "editable" vs "view only"?
+            // TODO: add an attribute controlling the ability to more key-value pairs
+            // TODO: add an attribute to control sortable via drag-and-drop
             pairs: '=?',
             keyPlaceholder: '@',
             valuePlaceholder: '@'
@@ -20,6 +29,10 @@
           link: function($scope, $elem, $attrs) {
             // ensure a default
             $scope.pairs = $scope.pairs || [[]];
+            // ensure that there is at least one empty input for the user
+            if(!!first(last($scope.pairs))) {
+              $scope.pairs.push([]);
+            }
           },
           controller: [
             '$scope',
