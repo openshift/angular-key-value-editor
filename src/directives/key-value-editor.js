@@ -10,7 +10,7 @@
         return {
           restrict: 'AE',
           scope: {
-            pairs: '=',
+            pairs: '=?',
             keyPlaceholder: '@',
             valuePlaceholder: '@'
           },
@@ -18,13 +18,17 @@
           // angular template cacher to cache the templates....
           // templateUrl: 'key-value-editor.html',
           link: function($scope, $elem, $attrs) {
-            console.log('key-value-editor.link', $attrs);
+            // ensure a default
+            $scope.pairs = $scope.pairs || [[]];
           },
           controller: [
             '$scope',
             function($scope) {
-              console.log('key-value-editor.ctrl');
-              // always need to ensure one empty key/value pair editor at end
+
+              $scope.onFocus = function(last, index) {
+                console.log('focus last?', last, index);
+              };
+
             }
           ],
           templateUrl: 'key-value-editor.html'
