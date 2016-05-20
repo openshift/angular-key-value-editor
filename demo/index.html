@@ -14,25 +14,28 @@
   <body>
     <div class="container" data-ng-controller="demoCtrl">
 
+      <strong>As element</strong>
       <!-- an element -->
       <key-value-editor
-        pairs="list"
+        pairs="list1"
         key-placeholder="{{keyPlaceholder}}"
         value-placeholder="{{valuePlaceholder}}"
       ></key-value-editor>
       <hr>
 
+      <strong>As attribute</strong>
       <!-- or an attribute of another node -->
       <div
         key-value-editor
-        pairs="list"
-        key-placeholder="KEY"
-        value-placeholder="VALUE"></div>
+        pairs="list2"></div>
 
       <!-- using data-* attribs -->
       <hr>
+      <strong>With data-* bindings</strong>
       <div
-        data-key-value-editor></div>
+        data-key-value-editor
+        data-key-placeholder="KEY"
+        data-value-placeholder="VALUE"></div>
 
     </div>
 
@@ -59,11 +62,14 @@
             // an array of arrays,
             // but we need to make sure that the implementation can easily
             // support dealing with various data types...
-            $scope.list = [
+            $scope.list1 = [
               ['key', 'value'],
               ['array', 'of key values'],
               ['or should it be', 'objects?']
             ];
+
+            $scope.list2 = [['stuff', 'things']];
+
             $scope.keyPlaceholder = 'this is a key';
             $scope.valuePlaceholder = 'this is a value';
           }

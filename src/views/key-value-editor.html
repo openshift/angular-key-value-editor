@@ -6,7 +6,7 @@
       id="key-{{$id}}"
       placeholder="{{keyPlaceholder}}"
       value={{pair[0]}}
-      ng-focus="$last && onFocus($last, $index)">
+      ng-focus="$last && onFocusLast($last, $index)">
   </div>
   <div class="form-group col-xs-5">
     <input
@@ -15,7 +15,7 @@
       id="value-{{$id}}"
       placeholder="{{valuePlaceholder}}"
       value={{pair[1]}}
-      ng-focus="$last && onFocus($last, $index)">
+      ng-focus="$last && onFocusLast($last, $index)">
   </div>
   <div class="col-xs-2">
     <span class="fa fa-bars" aria-hidden="true"></span>

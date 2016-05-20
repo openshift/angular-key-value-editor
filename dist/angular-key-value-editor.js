@@ -31,8 +31,10 @@
             '$scope',
             function($scope) {
 
-              $scope.onFocus = function(last, index) {
-                console.log('focus last?', last, index);
+              // will add a new text input every time the last
+              // set is selected.
+              $scope.onFocusLast = function(last, index) {
+                $scope.pairs.push([]);
               };
 
             }
