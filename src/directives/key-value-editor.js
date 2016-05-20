@@ -21,8 +21,10 @@
             console.log('key-value-editor.link', $attrs);
           },
           controller: [
-            function() {
+            '$scope',
+            function($scope) {
               console.log('key-value-editor.ctrl');
+              // always need to ensure one empty key/value pair editor at end
             }
           ],
           templateUrl: 'key-value-editor.html'

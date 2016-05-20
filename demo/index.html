@@ -8,6 +8,7 @@
   </head>
   <body>
     <div class="container" data-ng-controller="demoCtrl">
+
       <!-- an element -->
       <key-value-editor
         pairs="list"
@@ -15,10 +16,20 @@
         value-placeholder="{{valuePlaceholder}}"
       ></key-value-editor>
       <hr>
+
       <!-- or an attribute of another node -->
-      <div key-value-editor pairs="list"></div>
+      <div
+        key-value-editor
+        pairs="list"
+        key-placeholder="KEY"
+        value-placeholder="VALUE"></div>
+
+      <!-- using data-* attribs -->
       <hr>
-      <div data-key-value-editor data-pairs="list"></div>
+      <div
+        data-key-value-editor
+        data-pairs="list"></div>
+        
     </div>
 
     <!-- dependencies -->
