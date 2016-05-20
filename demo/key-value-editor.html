@@ -1,0 +1,13 @@
+<div class="row" ng-repeat="pair in pairs track by $index">
+  <div class="form-group col-xs-5">
+    <input type="text" class="form-control" id="key-{{$id}}" placeholder="{{keyPlaceholder}}" value={{pair[0]}}>
+  </div>
+  <div class="form-group col-xs-5">
+    <input type="text" class="form-control" id="value-{{$id}}" placeholder="{{valuePlaceholder}}" value={{pair[1]}}>
+  </div>
+  <div class="col-xs-2">
+    <span class="fa fa-bars" aria-hidden="true"></span>
+    <button type="submit" class="btn btn-default"><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+  </div>
+</div>
+<input type="text" class="form-control" id="key-{{$id}}" placeholder="{{keyPlaceholder}}" value={{pair[0]}}>

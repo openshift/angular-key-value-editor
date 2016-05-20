@@ -1,18 +1,28 @@
-<html ng-app="demo">
-  <head></head>
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+  </head>
   <body>
-    Hello World.
-
-    <div ng-controller="demoCtrl">
+    <div class="container" data-ng-controller="demoCtrl">
       <!-- an element -->
-      <key-value-list></key-value-list>
+      <key-value-editor
+        pairs="list"
+        key-placeholder="key"
+        value-placeholder="value"
+      ></key-value-editor>
+      <hr>
       <!-- or an attribute of another node -->
-      <div key-value-list></div>
+      <div key-value-editor pairs="list"></div>
+      <hr>
+      <div data-key-value-editor data-pairs="list"></div>
     </div>
-
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../src/key-value-editor.js"></script>
-    <script src="../src/directives/key-value-list.js"></script>
+    <script src="../src/directives/key-value-editor.js"></script>
     <script>
       // quick hack getting demo up and running
       angular
@@ -27,10 +37,12 @@
             // but we need to make sure that the implementation can easily
             // support dealing with various data types...
             $scope.list = [
-              ['key', 'vaue'],
+              ['key', 'value'],
               ['array', 'of key values'],
               ['or should it be', 'objects?']
             ];
+            $scope.keyPlaceholder = 'abc';
+            $scope.valuePlaceholder = 'abc';
           }
         ])
         .run([
