@@ -5,42 +5,54 @@
     <title>Angular Key Value Editor</title>
     <link href="../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
     <link href="../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
-    <style>
-      .even {
-        background: #F5F5F5;
-      }
-    </style>
+    <link href="../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../dist/angular-key-value-editor.css" rel="stylesheet">
   </head>
   <body>
     <div class="container" data-ng-controller="demoCtrl">
-
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+      <h2>As element</h2>
       <ng-form
         novalidate
         name="test-form"
         ng-submit="onSubmit()">
 
-        <strong>As element</strong>
-        <!-- an element -->
+        <div ng-repeat="deploymentConfig in deploymentConfigs">
+          <div ng-repeat="container in deploymentConfig.containers">
+            <key-value-editor
+              pairs="container.env"
+              key-placeholder="{{keyPlaceholder}}"
+              value-placeholder="{{valuePlaceholder}}"
+
+            ></key-value-editor>
+            <hr>
+          </div>
+        </div>
+
+        <h2>As element with a single container env var</h2>
         <key-value-editor
-          pairs="list1"
+          pairs="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
         ></key-value-editor>
         <hr>
-
-        <strong>As attribute</strong>
-        <!-- or an attribute of another node -->
+        <h2>As attribute</h2>
         <div
           key-value-editor
-          pairs="list2"></div>
-
-        <!-- using data-* attribs -->
+          pairs="deploymentConfigs[0].containers[0].env"
+          key-placeholder="{{keyPlaceholder}}"
+          value-placeholder="{{valuePlaceholder}}"
+        ></div>
         <hr>
-        <strong>With data-* bindings</strong>
+        <h2>With data-* bindings</h2>
         <div
           data-key-value-editor
-          data-key-placeholder="KEY"
-          data-value-placeholder="VALUE"></div>
+          data-pairs="deploymentConfigs[0].containers[0].env"
+          data-key-placeholder="{{keyPlaceholder}}"
+          data-value-placeholder="{{valuePlaceholder}}"
+        ></div>
 
         <button
           type="submit"
@@ -48,15 +60,16 @@
           value="submit"
           class="btn btn-primary"
           ng-click="onClick()">Submit</button>
-
       </ng-form>
 
     </div>
 
     <!-- dependencies -->
     <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/lodash/dist/lodash.js"></script>
     <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
     <script src="../dist/angular-key-value-editor.js"></script>
+    <script src="../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
     <!-- the built template files -->
     <script src="../dist/compiled-templates.js"></script>
     <script>
@@ -74,38 +87,49 @@
           '$scope',
           'dc',
           function($scope, dc) {
+            var originalDC;
 
             dc
               .get()
               .then(function(response) {
-                // TODO:
-                // gotta loop the items, then get the containers, then make
-                // key-value-editors for each env var...
-                // $scope.dc.items[].spec.template.spec.containers[].env[]
-                $scope.dc = response;
+                originalDC = response;
+                $scope.deploymentConfigs = _.map(
+                  response.items,
+                  function(deploymentConfig) {
+                    return {
+                      name: _.get(deploymentConfig, 'metadata.name'),
+                      containers: _.map(
+                        _.get(deploymentConfig, 'spec.template.spec.containers'),
+                        function(container) {
+                          return {
+                            name: container.name,
+                            env: _.map(
+                              container.env,
+                              function(env){
+                                return env;
+                              }
+                            )
+                          }
+                        }
+                      )
+                    }
+                  }
+                )
+                // console.log('response', response);
+                // console.log('deploymentConfigs', $scope.deploymentConfigs);
               });
 
-            // an array of arrays,
-            // but we need to make sure that the implementation can easily
-            // support dealing with various data types...
-            $scope.list1 = [
-              ['key', 'value'],
-              ['array', 'of key values'],
-              ['or should it be', 'objects?']
-            ];
-
-            $scope.list2 = [['stuff', 'things']];
-
-            $scope.keyPlaceholder = 'this is a key';
-            $scope.valuePlaceholder = 'this is a value';
+            $scope.keyPlaceholder = 'key';
+            $scope.valuePlaceholder = 'value';
 
             // for the form
             var on = function() {
-              console.log('Have the lists been edited?');
-              console.log('list1', $scope.list1);
-              console.log('list2', $scope.list2);
+              console.log($scope.deploymentConfigs);
+              // console.log('list1', $scope.list1);
+              // console.log('list2', $scope.list2);
               // no way to get at the unnamed list in the 3rd directive
             };
+
             $scope.onSubmit = on;
             $scope.onClick = on;
 
@@ -115,7 +139,7 @@
           '$timeout',
           function($timeout) {
             $timeout(function() {
-              console.log('demo is running');
+              // console.log('demo is running');
             },1200);
           }
         ]);

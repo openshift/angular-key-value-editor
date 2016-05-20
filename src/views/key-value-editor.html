@@ -1,24 +1,56 @@
-<div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="pair in pairs track by $index">
-  <div class="form-group col-xs-5">
-    <input
-      type="text"
-      class="form-control"
-      id="key-{{$id}}"
-      placeholder="{{keyPlaceholder}}"
-      value={{pair[0]}}
-      ng-focus="$last && onFocusLast($last, $index)">
+<div ng-if="!cannotSort" ng-model="pairs" as-sortable="dragControlListeners">
+  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="pair in pairs" as-sortable-item>
+    <div class="form-group col-xs-4 col-sm-5">
+      <input
+        type="text"
+        class="form-control"
+        id="key-{{$id}}"
+        placeholder="{{keyPlaceholder}}"
+        ng-model="pair.name"
+        ng-focus="$last && onFocusLast($last, $index)"
+        ng-readonly="isReadonly">
+    </div>
+    <div class="form-group col-xs-4 col-sm-5">
+      <input
+        type="text"
+        class="form-control"
+        id="value-{{$id}}"
+        placeholder="{{valuePlaceholder}}"
+        ng-model="pair.value"
+        ng-focus="$last && onFocusLast($last, $index)"
+        ng-readonly="isReadonly">
+    </div>
+    <div class="col-xs-4 col-sm-2" ng-hide="!cannotAdd && $last">
+      <span class="fa fa-bars" role="button" aria-label="Move row" aria-grabbed="false" as-sortable-item-handle></span>
+      <span class="pficon pficon-close as-sortable-item-delete" role="button" aria-label="Delete row" ng-hide="cannotDelete" ng-click="deletePair($index, 1)"></span>
+    </div>
   </div>
-  <div class="form-group col-xs-5">
-    <input
-      type="text"
-      class="form-control"
-      id="value-{{$id}}"
-      placeholder="{{valuePlaceholder}}"
-      value={{pair[1]}}
-      ng-focus="$last && onFocusLast($last, $index)">
-  </div>
-  <div class="col-xs-2">
-    <span class="fa fa-bars" aria-hidden="true"></span>
-    <button type="submit" class="btn btn-default"><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+</div>
+
+<div ng-if="cannotSort" ng-model="pairs">
+  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="pair in pairs">
+    <div class="form-group col-xs-4 col-sm-5">
+      <input
+        type="text"
+        class="form-control"
+        id="key-{{$id}}"
+        placeholder="{{keyPlaceholder}}"
+        ng-model="pair.name"
+        ng-focus="$last && onFocusLast($last, $index)"
+        ng-readonly="isReadonly">
+    </div>
+    <div class="form-group col-xs-4 col-sm-5">
+      <input
+        type="text"
+        class="form-control"
+        id="value-{{$id}}"
+        placeholder="{{valuePlaceholder}}"
+        ng-model="pair.value"
+        ng-focus="$last && onFocusLast($last, $index)"
+        ng-readonly="isReadonly">
+    </div>
+    <div class="col-xs-4 col-sm-2" ng-hide="$last">
+      <span class="pficon pficon-close as-sortable-item-delete" role="button" aria-label="Delete row" ng-hide="cannotDelete" ng-click="deletePair($index, 1)"></span>    </div>
+    </div>
   </div>
 </div>

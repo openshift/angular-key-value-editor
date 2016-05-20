@@ -11,7 +11,9 @@ var gulp = require('gulp'),
     del = require('del'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
-    templateCache = require('gulp-angular-templatecache');
+    templateCache = require('gulp-angular-templatecache'),
+    less = require('gulp-less'),
+    path = require('path');
 
 // vars for finding directories
 var match = {
@@ -30,7 +32,8 @@ var srcAll = src + match.recurse,
     tmpAll = tmpBuild + match.recurse;
 
 var srcJS = src + match.recurse + '.js',
-    srcView = src + '/views/'+ match.recurse + '.html';
+    srcView = src + '/views/'+ match.recurse + '.html',
+    srcLess = src + '/less/' + match.recurse + '.less';
 
 var outputJS = 'angular-key-value-editor.js',
     outputTpl = 'compiled-templates.js';
@@ -85,16 +88,25 @@ gulp.task('jshint', function() {
           .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('templates', function () {
+gulp.task('templates', ['clean'], function () {
   return cacheTemplates();
 });
 
-gulp.task('build', ['clean','templates', 'jshint'], function () {
+gulp.task('less', ['clean'], function () {
+  return gulp
+          .src(srcLess)
+          .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+          }))
+          .pipe(gulp.dest(dist));
+});
+
+gulp.task('build', ['clean','templates', 'jshint', 'less'], function () {
   return concatSource();
 });
 
 gulp.task('min', ['build', 'templates'], function() {
-    return minifyDist();
+  return minifyDist();
 });
 
 gulp.task('min-and-reload', ['min'], reload);
@@ -121,7 +133,6 @@ gulp.task('_tmp-templates', function() {
 gulp.task('_tmp-min', ['_tmp-build', '_tmp-templates'], function() {
   return minifyDist(tmpBuild);
 });
-
 
 // at present this task exists for travis to use to before
 // running ./validate.sh to diff our dist against ./.tmp/build
