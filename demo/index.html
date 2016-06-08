@@ -22,7 +22,7 @@
         <div ng-repeat="deploymentConfig in deploymentConfigs">
           <div ng-repeat="container in deploymentConfig.containers">
             <key-value-editor
-              pairs="container.env"
+              entries="container.env"
               key-placeholder="{{keyPlaceholder}}"
               value-placeholder="{{valuePlaceholder}}"
 
@@ -33,7 +33,7 @@
 
         <h2>As element with a single container env var</h2>
         <key-value-editor
-          pairs="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
         ></key-value-editor>
@@ -41,7 +41,7 @@
         <h2>As attribute</h2>
         <div
           key-value-editor
-          pairs="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
         ></div>
@@ -49,7 +49,7 @@
         <h2>With data-* bindings</h2>
         <div
           data-key-value-editor
-          data-pairs="deploymentConfigs[0].containers[0].env"
+          data-entries="deploymentConfigs[0].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
         ></div>

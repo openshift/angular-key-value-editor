@@ -6,11 +6,11 @@
     .directive('keyValueEditor', [
       function() {
         // a few utils
-        var addEmptyPair = function(pairs) {
-          pairs.push({name: '', value: ''});
+        var addEmptyEntry = function(entries) {
+          entries.push({name: '', value: ''});
         };
-        var last = function(pairs) {
-          return pairs[pairs.length - 1];
+        var last = function(entries) {
+          return entries[entries.length - 1];
         };
         return {
           restrict: 'AE',
@@ -18,7 +18,7 @@
             // TODO: save modifications
             // TODO: ensure we don't return an empty pair
             // TODO: validate input
-            pairs: '=?',
+            entries: '=?',
             // TODO: add an attribute for "editable" vs "view only"?
             // TODO: add an attribute for delete
             keyPlaceholder: '@',
@@ -30,7 +30,7 @@
           },
           link: function($scope, $elem, $attrs) {
             // ensure a default
-            $scope.pairs = $scope.pairs || [];
+            $scope.entries = $scope.entries || [];
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {
               $scope.cannotAdd = true;
@@ -45,8 +45,8 @@
               $scope.cannotSort = true;
             }
             // ensure that there is at least one empty input for the user
-            if(!$scope.cannotAdd && last($scope.pairs).name !== ''){
-              addEmptyPair($scope.pairs);
+            if(!$scope.cannotAdd && last($scope.entries).name !== ''){
+              addEmptyEntry($scope.entries);
             }
           },
           controller: [
@@ -56,12 +56,12 @@
               // set is selected.
               $scope.onFocusLast = function(last, index) {
                 if (!$scope.cannotAdd) {
-                  addEmptyPair($scope.pairs);
+                  addEmptyEntry($scope.entries);
                 }
               };
               // clicking the delete button removes the pair
-              $scope.deletePair = function(start, deleteCount) {
-                $scope.pairs.splice(start, deleteCount);
+              $scope.deleteEntry = function(start, deleteCount) {
+                $scope.entries.splice(start, deleteCount);
               };
               $scope.dragControlListeners = {
                   // only allow sorting within the parent instance
@@ -74,7 +74,7 @@
                       event.dest.sortableScope.removeItem(event.dest.index);
                       event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
                     }
-                    // console.log(_.map($scope.pairs, function(item) {
+                    // console.log(_.map($scope.entries, function(item) {
                     //   return item.name;
                     // }));
                   }
