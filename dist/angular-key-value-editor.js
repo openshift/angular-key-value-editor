@@ -15,17 +15,29 @@
           entries.push({name: '', value: ''});
         };
         var last = function(entries) {
-          return entries[entries.length - 1];
+          return entries && entries[entries.length - 1];
+        };
+        // this is a minimal get w/o deep paths
+        var get = function(obj, prop) {
+          return obj && obj[prop];
         };
         return {
           restrict: 'AE',
           scope: {
             // TODO: save modifications
+            //  - the calling code controller needs to do this as an example
             // TODO: ensure we don't return an empty pair
+            //  - this is tricky as we are using simple two-way data binding
             // TODO: validate input
+            //  - follow the tut http://www.benlesh.com/2012/12/angular-js-custom-validation-via.html
+            // each entry can look like the following:
+            // {
+            //  name: 'foo',
+            //  value: 'bar',
+            //  isReadOnly: true|| false      // individual entries may be readonly
+            //  cannotDelete: true || false   // individual entries can be permanent
+            // }
             entries: '=?',
-            // TODO: add an attribute for "editable" vs "view only"?
-            // TODO: add an attribute for delete
             keyPlaceholder: '@',
             valuePlaceholder: '@',
             cannotAdd: '=?',
@@ -50,7 +62,7 @@
               $scope.cannotSort = true;
             }
             // ensure that there is at least one empty input for the user
-            if(!$scope.cannotAdd && last($scope.entries).name !== ''){
+            if(!$scope.cannotAdd && get(last($scope.entries), 'name') !== ''){
               addEmptyEntry($scope.entries);
             }
           },
@@ -59,7 +71,7 @@
             function($scope) {
               // will add a new text input every time the last
               // set is selected.
-              $scope.onFocusLast = function(last, index) {
+              $scope.onFocusLast = function() {
                 if (!$scope.cannotAdd) {
                   addEmptyEntry($scope.entries);
                 }
@@ -79,9 +91,6 @@
                       event.dest.sortableScope.removeItem(event.dest.index);
                       event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
                     }
-                    // console.log(_.map($scope.entries, function(item) {
-                    //   return item.name;
-                    // }));
                   }
 
               };

@@ -8,7 +8,7 @@
         placeholder="{{keyPlaceholder}}"
         ng-model="entry.name"
         ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly">
+        ng-readonly="isReadonly || entry.isReadonly">
     </div>
     <div class="form-group col-xs-4 col-sm-5">
       <input
@@ -18,11 +18,21 @@
         placeholder="{{valuePlaceholder}}"
         ng-model="entry.value"
         ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly">
+        ng-readonly="isReadonly || entry.isReadonly">
     </div>
     <div class="col-xs-4 col-sm-2" ng-hide="!cannotAdd && $last">
-      <span class="fa fa-bars" role="button" aria-label="Move row" aria-grabbed="false" as-sortable-item-handle></span>
-      <span class="pficon pficon-close as-sortable-item-delete" role="button" aria-label="Delete row" ng-hide="cannotDelete" ng-click="deleteEntry($index, 1)"></span>
+      <span
+        class="fa fa-bars"
+        role="button"
+        aria-label="Move row"
+        aria-grabbed="false"
+        as-sortable-item-handle></span>
+      <span
+        class="pficon pficon-close as-sortable-item-delete"
+        role="button"
+        aria-label="Delete row"
+        ng-hide="cannotDelete || entry.cannotDelete"
+        ng-click="deleteEntry($index, 1)"></span>
     </div>
   </div>
 </div>
@@ -37,7 +47,7 @@
         placeholder="{{keyPlaceholder}}"
         ng-model="entry.name"
         ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly">
+        ng-readonly="isReadonly || entry.isReadonly">
     </div>
     <div class="form-group col-xs-4 col-sm-5">
       <input
@@ -47,10 +57,15 @@
         placeholder="{{valuePlaceholder}}"
         ng-model="entry.value"
         ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly">
+        ng-readonly="isReadonly || entry.isReadonly">
     </div>
     <div class="col-xs-4 col-sm-2" ng-hide="$last">
-      <span class="pficon pficon-close as-sortable-item-delete" role="button" aria-label="Delete row" ng-hide="cannotDelete" ng-click="deletePair($index, 1)"></span>    </div>
+      <span
+        class="pficon pficon-close as-sortable-item-delete"
+        role="button"
+        aria-label="Delete row"
+        ng-hide="cannotDelete || entry.cannotDelete"
+        ng-click="deletePair($index, 1)"></span>
     </div>
   </div>
 </div>

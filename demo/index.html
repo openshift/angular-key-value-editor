@@ -7,6 +7,15 @@
     <link href="../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
     <link href="../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
     <link href="../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+    </style>
   </head>
   <body>
     <div class="container" data-ng-controller="demoCtrl">
@@ -32,27 +41,36 @@
         </div>
 
         <h2>As element with a single container env var</h2>
+        <p><strong>is-readonly</strong>: true</p>
         <key-value-editor
           entries="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
-        ></key-value-editor>
+          is-readonly></key-value-editor>
         <hr>
         <h2>As attribute</h2>
+        <p><strong>cannot-sort</strong>: true</p>
+        <p><strong>cannot-add</strong>: true</p>
         <div
           key-value-editor
           entries="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
-        ></div>
+          cannot-sort
+          cannot-add></div>
         <hr>
         <h2>With data-* bindings</h2>
+        <p><strong>is-readonly</strong>: true</p>
+        <p><strong>cannot-sort</strong>: true</p>
+        <p><strong>cannot-add</strong>: true</p>
         <div
           data-key-value-editor
           data-entries="deploymentConfigs[0].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
-        ></div>
+          cannot-sort
+          cannot-delete
+          is-readonly></div>
 
         <button
           type="submit"
@@ -83,16 +101,38 @@
     <script>
       angular
         .module('demo')
+        .factory('mod', [
+          function() {
+            return function(num, remainder) {
+              var counter = 0;
+              return function() {
+                counter++;
+                return counter % num === remainder;
+              }
+            }
+          }
+        ])
         .controller('demoCtrl', [
           '$scope',
           'dc',
-          function($scope, dc) {
+          'mod',
+          function($scope, dc, mod) {
             var originalDC;
+
+            // quick dummy functions for testing purposes
+            var isEven = mod(2, 0);
+            var isOdd = mod(2, 1);
+            var isEveryThird = mod(3, 0);
 
             dc
               .get()
               .then(function(response) {
                 originalDC = response;
+                console.log(response);
+                // transforming the lists into a simplified copy we can use for UI
+                // we will dirty up this temporary model with UI data, therefore need
+                // to transform it back when ready to persist it (copy relevant data
+                // back to the original model to return to the server)
                 $scope.deploymentConfigs = _.map(
                   response.items,
                   function(deploymentConfig) {
@@ -106,17 +146,19 @@
                             env: _.map(
                               container.env,
                               function(env){
+                                //env.isReadonly = isEveryThird() ? true : false;
+                                //env.cannotDelete = isEveryThird() ? true : false;
+                                // for the key-value-editor, we will annotate these
+                                // with is-readonly, etc.
                                 return env;
-                              }
-                            )
-                          }
-                        }
-                      )
-                    }
-                  }
-                )
-                // console.log('response', response);
-                // console.log('deploymentConfigs', $scope.deploymentConfigs);
+                              })
+                          };
+                        })
+                    };
+                  });
+                // limit the noise
+                $scope.deploymentConfigs = [$scope.deploymentConfigs[2]];
+                console.log($scope.deploymentConfigs);
               });
 
             $scope.keyPlaceholder = 'key';
