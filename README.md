@@ -2,8 +2,6 @@
 A simple UI for editing key-value pairs
 
 ## TODO:
-- add drag/drop/sortable functionality
-  - this will probably require an external library, but should be optional, if a user does not want it should not blow up if not included
 - need to ensure that we can support various data formats, not just arrays of       arrays, though the directive itself should be pretty dumb (only support array of arrays)
 - optionally invalidate the parent form if something is wonky
   - example: enforce a format for key-value pairs, such as `no spaces`.  

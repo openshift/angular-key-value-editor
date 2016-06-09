@@ -1,5 +1,4 @@
 (function() {
   'use strict';
-  // currently no dependencies
-  angular.module('key-value-editor', [ ]);
+  angular.module('key-value-editor', ['as.sortable']);
 })();
