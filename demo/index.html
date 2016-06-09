@@ -36,17 +36,26 @@
               value-placeholder="{{valuePlaceholder}}"
 
             ></key-value-editor>
-            <hr>
           </div>
         </div>
-
-        <h2>As element with a single container env var</h2>
         <p><strong>is-readonly</strong>: true</p>
         <key-value-editor
           entries="deploymentConfigs[0].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
           is-readonly></key-value-editor>
+        <p><strong>cannot-delete</strong>: true</p>
+        <key-value-editor
+          entries="deploymentConfigs[0].containers[0].env"
+          key-placeholder="{{keyPlaceholder}}"
+          value-placeholder="{{valuePlaceholder}}"
+          cannot-delete></key-value-editor>
+          <p><strong>cannot-sort</strong>: true</p>
+          <key-value-editor
+            entries="deploymentConfigs[0].containers[0].env"
+            key-placeholder="{{keyPlaceholder}}"
+            value-placeholder="{{valuePlaceholder}}"
+            cannot-sort></key-value-editor>
         <hr>
         <h2>As attribute</h2>
         <p><strong>cannot-sort</strong>: true</p>
