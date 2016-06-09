@@ -1,6 +1,6 @@
-<div ng-if="!cannotSort" ng-model="entries" as-sortable="dragControlListeners">
-  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries" as-sortable-item>
-    <div class="form-group col-xs-4 col-sm-5">
+<div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="!cannotSort" ng-model="entries" as-sortable="dragControlListeners">
+  <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries" as-sortable-item>
+    <div class="form-group key-value-editor-input">
       <input
         type="text"
         class="form-control"
@@ -10,7 +10,7 @@
         ng-focus="$last && onFocusLast($last, $index)"
         ng-readonly="isReadonly || entry.isReadonly">
     </div>
-    <div class="form-group col-xs-4 col-sm-5">
+    <div class="form-group key-value-editor-input">
       <input
         type="text"
         class="form-control"
@@ -20,7 +20,7 @@
         ng-focus="$last && onFocusLast($last, $index)"
         ng-readonly="isReadonly || entry.isReadonly">
     </div>
-    <div class="col-xs-4 col-sm-2" ng-hide="!cannotAdd && $last">
+    <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
       <span
         class="fa fa-bars"
         role="button"
@@ -37,9 +37,9 @@
   </div>
 </div>
 
-<div ng-if="cannotSort" ng-model="entries">
-  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries">
-    <div class="form-group col-xs-4 col-sm-5">
+<div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="cannotSort" ng-model="entries">
+  <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries">
+    <div class="form-group key-value-editor-input">
       <input
         type="text"
         class="form-control"
@@ -49,7 +49,7 @@
         ng-focus="$last && onFocusLast($last, $index)"
         ng-readonly="isReadonly || entry.isReadonly">
     </div>
-    <div class="form-group col-xs-4 col-sm-5">
+    <div class="form-group key-value-editor-input">
       <input
         type="text"
         class="form-control"
@@ -59,7 +59,7 @@
         ng-focus="$last && onFocusLast($last, $index)"
         ng-readonly="isReadonly || entry.isReadonly">
     </div>
-    <div class="col-xs-4 col-sm-2" ng-hide="$last">
+    <div class="key-value-editor-buttons" ng-hide="$last">
       <span
         class="pficon pficon-close as-sortable-item-delete"
         role="button"
