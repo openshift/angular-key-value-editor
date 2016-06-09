@@ -9,7 +9,7 @@
 }
 .key-value-editor.cannot-delete .key-value-editor-entry,
 .key-value-editor.cannot-sort .key-value-editor-entry {
-  padding-right: 24px;
+  padding-right: 25px;
 }
 .key-value-editor.cannot-delete.cannot-sort .key-value-editor-entry {
   padding-right: 0;
@@ -37,7 +37,7 @@
 }
 .key-value-editor .key-value-editor-entry {
   display: table;
-  padding-right: 48px;
+  padding-right: 50px;
   position: relative;
   width: 100%;
 }
