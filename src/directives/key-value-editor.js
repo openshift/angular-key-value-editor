@@ -7,10 +7,10 @@
       function() {
         // a few utils
         var addEmptyEntry = function(entries) {
-          entries.push({name: '', value: ''});
+          entries && entries.push({name: '', value: ''});
         };
         var last = function(entries) {
-          return entries && entries[entries.length - 1];
+          return entries[entries.length - 1];
         };
         // this is a minimal get w/o deep paths
         var get = function(obj, prop) {
@@ -35,6 +35,8 @@
             entries: '=?',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
+            keyValidator: '@',
+            valueValidator: '@',
             cannotAdd: '=?',
             cannotDelete: '=?',
             cannotSort: '=?',
@@ -56,8 +58,9 @@
             if('cannotSort' in $attrs) {
               $scope.cannotSort = true;
             }
+
             // ensure that there is at least one empty input for the user
-            if(!$scope.cannotAdd && get(last($scope.entries), 'name') !== ''){
+            if(!$scope.cannotAdd && !$scope.isReadonly && (get(last($scope.entries), 'name') !== '')) {
               addEmptyEntry($scope.entries);
             }
           },
@@ -67,7 +70,7 @@
               // will add a new text input every time the last
               // set is selected.
               $scope.onFocusLast = function() {
-                if (!$scope.cannotAdd) {
+                if (!$scope.cannotAdd && !$scope.isReadonly) {
                   addEmptyEntry($scope.entries);
                 }
               };

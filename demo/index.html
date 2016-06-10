@@ -15,48 +15,65 @@
       strong {
         color: #6099D4;
       }
+      .error {
+        border:1px solid #990000;
+        color: #990000;
+        background: #fefefe;
+      }
     </style>
   </head>
   <body>
+
+
+
     <div class="container" data-ng-controller="demoCtrl">
       <div class="page-header">
         <h1>Angular Key Value Editor</h1>
       </div>
-      <h2>As element</h2>
       <ng-form
         novalidate
         name="test-form"
         ng-submit="onSubmit()">
-
-        <div ng-repeat="deploymentConfig in deploymentConfigs">
+        <h2>As element</h2>
+        <div ng-repeat="deploymentConfig in [deploymentConfigs[0]]">
           <div ng-repeat="container in deploymentConfig.containers">
             <key-value-editor
               entries="container.env"
               key-placeholder="{{keyPlaceholder}}"
               value-placeholder="{{valuePlaceholder}}"
-
-            ></key-value-editor>
+              key-validator="{{keyValidator}}"
+              value-validator="{{valueValidator}}"
+              cannot-add></key-value-editor>
           </div>
         </div>
+
+        <h2>Read-only</h2>
         <p><strong>is-readonly</strong>: true</p>
         <key-value-editor
-          entries="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[1].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
-          is-readonly></key-value-editor>
+          is-readonly
+          ></key-value-editor>
+
+        <h2>Reorder only</h2>
         <p><strong>cannot-delete</strong>: true</p>
         <key-value-editor
-          entries="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[2].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
           cannot-delete></key-value-editor>
-          <p><strong>cannot-sort</strong>: true</p>
-          <key-value-editor
-            entries="deploymentConfigs[0].containers[0].env"
-            key-placeholder="{{keyPlaceholder}}"
-            value-placeholder="{{valuePlaceholder}}"
-            cannot-sort></key-value-editor>
+
+        <h2>No Sorting</h2>
+        <p><strong>cannot-sort</strong>: true</p>
+        <key-value-editor
+          entries="deploymentConfigs[3].containers[0].env"
+          key-placeholder="{{keyPlaceholder}}"
+          value-placeholder="{{valuePlaceholder}}"
+          cannot-sort></key-value-editor>
         <hr>
+
+        <!--
         <h2>As attribute</h2>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
@@ -67,18 +84,22 @@
           value-placeholder="{{valuePlaceholder}}"
           cannot-sort
           cannot-add></div>
+        -->
+
         <hr>
+        <h2>Completely readonly (no sorting, adding, etc)</h2>
         <h2>With data-* bindings</h2>
         <p><strong>is-readonly</strong>: true</p>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
         <div
           data-key-value-editor
-          data-entries="deploymentConfigs[0].containers[0].env"
+          data-entries="deploymentConfigs[2].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
           cannot-sort
           cannot-delete
+          cannot-add
           is-readonly></div>
 
         <button
@@ -121,17 +142,63 @@
             }
           }
         ])
+        .factory('lessThan', [
+          function() {
+            return function(num) {
+              return function(compare) {
+                return compare < num;
+              }
+            }
+          }
+        ])
+        .factory('commonRegex', [
+          function() {
+            return {
+              raw: {
+                // bunch of common regex for testing
+                noWhiteSpace: /^\S*$/,
+                digitsOnly: /^[0-9]+$/,
+                alphaOnly: /^[a-zA-Z]+$/,
+                alphaNumeric: /^[a-zA-Z0-9]+$/,
+                alphaNumericUnderscore: /^[a-zA-Z0-9_]*$/,
+                alphaNumericDashes: /^[a-zA-Z0-9-_]+$/,
+                email: /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/,
+                // USPhone: /^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                // at least 3, max 16, alphanumeric
+                standardUsername: /^[a-z0-9_-]{3,16}$/,
+                // 6 to 18, letters, numbers, underscore, hyphen
+                standardPassword: /^[a-z0-9_-]{6,18}$/,
+                // lower, upper, unique char, min-6 char...
+                complexPassword: /^.*(?=.{6,})(?=.*d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/,
+                url: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+                ipAddress: /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
+                htmlTag: /^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/
+              },
+              strings: {
+                noWhiteSpace: '\S*',
+                digitsOnly: '[0-9]+',
+                alphaOnly: '[a-zA-Z]+',
+                alphaNumeric: '[a-zA-Z0-9]+',
+                alphaNumericUnderscore: '[a-zA-Z0-9_]*'
+              }
+            }
+          }
+        ])
         .controller('demoCtrl', [
           '$scope',
           'dc',
           'mod',
-          function($scope, dc, mod) {
+          'lessThan',
+          'commonRegex',
+          function($scope, dc, mod, lessThan, commonRegex) {
             var originalDC;
 
             // quick dummy functions for testing purposes
             var isEven = mod(2, 0);
             var isOdd = mod(2, 1);
             var isEveryThird = mod(3, 0);
+            var lessThanTwo = lessThan(2);
+            var lessThanThree = lessThan(3);
 
             dc
               .get()
@@ -154,9 +221,9 @@
                             name: container.name,
                             env: _.map(
                               container.env,
-                              function(env){
-                                //env.isReadonly = isEveryThird() ? true : false;
-                                //env.cannotDelete = isEveryThird() ? true : false;
+                              function(env, i){
+                                env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
+                                env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
                                 // for the key-value-editor, we will annotate these
                                 // with is-readonly, etc.
                                 return env;
@@ -165,13 +232,15 @@
                         })
                     };
                   });
-                // limit the noise
-                $scope.deploymentConfigs = [$scope.deploymentConfigs[2]];
-                console.log($scope.deploymentConfigs);
+
               });
 
             $scope.keyPlaceholder = 'key';
             $scope.valuePlaceholder = 'value';
+
+          //  $scope.keyValidator =  commonRegex.noWhiteSpace;
+          //  $scope.valueValidator = commonRegex.alphaOnly;
+
 
             // for the form
             var on = function() {
