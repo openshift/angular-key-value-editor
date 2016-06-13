@@ -31,6 +31,8 @@
             //  value: 'bar',
             //  isReadOnly: true|| false      // individual entries may be readonly
             //  cannotDelete: true || false   // individual entries can be permanent
+            //  keyValidator: '',
+            //  valueValidator: ''
             // }
             entries: '=?',
             keyPlaceholder: '@',
