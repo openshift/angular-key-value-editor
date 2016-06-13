@@ -31,14 +31,18 @@
             //  value: 'bar',
             //  isReadOnly: true|| false      // individual entries may be readonly
             //  cannotDelete: true || false   // individual entries can be permanent
-            //  keyValidator: '',
-            //  valueValidator: ''
+            //  keyValidator: '',             // regex string
+            //  valueValidator: ''            // regex string
+            //  keyValidatorError: '',        // custom validation error
+            //  valueValidatorError: ''       // custom validation error
             // }
             entries: '=?',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
-            keyValidator: '@',
-            valueValidator: '@',
+            keyValidator: '@',                // general key regex validation string
+            valueValidator: '@',              // general value regex validation string
+            keyValidatorError: '@',           // general key validation error message
+            valueValidatorError: '@',         // general value validation error message
             cannotAdd: '=?',
             cannotDelete: '=?',
             cannotSort: '=?',
