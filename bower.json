@@ -1,10 +1,15 @@
 {
   "name": "angular-key-value-editor",
   "description": "A simple UI for editing key-value pairs",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.2",
+  "main": [
+    "dist/angular-key-value-editor.css",
+    "dist/angular-key-value-editor.js",
+    "dist/compiled-templates.js"
+  ],
   "authors": [
-    "benjaminapetersen <admin@benjaminapetersen.me>"
+    "benjaminapetersen <admin@benjaminapetersen.me>",
+    "rhamilto <rhamilto@redhat.com>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/benjaminapetersen/angular-key-value-editor",
