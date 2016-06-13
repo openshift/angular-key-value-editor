@@ -1,71 +1,90 @@
-<div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="!cannotSort" ng-model="entries" as-sortable="dragControlListeners">
-  <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries" as-sortable-item>
-    <div class="form-group key-value-editor-input">
-      <input
-        type="text"
-        class="form-control"
-        id="key-{{$id}}"
-        placeholder="{{keyPlaceholder}}"
-        ng-model="entry.name"
-        ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly || entry.isReadonly">
-    </div>
-    <div class="form-group key-value-editor-input">
-      <input
-        type="text"
-        class="form-control"
-        id="value-{{$id}}"
-        placeholder="{{valuePlaceholder}}"
-        ng-model="entry.value"
-        ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly || entry.isReadonly">
-    </div>
-    <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
-      <span
-        class="fa fa-bars"
-        role="button"
-        aria-label="Move row"
-        aria-grabbed="false"
-        as-sortable-item-handle></span>
-      <span
-        class="pficon pficon-close as-sortable-item-delete"
-        role="button"
-        aria-label="Delete row"
-        ng-hide="cannotDelete || entry.cannotDelete"
-        ng-click="deleteEntry($index, 1)"></span>
+<ng-form name="keyValueEditor" novalidate>
+  <!-- may use ng-messages for better validation, if needed -->
+  <div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="!cannotSort" ng-model="entries" as-sortable="dragControlListeners">
+    <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries" as-sortable-item>
+      <div
+        class="form-group key-value-editor-input"
+        ng-class="{ 'has-error' :  (keyValueEditor['key-' + $id].$invalid) }">
+        <input
+          type="text"
+          class="form-control"
+          id="key-{{$id}}"
+          name="key-{{$id}}"
+          placeholder="{{keyPlaceholder}}"
+          ng-model="entry.name"
+          ng-focus="$last && onFocusLast($last, $index)"
+          ng-readonly="isReadonly || entry.isReadonly"
+          ng-pattern="keyValidator">
+      </div>
+      <div
+        class="form-group key-value-editor-input"
+        ng-class="(keyValueEditor['value-' + $id].$invalid && keyValueEditor['value-' + $id].$dirty) ? 'has-error' : ''">
+        <input
+          type="text"
+          class="form-control"
+          id="value-{{$id}}"
+          name="value-{{$id}}"
+          placeholder="{{valuePlaceholder}}"
+          ng-model="entry.value"
+          ng-focus="$last && onFocusLast($last, $index)"
+          ng-readonly="isReadonly || entry.isReadonly"
+          ng-pattern="valueValidator">
+      </div>
+      <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
+        <span
+          class="fa fa-bars"
+          role="button"
+          aria-label="Move row"
+          aria-grabbed="false"
+          as-sortable-item-handle></span>
+        <span
+          class="pficon pficon-close as-sortable-item-delete"
+          role="button"
+          aria-label="Delete row"
+          ng-hide="cannotDelete || entry.cannotDelete"
+          ng-click="deleteEntry($index, 1)"></span>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="cannotSort" ng-model="entries">
-  <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries">
-    <div class="form-group key-value-editor-input">
-      <input
-        type="text"
-        class="form-control"
-        id="key-{{$id}}"
-        placeholder="{{keyPlaceholder}}"
-        ng-model="entry.name"
-        ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly || entry.isReadonly">
-    </div>
-    <div class="form-group key-value-editor-input">
-      <input
-        type="text"
-        class="form-control"
-        id="value-{{$id}}"
-        placeholder="{{valuePlaceholder}}"
-        ng-model="entry.value"
-        ng-focus="$last && onFocusLast($last, $index)"
-        ng-readonly="isReadonly || entry.isReadonly">
-    </div>
-    <div class="key-value-editor-buttons" ng-hide="$last">
-      <span
-        class="pficon pficon-close as-sortable-item-delete"
-        role="button"
-        aria-label="Delete row"
-        ng-hide="cannotDelete || entry.cannotDelete"
-        ng-click="deletePair($index, 1)"></span>
+  <div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-if="cannotSort" ng-model="entries">
+    <div class="key-value-editor-entry" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="entry in entries">
+      <div
+        class="form-group key-value-editor-input"
+        ng-class="(keyValueEditor['key-' + $id].$invalid && keyValueEditor['key-' + $id].$dirty) ? 'has-error' : ''">
+        <input
+          type="text"
+          class="form-control"
+          id="key-{{$id}}"
+          name="key-{{$id}}"
+          placeholder="{{keyPlaceholder}}"
+          ng-model="entry.name"
+          ng-focus="$last && onFocusLast($last, $index)"
+          ng-readonly="isReadonly || entry.isReadonly"
+          ng-pattern="keyValidator">
+      </div>
+      <div
+        class="form-group key-value-editor-input"
+        ng-class="(keyValueEditor['value-' + $id].$invalid && keyValueEditor['value-' + $id].$dirty) ? 'has-error' : ''">
+        <input
+          type="text"
+          class="form-control"
+          id="value-{{$id}}"
+          name="value-{{$id}}"
+          placeholder="{{valuePlaceholder}}"
+          ng-model="entry.value"
+          ng-focus="$last && onFocusLast($last, $index)"
+          ng-readonly="isReadonly || entry.isReadonly"
+          ng-pattern="valueValidator">
+      </div>
+      <div class="key-value-editor-buttons" ng-hide="$last">
+        <span
+          class="pficon pficon-close as-sortable-item-delete"
+          role="button"
+          aria-label="Delete row"
+          ng-hide="cannotDelete || entry.cannotDelete"
+          ng-click="deletePair($index, 1)"></span>
+      </div>
     </div>
   </div>
-</div>
+</ng-form>

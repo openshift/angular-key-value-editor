@@ -15,48 +15,71 @@
       strong {
         color: #6099D4;
       }
+      .error {
+        border:1px solid #990000;
+        color: #990000;
+        background: #fefefe;
+      }
     </style>
   </head>
   <body>
+
+
+
     <div class="container" data-ng-controller="demoCtrl">
       <div class="page-header">
         <h1>Angular Key Value Editor</h1>
       </div>
-      <h2>As element</h2>
       <ng-form
         novalidate
         name="test-form"
         ng-submit="onSubmit()">
-
-        <div ng-repeat="deploymentConfig in deploymentConfigs">
+        <h2>As element</h2>
+        <div ng-repeat="deploymentConfig in [deploymentConfigs[0]]">
           <div ng-repeat="container in deploymentConfig.containers">
+            <!--
+              TODO: what if we just hard-code the validation block here?
+              might work since it always seems to cause trouble when we
+              move the validation into a controller.  Dunno if the passing from
+              attrib to the directive controller will cause weirdness anyway....
+            -->
             <key-value-editor
               entries="container.env"
               key-placeholder="{{keyPlaceholder}}"
               value-placeholder="{{valuePlaceholder}}"
-
-            ></key-value-editor>
+              key-validator="{{keyValidator}}"
+              value-validator="{{valueValidator}}"
+              cannot-add></key-value-editor>
           </div>
         </div>
+
+        <h2>Read-only</h2>
         <p><strong>is-readonly</strong>: true</p>
         <key-value-editor
-          entries="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[1].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
-          is-readonly></key-value-editor>
+          is-readonly
+          ></key-value-editor>
+
+        <h2>Reorder only</h2>
         <p><strong>cannot-delete</strong>: true</p>
         <key-value-editor
-          entries="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[2].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
           cannot-delete></key-value-editor>
-          <p><strong>cannot-sort</strong>: true</p>
-          <key-value-editor
-            entries="deploymentConfigs[0].containers[0].env"
-            key-placeholder="{{keyPlaceholder}}"
-            value-placeholder="{{valuePlaceholder}}"
-            cannot-sort></key-value-editor>
+
+        <h2>No Sorting</h2>
+        <p><strong>cannot-sort</strong>: true</p>
+        <key-value-editor
+          entries="deploymentConfigs[3].containers[0].env"
+          key-placeholder="{{keyPlaceholder}}"
+          value-placeholder="{{valuePlaceholder}}"
+          cannot-sort></key-value-editor>
         <hr>
+
+        <!--
         <h2>As attribute</h2>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
@@ -67,18 +90,22 @@
           value-placeholder="{{valuePlaceholder}}"
           cannot-sort
           cannot-add></div>
+        -->
+
         <hr>
+        <h2>Completely readonly (no sorting, adding, etc)</h2>
         <h2>With data-* bindings</h2>
         <p><strong>is-readonly</strong>: true</p>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
         <div
           data-key-value-editor
-          data-entries="deploymentConfigs[0].containers[0].env"
+          data-entries="deploymentConfigs[2].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
           cannot-sort
           cannot-delete
+          cannot-add
           is-readonly></div>
 
         <button
@@ -99,101 +126,8 @@
     <script src="../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
     <!-- the built template files -->
     <script src="../dist/compiled-templates.js"></script>
-    <script>
-      // quick hack getting demo up and running
-      angular
-        .module('demo', [
-          'key-value-editor'
-        ]);
-    </script>
+    <script src="./app.js"></script>
     <script src="./dc.js"></script>
-    <script>
-      angular
-        .module('demo')
-        .factory('mod', [
-          function() {
-            return function(num, remainder) {
-              var counter = 0;
-              return function() {
-                counter++;
-                return counter % num === remainder;
-              }
-            }
-          }
-        ])
-        .controller('demoCtrl', [
-          '$scope',
-          'dc',
-          'mod',
-          function($scope, dc, mod) {
-            var originalDC;
-
-            // quick dummy functions for testing purposes
-            var isEven = mod(2, 0);
-            var isOdd = mod(2, 1);
-            var isEveryThird = mod(3, 0);
-
-            dc
-              .get()
-              .then(function(response) {
-                originalDC = response;
-                console.log(response);
-                // transforming the lists into a simplified copy we can use for UI
-                // we will dirty up this temporary model with UI data, therefore need
-                // to transform it back when ready to persist it (copy relevant data
-                // back to the original model to return to the server)
-                $scope.deploymentConfigs = _.map(
-                  response.items,
-                  function(deploymentConfig) {
-                    return {
-                      name: _.get(deploymentConfig, 'metadata.name'),
-                      containers: _.map(
-                        _.get(deploymentConfig, 'spec.template.spec.containers'),
-                        function(container) {
-                          return {
-                            name: container.name,
-                            env: _.map(
-                              container.env,
-                              function(env){
-                                //env.isReadonly = isEveryThird() ? true : false;
-                                //env.cannotDelete = isEveryThird() ? true : false;
-                                // for the key-value-editor, we will annotate these
-                                // with is-readonly, etc.
-                                return env;
-                              })
-                          };
-                        })
-                    };
-                  });
-                // limit the noise
-                $scope.deploymentConfigs = [$scope.deploymentConfigs[2]];
-                console.log($scope.deploymentConfigs);
-              });
-
-            $scope.keyPlaceholder = 'key';
-            $scope.valuePlaceholder = 'value';
-
-            // for the form
-            var on = function() {
-              console.log($scope.deploymentConfigs);
-              // console.log('list1', $scope.list1);
-              // console.log('list2', $scope.list2);
-              // no way to get at the unnamed list in the 3rd directive
-            };
-
-            $scope.onSubmit = on;
-            $scope.onClick = on;
-
-          }
-        ])
-        .run([
-          '$timeout',
-          function($timeout) {
-            $timeout(function() {
-              // console.log('demo is running');
-            },1200);
-          }
-        ]);
-    </script>
+    <script src="./ctrl.js"></script>
   </body>
 </html>
