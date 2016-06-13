@@ -48,9 +48,7 @@
               key-placeholder="{{keyPlaceholder}}"
               value-placeholder="{{valuePlaceholder}}"
               key-validator="{{keyValidator}}"
-              value-validator="{{valueValidator}}"
-              key-validator-error="This is a bad thing."
-              cannot-add></key-value-editor>
+              value-validator="{{valueValidator}}"></key-value-editor>
           </div>
         </div>
 
@@ -98,15 +96,15 @@
         <p><strong>is-readonly</strong>: true</p>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
-        <div
-          data-key-value-editor
+
+        <key-value-editor
           data-entries="deploymentConfigs[2].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
-          cannot-sort
-          cannot-delete
-          cannot-add
-          is-readonly></div>
+          data-is-readonly
+          data-cannot-add
+          data-cannot-sort
+          data-cannot-delete></key-value-editor>
 
         <button
           type="submit"

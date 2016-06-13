@@ -130,8 +130,8 @@
         $scope.keyPlaceholder = 'key';
         $scope.valuePlaceholder = 'value';
 
-        $scope.keyValidator =  commonRegex.strings.alphaNumeric; //commonRegex.raw.noWhiteSpace;
-        $scope.valueValidator = commonRegex.strings.email; commonRegex.raw.alphaOnly;
+        $scope.keyValidator =  commonRegex.strings.alphaNumericDashes; //commonRegex.raw.noWhiteSpace;
+        $scope.valueValidator = commonRegex.strings.alphaNumericDashes; // commonRegex.raw.alphaNumericDashes;
 
 
         // for the form

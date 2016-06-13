@@ -1,6 +1,7 @@
 # angular-key-value-editor
 A simple UI for editing key-value pairs
 
+<!--
 ## TODO:
 - need to ensure that we can support various data formats, not just arrays of       arrays, though the directive itself should be pretty dumb (only support array of arrays)
 - optionally invalidate the parent form if something is wonky
@@ -9,6 +10,7 @@ A simple UI for editing key-value pairs
 - add an image / animated-gif to show what it looks like & how it works
 - document dependency on bootstrap/patternfly
 - document how one could override the template if they did not want the dependency on bootstrap/patternfly
+-->
 
 ## Basic usage:
 
@@ -97,4 +99,18 @@ return [{
   valueValidator: '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}', // email address
   valueValidatorError: 'Hey, this has to be an email.'
 }]
+```
+For convenience, here are a few useful regex.  Note that the `<key-value-editor>` internally uses `ng-pattern` which expects string regex that angular will internally `new RegExp('^' + regex + '$');`.  Therefore be sure to leave off the leading `/^` and trailing `$/` or your regex will not work.
+
+```javascript
+// <key-value-editor key-validator="regex.digitsOnly"></key-value-editor>
+$scope.regex = {
+  noWhiteSpace: '\S*',
+  digitsOnly: '[0-9]+',
+  alphaOnly: '[a-zA-Z]+',
+  alphaNumeric: '[a-zA-Z0-9]+',
+  alphaNumericUnderscore: '[a-zA-Z0-9_]*',
+  alphaNumericDashes: '[a-zA-Z0-9-_]+',
+  email: '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}',
+}
 ```
