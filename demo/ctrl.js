@@ -26,8 +26,10 @@
     .factory('commonRegex', [
       function() {
         return {
+          // bunch of common regex for testing
+          // raw can be used in code via commonRegex.raw.foo.test(string)
+          // these cannot be passed to directives
           raw: {
-            // bunch of common regex for testing
             noWhiteSpace: /^\S*$/,
             digitsOnly: /^[0-9]+$/,
             alphaOnly: /^[a-zA-Z]+$/,
@@ -46,14 +48,27 @@
             ipAddress: /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
             htmlTag: /^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/
           },
+          // Is the same as above, just without the leading /^ and trailing $/
+          // these must be used to pass to directives via $scope, as the ng-pattern
+          // directive will internally do this:   regex = new RegExp('^' + regex + '$');
+          // at line 30671 of angular.js
           strings: {
             noWhiteSpace: '\S*',
             digitsOnly: '[0-9]+',
             alphaOnly: '[a-zA-Z]+',
             alphaNumeric: '[a-zA-Z0-9]+',
-            alphaNumericUnderscore: '[a-zA-Z0-9_]*'
+            alphaNumericUnderscore: '[a-zA-Z0-9_]*',
+            alphaNumericDashes: '[a-zA-Z0-9-_]+',
+            email: '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}',
+            standardUsername: '[a-z0-9_-]{3,16}',
+            standardPassword: '[a-z0-9_-]{6,18}',
+            complexPassword: '.*(?=.{6,})(?=.*d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*',
+            url: '(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?',
+            ipAddress: '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)',
+            // this one throws an error about octal literals in strict mode:
+            //htmlTag: '<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)'
           }
-        }
+        };
       }
     ])
     .controller('demoCtrl', [
@@ -94,8 +109,13 @@
                         env: _.map(
                           container.env,
                           function(env, i){
+                            // randomly add a few things to trigger UI changes
+                            // this is cheap testing :)
                             env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
                             env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
+                            if(lessThanTwo(i+1)) {
+                              env.keyValidatorError = 'Nope! You fail.';
+                            }
                             // for the key-value-editor, we will annotate these
                             // with is-readonly, etc.
                             return env;
@@ -110,8 +130,8 @@
         $scope.keyPlaceholder = 'key';
         $scope.valuePlaceholder = 'value';
 
-      //  $scope.keyValidator =  commonRegex.noWhiteSpace;
-      //  $scope.valueValidator = commonRegex.alphaOnly;
+        $scope.keyValidator =  commonRegex.strings.alphaNumeric; //commonRegex.raw.noWhiteSpace;
+        $scope.valueValidator = commonRegex.strings.email; commonRegex.raw.alphaOnly;
 
 
         // for the form
