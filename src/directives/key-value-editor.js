@@ -20,7 +20,7 @@
         return {
           restrict: 'AE',
           scope: {
-            // {
+            // entries: [{
             //  name: 'foo',
             //  value: 'bar',
             //  isReadOnly: true|| false      // individual entries may be readonly
@@ -29,7 +29,7 @@
             //  valueValidator: ''            // regex string
             //  keyValidatorError: '',        // custom validation error
             //  valueValidatorError: ''       // custom validation error
-            // }
+            // }]
             entries: '=?',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
