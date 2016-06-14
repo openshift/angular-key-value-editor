@@ -40,7 +40,8 @@ var outputJS = 'angular-key-value-editor.js',
 
 var buildSource = [
   src + '*.js',
-  src + 'directives/**/*.js'
+  src + 'directives/**/*.js',
+  src + 'services/**/*.js'
 ];
 
 var angularModuleName = 'key-value-editor';

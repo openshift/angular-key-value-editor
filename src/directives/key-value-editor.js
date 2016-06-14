@@ -1,10 +1,11 @@
 (function() {
   'use strict';
-  // currently no dependencies
+
   angular
     .module('key-value-editor')
     .directive('keyValueEditor', [
-      function() {
+      'keyValueEditorConfig',
+      function(keyValueEditorConfig) {
         // a few utils
         var addEmptyEntry = function(entries) {
           entries && entries.push({name: '', value: ''});
@@ -65,7 +66,15 @@
               $scope.cannotSort = true;
             }
 
+            $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
+            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+            $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
+            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+
             // ensure that there is at least one empty input for the user
+            // NOTE: if the data source 'entries' is shared between two instances
+            // and one of them has 'can add', the addEmptyEntry() function runs.
+            // and then we are all confused.
             if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
               addEmptyEntry($scope.entries);
             }
@@ -100,7 +109,10 @@
               };
             }
           ],
-          templateUrl: 'key-value-editor.html'
+          // as a fn in case we want to allow configurable templates
+          templateUrl: function() {
+            return 'key-value-editor.html';
+          }
         };
       }]);
 

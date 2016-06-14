@@ -3,6 +3,13 @@
   // quick hack getting demo up and running
   angular
     .module('demo')
+    .config([
+      'keyValueEditorConfigProvider',
+      function(keyValueEditorConfigProvider) {
+        // set a global value here:
+        //keyValueEditorConfigProvider.set('keyValidator', '[0-9]+');
+      }
+    ])
     .factory('mod', [
       function() {
         return function(num, remainder) {
