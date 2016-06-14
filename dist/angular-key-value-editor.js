@@ -5,11 +5,12 @@
 
 (function() {
   'use strict';
-  // currently no dependencies
+
   angular
     .module('key-value-editor')
     .directive('keyValueEditor', [
-      function() {
+      'keyValueEditorConfig',
+      function(keyValueEditorConfig) {
         // a few utils
         var addEmptyEntry = function(entries) {
           entries && entries.push({name: '', value: ''});
@@ -70,7 +71,15 @@
               $scope.cannotSort = true;
             }
 
+            $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
+            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+            $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
+            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+
             // ensure that there is at least one empty input for the user
+            // NOTE: if the data source 'entries' is shared between two instances
+            // and one of them has 'can add', the addEmptyEntry() function runs.
+            // and then we are all confused.
             if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
               addEmptyEntry($scope.entries);
             }
@@ -105,8 +114,51 @@
               };
             }
           ],
-          templateUrl: 'key-value-editor.html'
+          // as a fn in case we want to allow configurable templates
+          templateUrl: function() {
+            return 'key-value-editor.html';
+          }
         };
       }]);
 
+})();
+
+(function() {
+  'use strict';
+  angular
+    .module('key-value-editor')
+    .provider('keyValueEditorConfig', [
+      function() {
+        var defaults = {
+          keyValidator: '[a-zA-Z0-9-_]+',   // alphanumeric, with dash & underscores
+          valueValidator: '',               // values have no default validation
+          keyValidatorError: undefined,     // default error message string
+          valueValidatorError: undefined    // default error message string
+        };
+
+        // set a new default key value pair, or pass an object to replace
+        // multiple keys.
+        // example 1:
+        //  keyValueEditorConfigProvider.set('keyValidator', '\S*') // no white space
+        // example 2:
+        //  keyValueEditorConfigProvider.set({
+        //      keyValidator: '[a-zA-Z0-9]+',  // alphanumberic,
+        //      keyValidatorError: 'key must be alphanumeric only'
+        //  });
+        this.set = function(key, value) {
+          if(angular.isObject(key)) {
+            angular.extend(defaults, key);
+          } else {
+            console.log('replace defaults', '');
+            defaults[key] = value;
+          }
+        };
+
+        this.$get = [
+          function() {
+            return defaults;
+          }
+        ];
+      }
+    ]);
 })();

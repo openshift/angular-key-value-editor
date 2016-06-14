@@ -114,3 +114,25 @@ $scope.regex = {
   email: '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}',
 }
 ```
+
+### Setting global validation
+
+Global defaults can be set via the provider:
+
+```javascript
+angular
+  .module('demo')
+  .config([
+    'keyValueEditorConfigProvider',
+    function(keyValueEditorConfigProvider) {
+      // set a global value here:
+      keyValueEditorConfigProvider.set('keyValidator', '[0-9]+');
+      // or, pass an object to set multiple values at once:
+      keyValueEditorConfigProvider.set({
+        keyValidator: '[0-9]+',
+        keyValidatorError: 'This is an invalid key'
+      });
+    }
+  ]);
+```
+Globals are still overriden via attributes on the `<key-value-editor>` directive, or via the `entries="entries"` data objects passed to the directive.
