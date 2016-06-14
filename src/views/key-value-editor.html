@@ -93,13 +93,13 @@
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
         </p>
       </div>
-      <div class="key-value-editor-buttons" ng-hide="$last">
+      <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
         <span
           class="pficon pficon-close as-sortable-item-delete"
           role="button"
           aria-label="Delete row"
           ng-hide="cannotDelete || entry.cannotDelete"
-          ng-click="deletePair($index, 1)"></span>
+          ng-click="deleteEntry($index, 1)"></span>
       </div>
     </div>
   </div>
