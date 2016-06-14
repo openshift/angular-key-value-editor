@@ -71,7 +71,7 @@
             }
 
             // ensure that there is at least one empty input for the user
-            if(!$scope.cannotAdd && !$scope.isReadonly && (get(last($scope.entries), 'name') !== '')) {
+            if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
               addEmptyEntry($scope.entries);
             }
           },

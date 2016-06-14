@@ -15,11 +15,6 @@
       strong {
         color: #6099D4;
       }
-      .error {
-        border:1px solid #990000;
-        color: #990000;
-        background: #fefefe;
-      }
     </style>
   </head>
   <body>
@@ -52,7 +47,7 @@
           </div>
         </div>
 
-        <h2>Read-only</h2>
+        <h3>Read-only</h3>
         <p><strong>is-readonly</strong>: true</p>
         <key-value-editor
           entries="deploymentConfigs[1].containers[0].env"
@@ -60,7 +55,7 @@
           value-placeholder="{{valuePlaceholder}}"
           is-readonly></key-value-editor>
 
-        <h2>Reorder only</h2>
+        <h3>Reorder only</h3>
         <p><strong>cannot-delete</strong>: true</p>
         <key-value-editor
           entries="deploymentConfigs[2].containers[0].env"
@@ -68,7 +63,7 @@
           value-placeholder="{{valuePlaceholder}}"
           cannot-delete></key-value-editor>
 
-        <h2>No Sorting</h2>
+        <h3>No Sorting</h3>
         <p><strong>cannot-sort</strong>: true</p>
         <key-value-editor
           entries="deploymentConfigs[3].containers[0].env"
@@ -77,28 +72,26 @@
           cannot-sort></key-value-editor>
         <hr>
 
-        <!--
         <h2>As attribute</h2>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
         <div
           key-value-editor
-          entries="deploymentConfigs[0].containers[0].env"
+          entries="deploymentConfigs[4].containers[0].env"
           key-placeholder="{{keyPlaceholder}}"
           value-placeholder="{{valuePlaceholder}}"
           cannot-sort
           cannot-add></div>
-        -->
 
         <hr>
-        <h2>Completely readonly (no sorting, adding, etc)</h2>
-        <h2>With data-* bindings</h2>
+        <h2>As attribute with data-* bindings</h2>
+        <h3>Completely readonly (no sorting, adding, etc)</h3>
         <p><strong>is-readonly</strong>: true</p>
         <p><strong>cannot-sort</strong>: true</p>
         <p><strong>cannot-add</strong>: true</p>
 
         <key-value-editor
-          data-entries="deploymentConfigs[2].containers[0].env"
+          data-entries="deploymentConfigs[5].containers[0].env"
           data-key-placeholder="{{keyPlaceholder}}"
           data-value-placeholder="{{valuePlaceholder}}"
           data-is-readonly
