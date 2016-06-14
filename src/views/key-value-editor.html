@@ -15,10 +15,11 @@
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
           ng-pattern="keyValidator">
-        <p
+        <span
+          class="help-block"
           ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
-        </p>
+        </span>
       </div>
       <div
         class="form-group key-value-editor-input"
@@ -33,10 +34,11 @@
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
           ng-pattern="valueValidator">
-        <p
+        <span
+          class="help-block"
           ng-show="(keyValueEditor['value-' + $id].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
-        </p>
+        </span>
       </div>
       <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
         <span
@@ -70,10 +72,11 @@
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
           ng-pattern="keyValidator">
-        <p
+        <span
+          class="help-block"
           ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
-        </p>
+        </span>
       </div>
       <div
         class="form-group key-value-editor-input"
@@ -88,10 +91,11 @@
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
           ng-pattern="valueValidator">
-        <p
+        <span
+          class="help-block"
           ng-show="(keyValueEditor['value-' + $id].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
-        </p>
+        </span>
       </div>
       <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
         <span

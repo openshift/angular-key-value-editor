@@ -111,11 +111,11 @@
                           function(env, i){
                             // randomly add a few things to trigger UI changes
                             // this is cheap testing :)
-                            // env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
-                            // env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
-                            // if(lessThanTwo(i+1)) {
-                            //   env.keyValidatorError = 'Nope! You fail.';
-                            // }
+                            env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
+                            env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
+                            if(lessThanTwo(i+1)) {
+                              env.keyValidatorError = 'Nope! You fail.';
+                            }
                             // for the key-value-editor, we will annotate these
                             // with is-readonly, etc.
                             return env;
