@@ -32,12 +32,7 @@
         <h2>As element</h2>
         <div ng-repeat="deploymentConfig in [deploymentConfigs[0]]">
           <div ng-repeat="container in deploymentConfig.containers">
-            <!--
-              TODO: what if we just hard-code the validation block here?
-              might work since it always seems to cause trouble when we
-              move the validation into a controller.  Dunno if the passing from
-              attrib to the directive controller will cause weirdness anyway....
-            -->
+
             <key-value-editor
               entries="container.env"
               key-placeholder="{{keyPlaceholder}}"

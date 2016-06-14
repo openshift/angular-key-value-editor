@@ -25,13 +25,6 @@
         return {
           restrict: 'AE',
           scope: {
-            // TODO: save modifications
-            //  - the calling code controller needs to do this as an example
-            // TODO: ensure we don't return an empty pair
-            //  - this is tricky as we are using simple two-way data binding
-            // TODO: validate input
-            //  - follow the tut http://www.benlesh.com/2012/12/angular-js-custom-validation-via.html
-            // each entry can look like the following:
             // {
             //  name: 'foo',
             //  value: 'bar',
