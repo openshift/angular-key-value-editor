@@ -4,8 +4,10 @@
   angular
     .module('key-value-editor')
     .directive('keyValueEditor', [
+      '$compile',
+      '$templateCache',
       'keyValueEditorConfig',
-      function(keyValueEditorConfig) {
+      function($compile, $templateCache, keyValueEditorConfig) {
         // a few utils
         var addEmptyEntry = function(entries) {
           entries && entries.push({name: '', value: ''});
@@ -17,6 +19,7 @@
         var get = function(obj, prop) {
           return obj && obj[prop];
         };
+
         return {
           restrict: 'AE',
           scope: {
@@ -47,6 +50,9 @@
             isReadonly: '=?'
           },
           link: function($scope, $elem, $attrs) {
+            // manually retrieving here so we can manipulate and compile in JS
+            var tpl = $templateCache.get('key-value-editor.html');
+
             // ensure a default
             $scope.entries = $scope.entries || [];
             // if an attribute exists, set its corresponding bool to true
@@ -60,6 +66,9 @@
               $scope.isReadonly = true;
             }
             if('cannotSort' in $attrs) {
+              // uses a regex to essentially kill the as-sortable directives
+              // before we compile the template
+              tpl = tpl.replace(/as-sortable/g, 'as-sortable-DISABLED');
               $scope.cannotSort = true;
             }
             // min/max lengths
@@ -80,6 +89,9 @@
             if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
               addEmptyEntry($scope.entries);
             }
+
+            // manually compile and append to the DOM
+            $elem.append($compile(tpl)($scope));
           },
           controller: [
             '$scope',
@@ -110,11 +122,11 @@
 
               };
             }
-          ],
+          ]
           // as a fn in case we want to allow configurable templates
-          templateUrl: function() {
-            return 'key-value-editor.html';
-          }
+          // templateUrl: function() {
+          //   return 'key-value-editor.html';
+          // }
         };
       }]);
 
