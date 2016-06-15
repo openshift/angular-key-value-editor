@@ -1,6 +1,8 @@
 # angular-key-value-editor
 A simple UI for editing key-value pairs
 
+![key-value-editor screenshot](/docs/key-value-editor-screenshot.png)
+
 ## Basic usage:
 
 Add the `key-value-editor` in html and provide it some data:
