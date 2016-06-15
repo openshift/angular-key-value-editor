@@ -12,7 +12,7 @@
           name="key-{{$id}}"
           placeholder="{{keyPlaceholder}}"
           ng-minlength="{{keyMinlength}}"
-          ng-maxlength="{{keyMaxlength}}"
+          maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -27,11 +27,6 @@
           ng-show="(keyValueEditor['key-' + $id].$error.minlength)">
           <span>Minimum character count is {{keyMinlength}}</span>
         </span>
-        <span
-          class="help-block"
-          ng-show="(keyValueEditor['key-' + $id].$error.maxlength)">
-          <span>Maximum character count is {{keyMaxlength}}</span>
-        </span>
       </div>
       <div
         class="form-group key-value-editor-input"
@@ -43,7 +38,7 @@
           name="value-{{$id}}"
           placeholder="{{valuePlaceholder}}"
           ng-minlength="{{valueMinlength}}"
-          ng-maxlength="{{valueMaxlength}}"
+          maxlength="{{valueMaxlength}}"
           ng-model="entry.value"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -57,11 +52,6 @@
           class="help-block"
           ng-show="(keyValueEditor['value-' + $id].$error.minlength)">
           <span>Minimum character count is {{valueMinlength}}</span>
-        </span>
-        <span
-          class="help-block"
-          ng-show="(keyValueEditor['value-' + $id].$error.maxlength)">
-          <span>Maximum character count is {{valueMaxlength}}</span>
         </span>
       </div>
       <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
