@@ -5,6 +5,10 @@
     .provider('keyValueEditorConfig', [
       function() {
         var defaults = {
+          keyMinlength: '',                 // min character length, falsy by default
+          keyMaxlength: '',                 // max character length, falsy by default
+          valueMinlength: '',               // min character length, falsy by default
+          valueMaxlength: '',               // max character length, falsy by default
           keyValidator: '[a-zA-Z0-9-_]+',   // alphanumeric, with dash & underscores
           valueValidator: '',               // values have no default validation
           keyValidatorError: undefined,     // default error message string
@@ -24,7 +28,6 @@
           if(angular.isObject(key)) {
             angular.extend(defaults, key);
           } else {
-            console.log('replace defaults', '');
             defaults[key] = value;
           }
         };

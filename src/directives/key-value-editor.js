@@ -20,6 +20,10 @@
         return {
           restrict: 'AE',
           scope: {
+            keyMinlength: '@',                   // min character length
+            keyMaxlength: '@',                   // max character length
+            valueMinlength: '@',                   // min character length
+            valueMaxlength: '@',                   // max character length
             // entries: [{
             //  name: 'foo',
             //  value: 'bar',
@@ -58,7 +62,12 @@
             if('cannotSort' in $attrs) {
               $scope.cannotSort = true;
             }
-
+            // min/max lengths
+            $scope.keyMinlength = keyValueEditorConfig.keyMinlength || $attrs.keyMinlength;
+            $scope.keyMaxlength = keyValueEditorConfig.keyMaxlength || $attrs.keyMaxlength;
+            $scope.valueMinlength = keyValueEditorConfig.valueMinlength || $attrs.valueMinlength;
+            $scope.valueMaxlength = keyValueEditorConfig.valueMaxlength || $attrs.valueMaxlength;
+            // validation regex
             $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;

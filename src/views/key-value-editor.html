@@ -11,6 +11,8 @@
           id="key-{{$id}}"
           name="key-{{$id}}"
           placeholder="{{keyPlaceholder}}"
+          ng-minlength="{{keyMinlength}}"
+          ng-maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -19,6 +21,16 @@
           class="help-block"
           ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['key-' + $id].$error.minlength)">
+          <span>Minimum character count is {{keyMinlength}}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['key-' + $id].$error.maxlength)">
+          <span>Maximum character count is {{keyMaxlength}}</span>
         </span>
       </div>
       <div
@@ -30,6 +42,8 @@
           id="value-{{$id}}"
           name="value-{{$id}}"
           placeholder="{{valuePlaceholder}}"
+          ng-minlength="{{valueMinlength}}"
+          ng-maxlength="{{valueMaxlength}}"
           ng-model="entry.value"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -38,6 +52,16 @@
           class="help-block"
           ng-show="(keyValueEditor['value-' + $id].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['value-' + $id].$error.minlength)">
+          <span>Minimum character count is {{valueMinlength}}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['value-' + $id].$error.maxlength)">
+          <span>Maximum character count is {{valueMaxlength}}</span>
         </span>
       </div>
       <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">
@@ -68,6 +92,8 @@
           id="key-{{$id}}"
           name="key-{{$id}}"
           placeholder="{{keyPlaceholder}}"
+          ng-minlength="{{keyMinlength}}"
+          ng-maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -76,6 +102,16 @@
           class="help-block"
           ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['key-' + $id].$error.minlength)">
+          <span>Minimum character count is {{keyMinlength}}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['key-' + $id].$error.maxlength)">
+          <span>Maximum character count is {{keyMaxlength}}</span>
         </span>
       </div>
       <div
@@ -87,6 +123,8 @@
           id="value-{{$id}}"
           name="value-{{$id}}"
           placeholder="{{valuePlaceholder}}"
+          ng-minlength="{{valueMinlength}}"
+          ng-maxlength="{{valueMaxlength}}"
           ng-model="entry.value"
           ng-focus="$last && onFocusLast($last, $index)"
           ng-readonly="isReadonly || entry.isReadonly"
@@ -95,6 +133,16 @@
           class="help-block"
           ng-show="(keyValueEditor['value-' + $id].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['value-' + $id].$error.minlength)">
+          <span>Minimum character count is {{valueMinlength}}</span>
+        </span>
+        <span
+          class="help-block"
+          ng-show="(keyValueEditor['value-' + $id].$error.maxlength)">
+          <span>Maximum character count is {{valueMaxlength}}</span>
         </span>
       </div>
       <div class="key-value-editor-buttons" ng-hide="!cannotAdd && $last">

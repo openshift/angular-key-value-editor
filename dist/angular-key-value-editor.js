@@ -25,6 +25,10 @@
         return {
           restrict: 'AE',
           scope: {
+            keyMinlength: '@',                   // min character length
+            keyMaxlength: '@',                   // max character length
+            valueMinlength: '@',                   // min character length
+            valueMaxlength: '@',                   // max character length
             // entries: [{
             //  name: 'foo',
             //  value: 'bar',
@@ -63,7 +67,12 @@
             if('cannotSort' in $attrs) {
               $scope.cannotSort = true;
             }
-
+            // min/max lengths
+            $scope.keyMinlength = keyValueEditorConfig.keyMinlength || $attrs.keyMinlength;
+            $scope.keyMaxlength = keyValueEditorConfig.keyMaxlength || $attrs.keyMaxlength;
+            $scope.valueMinlength = keyValueEditorConfig.valueMinlength || $attrs.valueMinlength;
+            $scope.valueMaxlength = keyValueEditorConfig.valueMaxlength || $attrs.valueMaxlength;
+            // validation regex
             $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
@@ -123,6 +132,10 @@
     .provider('keyValueEditorConfig', [
       function() {
         var defaults = {
+          keyMinlength: '',                 // min character length, falsy by default
+          keyMaxlength: '',                 // max character length, falsy by default
+          valueMinlength: '',               // min character length, falsy by default
+          valueMaxlength: '',               // max character length, falsy by default
           keyValidator: '[a-zA-Z0-9-_]+',   // alphanumeric, with dash & underscores
           valueValidator: '',               // values have no default validation
           keyValidatorError: undefined,     // default error message string
@@ -142,7 +155,6 @@
           if(angular.isObject(key)) {
             angular.extend(defaults, key);
           } else {
-            console.log('replace defaults', '');
             defaults[key] = value;
           }
         };
