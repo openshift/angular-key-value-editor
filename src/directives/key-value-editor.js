@@ -47,6 +47,8 @@
             valueValidator: '@',              // general value regex validation string
             keyValidatorError: '@',           // general key validation error message
             valueValidatorError: '@',         // general value validation error message
+            secretValueTooltip: '@',
+            secretValueIcon: '@',
             cannotAdd: '=?',
             cannotDelete: '=?',
             cannotSort: '=?',
@@ -84,7 +86,9 @@
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
-
+            // secret values
+            $scope.secretValueTooltip = keyValueEditorConfig.secretValueTooltip || $attrs.secretValueTooltip;
+            $scope.secretValueIcon = keyValueEditorConfig.secretValueIcon || $attrs.secretValueIcon;
 
             // manually compile and append to the DOM
             $elem.append($compile(tpl)($scope));

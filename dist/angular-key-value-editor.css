@@ -1,9 +1,11 @@
 .key-value-editor.as-sortable-dragging .as-sortable-item-delete,
+.key-value-editor.as-sortable-dragging .input-group-addon,
 .key-value-editor.as-sortable-dragging input {
   opacity: 0.65;
 }
 .key-value-editor.as-sortable-dragging .as-sortable-item-handle,
 .key-value-editor .as-sortable-item-delete:hover,
+.key-value-editor .as-sortable-DISABLED-item-delete:hover,
 .key-value-editor .as-sortable-item-handle:hover {
   opacity: 1;
 }
@@ -11,6 +13,7 @@
   padding-right: 0;
 }
 .key-value-editor .as-sortable-item-delete,
+.key-value-editor .as-sortable-DISABLED-item-delete,
 .key-value-editor .as-sortable-item-handle {
   display: inline-block;
   font-size: 14px;
@@ -25,6 +28,9 @@
   border-top: 2px solid #0099d3;
   clear: left;
   width: 100% !important;
+}
+.key-value-editor .input-group-addon span[title]:not([data-original-title=""]) {
+  cursor: help;
 }
 .key-value-editor .key-value-editor-buttons {
   position: absolute;

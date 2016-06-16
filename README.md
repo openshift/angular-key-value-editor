@@ -66,6 +66,34 @@ $scope.entries = [{
 }];
 ```
 
+### Secret values
+
+![key-value-editor screenshot](/docs/key-value-editor-secret-screenshot.png)
+
+Values that contain secrets display with a special presentation.  This display includes a configurable icon and tooltip.  The
+default icon is [Font Awesome's user-secret](http://fontawesome.io/icon/user-secret/).
+
+The default icon can be overridden using any of [PatternFly's icons](https://www.patternfly.org/styles/icons/#_) via an attribute
+
+```html
+<key-value-editor
+  entries="entries"
+  secret-value-icon="fa fa-lock"></key-value-editor>
+```
+
+or a global default.
+
+There is no default for the secret value tooltip, but one can be set via an
+attribute
+
+```html
+<key-value-editor
+  entries="entries"
+  secret-value-tooltip="This value is secret"></key-value-editor>
+```
+
+or a global default.
+
 ## Validation
 
 General validation rules can be put on the directive as attributes and will run
@@ -126,4 +154,4 @@ angular
     }
   ]);
 ```
-Globals are still overriden via attributes on the `<key-value-editor>` directive, or via the `entries="entries"` data objects passed to the directive.
+Globals are still overridden via attributes on the `<key-value-editor>` directive, or via the `entries="entries"` data objects passed to the directive.

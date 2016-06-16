@@ -18,6 +18,7 @@
 .key-value-editor {
   &.as-sortable-dragging {
     .as-sortable-item-delete,
+    .input-group-addon,
     input {
       opacity: @as-sortable-dragging-opacity;
     }
@@ -25,6 +26,7 @@
 
   &.as-sortable-dragging .as-sortable-item-handle,
   .as-sortable-item-delete:hover,
+  .as-sortable-DISABLED-item-delete:hover,
   .as-sortable-item-handle:hover {
     opacity: @as-sortable-item-icon-hover-opacity;
   }
@@ -34,6 +36,7 @@
   }
 
   .as-sortable-item-delete,
+  .as-sortable-DISABLED-item-delete,
   .as-sortable-item-handle {
     display: inline-block;
     font-size: @as-sortable-item-icon-font-size;
@@ -50,6 +53,10 @@
     border-top: @as-sortable-placeholder-border-top-width @as-sortable-placeholder-border-top-style @as-sortable-placeholder-border-top-color;
     clear: left;
     width: @as-sortable-placeholder-width;
+  }
+
+  .input-group-addon span[title]:not([data-original-title=""]) {
+    cursor: help;
   }
 
   .key-value-editor-buttons {
