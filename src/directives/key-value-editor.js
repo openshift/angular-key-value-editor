@@ -7,17 +7,20 @@
       '$compile',
       '$templateCache',
       'keyValueEditorConfig',
-      function($compile, $templateCache, keyValueEditorConfig) {
+      'keyValueEditorUtils',
+      function($compile, $templateCache, keyValueEditorConfig, keyValueEditorUtils) {
+
+        var last = keyValueEditorUtils.last;
+        var get = keyValueEditorUtils.get;
+        // not used internally, however users can ask for keyValueEditorUtils and
+        // use this function to clean out empty pairs from the list when they are ready
+        // to save/preserve.  Also can just use _.compact() or any other library that
+        // provides this util if it is already available.
+        // var compact = keyValueEditorUtils.compact;
+
         // a few utils
         var addEmptyEntry = function(entries) {
           entries && entries.push({name: '', value: ''});
-        };
-        var last = function(entries) {
-          return entries[entries.length - 1];
-        };
-        // this is a minimal get w/o deep paths
-        var get = function(obj, prop) {
-          return obj && obj[prop];
         };
 
         return {
@@ -82,13 +85,6 @@
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
 
-            // ensure that there is at least one empty input for the user
-            // NOTE: if the data source 'entries' is shared between two instances
-            // and one of them has 'can add', the addEmptyEntry() function runs.
-            // and then we are all confused.
-            if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
-              addEmptyEntry($scope.entries);
-            }
 
             // manually compile and append to the DOM
             $elem.append($compile(tpl)($scope));
@@ -96,6 +92,11 @@
           controller: [
             '$scope',
             function($scope) {
+              $scope.$watch('entries', function() {
+                if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
+                  addEmptyEntry($scope.entries);
+                }
+              });
               // will add a new text input every time the last
               // set is selected.
               $scope.onFocusLast = function() {
