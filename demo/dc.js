@@ -998,6 +998,540 @@
                   }
                 ]
               });
+            },
+            getWithSpecialEnvs: function() {
+              return $q.when({
+                "kind": "PodList",
+                "apiVersion": "v1",
+                "metadata": {
+                  "selfLink": "/api/v1/namespaces/special-envs/pods",
+                  "resourceVersion": "1037"
+                },
+                "items": [
+                  {
+                    "metadata": {
+                      "name": "config-cmd-test-pod",
+                      "namespace": "special-envs",
+                      "selfLink": "/api/v1/namespaces/special-envs/pods/config-cmd-test-pod",
+                      "uid": "38fdf844-36fe-11e6-a049-080027c5bfa9",
+                      "resourceVersion": "980",
+                      "creationTimestamp": "2016-06-20T15:46:58Z",
+                      "annotations": {
+                        "openshift.io/scc": "restricted"
+                      }
+                    },
+                    "spec": {
+                      "volumes": [
+                        {
+                          "name": "default-token-mrp97",
+                          "secret": {
+                            "secretName": "default-token-mrp97"
+                          }
+                        }
+                      ],
+                      "containers": [
+                        {
+                          "name": "test-container",
+                          "image": "gcr.io/google_containers/busybox",
+                          "command": [
+                            "/bin/sh",
+                            "-c",
+                            "echo $(KUBE_CONFIG_1) $(KUBE_CONFIG_2)"
+                          ],
+                          "env": [
+                            {
+                              "name": "KUBE_CONFIG_1",
+                              "valueFrom": {
+                                "configMapKeyRef": {
+                                  "name": "test-configmap",
+                                  "key": "data-1"
+                                }
+                              }
+                            },
+                            {
+                              "name": "KUBE_CONFIG_2",
+                              "valueFrom": {
+                                "configMapKeyRef": {
+                                  "name": "test-configmap",
+                                  "key": "data-2"
+                                }
+                              }
+                            }
+                          ],
+                          "resources": {},
+                          "volumeMounts": [
+                            {
+                              "name": "default-token-mrp97",
+                              "readOnly": true,
+                              "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                          ],
+                          "terminationMessagePath": "/dev/termination-log",
+                          "imagePullPolicy": "Always",
+                          "securityContext": {
+                            "capabilities": {
+                              "drop": [
+                                "KILL",
+                                "MKNOD",
+                                "SETGID",
+                                "SETUID",
+                                "SYS_CHROOT"
+                              ]
+                            },
+                            "privileged": false,
+                            "seLinuxOptions": {
+                              "level": "s0:c7,c4"
+                            },
+                            "runAsUser": 1000050000
+                          }
+                        }
+                      ],
+                      "restartPolicy": "Never",
+                      "terminationGracePeriodSeconds": 30,
+                      "dnsPolicy": "ClusterFirst",
+                      "host": "localhost.localdomain",
+                      "serviceAccountName": "default",
+                      "serviceAccount": "default",
+                      "nodeName": "localhost.localdomain",
+                      "securityContext": {
+                        "seLinuxOptions": {
+                          "level": "s0:c7,c4"
+                        },
+                        "fsGroup": 1000050000
+                      },
+                      "imagePullSecrets": [
+                        {
+                          "name": "default-dockercfg-n3dif"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "phase": "Pending",
+                      "conditions": [
+                        {
+                          "type": "Ready",
+                          "status": "False",
+                          "lastProbeTime": null,
+                          "lastTransitionTime": "2016-06-20T15:46:58Z",
+                          "reason": "ContainersNotReady",
+                          "message": "containers with unready status: [test-container]"
+                        }
+                      ],
+                      "hostIP": "10.0.2.15",
+                      "podIP": "172.17.0.16",
+                      "startTime": "2016-06-20T15:46:58Z",
+                      "containerStatuses": [
+                        {
+                          "name": "test-container",
+                          "state": {
+                            "waiting": {
+                              "reason": "RunContainerError",
+                              "message": "GenerateRunContainerOptions: configmaps \"test-configmap\" not found"
+                            }
+                          },
+                          "lastState": {},
+                          "ready": false,
+                          "restartCount": 0,
+                          "image": "gcr.io/google_containers/busybox",
+                          "imageID": ""
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "metadata": {
+                      "name": "config-env-test-pod",
+                      "namespace": "special-envs",
+                      "selfLink": "/api/v1/namespaces/special-envs/pods/config-env-test-pod",
+                      "uid": "4080b7fb-36fe-11e6-a049-080027c5bfa9",
+                      "resourceVersion": "992",
+                      "creationTimestamp": "2016-06-20T15:47:11Z",
+                      "annotations": {
+                        "openshift.io/scc": "restricted"
+                      }
+                    },
+                    "spec": {
+                      "volumes": [
+                        {
+                          "name": "default-token-mrp97",
+                          "secret": {
+                            "secretName": "default-token-mrp97"
+                          }
+                        }
+                      ],
+                      "containers": [
+                        {
+                          "name": "test-container",
+                          "image": "gcr.io/google_containers/busybox",
+                          "command": [
+                            "/bin/sh",
+                            "-c",
+                            "env"
+                          ],
+                          "env": [
+                            {
+                              "name": "KUBE_CONFIG_1",
+                              "valueFrom": {
+                                "configMapKeyRef": {
+                                  "name": "test-configmap",
+                                  "key": "data-1"
+                                }
+                              }
+                            },
+                            {
+                              "name": "KUBE_CONFIG_2",
+                              "valueFrom": {
+                                "configMapKeyRef": {
+                                  "name": "test-configmap",
+                                  "key": "data-2"
+                                }
+                              }
+                            }
+                          ],
+                          "resources": {},
+                          "volumeMounts": [
+                            {
+                              "name": "default-token-mrp97",
+                              "readOnly": true,
+                              "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                          ],
+                          "terminationMessagePath": "/dev/termination-log",
+                          "imagePullPolicy": "Always",
+                          "securityContext": {
+                            "capabilities": {
+                              "drop": [
+                                "KILL",
+                                "MKNOD",
+                                "SETGID",
+                                "SETUID",
+                                "SYS_CHROOT"
+                              ]
+                            },
+                            "privileged": false,
+                            "seLinuxOptions": {
+                              "level": "s0:c7,c4"
+                            },
+                            "runAsUser": 1000050000
+                          }
+                        }
+                      ],
+                      "restartPolicy": "Never",
+                      "terminationGracePeriodSeconds": 30,
+                      "dnsPolicy": "ClusterFirst",
+                      "host": "localhost.localdomain",
+                      "serviceAccountName": "default",
+                      "serviceAccount": "default",
+                      "nodeName": "localhost.localdomain",
+                      "securityContext": {
+                        "seLinuxOptions": {
+                          "level": "s0:c7,c4"
+                        },
+                        "fsGroup": 1000050000
+                      },
+                      "imagePullSecrets": [
+                        {
+                          "name": "default-dockercfg-n3dif"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "phase": "Pending",
+                      "conditions": [
+                        {
+                          "type": "Ready",
+                          "status": "False",
+                          "lastProbeTime": null,
+                          "lastTransitionTime": "2016-06-20T15:47:11Z",
+                          "reason": "ContainersNotReady",
+                          "message": "containers with unready status: [test-container]"
+                        }
+                      ],
+                      "hostIP": "10.0.2.15",
+                      "podIP": "172.17.0.17",
+                      "startTime": "2016-06-20T15:47:11Z",
+                      "containerStatuses": [
+                        {
+                          "name": "test-container",
+                          "state": {
+                            "waiting": {
+                              "reason": "RunContainerError",
+                              "message": "GenerateRunContainerOptions: configmaps \"test-configmap\" not found"
+                            }
+                          },
+                          "lastState": {},
+                          "ready": false,
+                          "restartCount": 0,
+                          "image": "gcr.io/google_containers/busybox",
+                          "imageID": ""
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "metadata": {
+                      "name": "dapi-test-pod",
+                      "namespace": "special-envs",
+                      "selfLink": "/api/v1/namespaces/special-envs/pods/dapi-test-pod",
+                      "uid": "50658894-36fe-11e6-a049-080027c5bfa9",
+                      "resourceVersion": "1032",
+                      "creationTimestamp": "2016-06-20T15:47:37Z",
+                      "annotations": {
+                        "openshift.io/scc": "restricted"
+                      }
+                    },
+                    "spec": {
+                      "volumes": [
+                        {
+                          "name": "default-token-mrp97",
+                          "secret": {
+                            "secretName": "default-token-mrp97"
+                          }
+                        }
+                      ],
+                      "containers": [
+                        {
+                          "name": "test-container",
+                          "image": "gcr.io/google_containers/busybox",
+                          "command": [
+                            "/bin/sh",
+                            "-c",
+                            "env"
+                          ],
+                          "env": [
+                            {
+                              "name": "MY_POD_NAME",
+                              "valueFrom": {
+                                "fieldRef": {
+                                  "apiVersion": "v1",
+                                  "fieldPath": "metadata.name"
+                                }
+                              }
+                            },
+                            {
+                              "name": "MY_POD_NAMESPACE",
+                              "valueFrom": {
+                                "fieldRef": {
+                                  "apiVersion": "v1",
+                                  "fieldPath": "metadata.namespace"
+                                }
+                              }
+                            },
+                            {
+                              "name": "MY_POD_IP",
+                              "valueFrom": {
+                                "fieldRef": {
+                                  "apiVersion": "v1",
+                                  "fieldPath": "status.podIP"
+                                }
+                              }
+                            }
+                          ],
+                          "resources": {},
+                          "volumeMounts": [
+                            {
+                              "name": "default-token-mrp97",
+                              "readOnly": true,
+                              "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                          ],
+                          "terminationMessagePath": "/dev/termination-log",
+                          "imagePullPolicy": "Always",
+                          "securityContext": {
+                            "capabilities": {
+                              "drop": [
+                                "KILL",
+                                "MKNOD",
+                                "SETGID",
+                                "SETUID",
+                                "SYS_CHROOT"
+                              ]
+                            },
+                            "privileged": false,
+                            "seLinuxOptions": {
+                              "level": "s0:c7,c4"
+                            },
+                            "runAsUser": 1000050000
+                          }
+                        }
+                      ],
+                      "restartPolicy": "Never",
+                      "terminationGracePeriodSeconds": 30,
+                      "dnsPolicy": "ClusterFirst",
+                      "host": "localhost.localdomain",
+                      "serviceAccountName": "default",
+                      "serviceAccount": "default",
+                      "nodeName": "localhost.localdomain",
+                      "securityContext": {
+                        "seLinuxOptions": {
+                          "level": "s0:c7,c4"
+                        },
+                        "fsGroup": 1000050000
+                      },
+                      "imagePullSecrets": [
+                        {
+                          "name": "default-dockercfg-n3dif"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "phase": "Succeeded",
+                      "conditions": [
+                        {
+                          "type": "Ready",
+                          "status": "False",
+                          "lastProbeTime": null,
+                          "lastTransitionTime": "2016-06-20T15:47:37Z",
+                          "reason": "PodCompleted"
+                        }
+                      ],
+                      "hostIP": "10.0.2.15",
+                      "startTime": "2016-06-20T15:47:37Z",
+                      "containerStatuses": [
+                        {
+                          "name": "test-container",
+                          "state": {
+                            "terminated": {
+                              "exitCode": 0,
+                              "reason": "Completed",
+                              "startedAt": "2016-06-20T15:47:39Z",
+                              "finishedAt": "2016-06-20T15:47:39Z",
+                              "containerID": "docker://e369bd61db3a4434728abd7a92012f3a4c5b4d44d974be4c824342b13b897d2d"
+                            }
+                          },
+                          "lastState": {},
+                          "ready": false,
+                          "restartCount": 0,
+                          "image": "gcr.io/google_containers/busybox",
+                          "imageID": "docker://4986bf8c15363d1c5d15512d5266f8777bfba4974ac56e3270e7760f6f0a8125",
+                          "containerID": "docker://e369bd61db3a4434728abd7a92012f3a4c5b4d44d974be4c824342b13b897d2d"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "metadata": {
+                      "name": "secret-env-pod",
+                      "namespace": "special-envs",
+                      "selfLink": "/api/v1/namespaces/special-envs/pods/secret-env-pod",
+                      "uid": "484d3805-36fe-11e6-a049-080027c5bfa9",
+                      "resourceVersion": "1008",
+                      "creationTimestamp": "2016-06-20T15:47:24Z",
+                      "annotations": {
+                        "openshift.io/scc": "restricted"
+                      }
+                    },
+                    "spec": {
+                      "volumes": [
+                        {
+                          "name": "default-token-mrp97",
+                          "secret": {
+                            "secretName": "default-token-mrp97"
+                          }
+                        }
+                      ],
+                      "containers": [
+                        {
+                          "name": "test-container",
+                          "image": "gcr.io/google_containers/busybox",
+                          "command": [
+                            "/bin/sh",
+                            "-c",
+                            "env"
+                          ],
+                          "env": [
+                            {
+                              "name": "MY_SECRET_DATA",
+                              "valueFrom": {
+                                "secretKeyRef": {
+                                  "name": "test-secret",
+                                  "key": "data-1"
+                                }
+                              }
+                            }
+                          ],
+                          "resources": {},
+                          "volumeMounts": [
+                            {
+                              "name": "default-token-mrp97",
+                              "readOnly": true,
+                              "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                          ],
+                          "terminationMessagePath": "/dev/termination-log",
+                          "imagePullPolicy": "Always",
+                          "securityContext": {
+                            "capabilities": {
+                              "drop": [
+                                "KILL",
+                                "MKNOD",
+                                "SETGID",
+                                "SETUID",
+                                "SYS_CHROOT"
+                              ]
+                            },
+                            "privileged": false,
+                            "seLinuxOptions": {
+                              "level": "s0:c7,c4"
+                            },
+                            "runAsUser": 1000050000
+                          }
+                        }
+                      ],
+                      "restartPolicy": "Never",
+                      "terminationGracePeriodSeconds": 30,
+                      "dnsPolicy": "ClusterFirst",
+                      "host": "localhost.localdomain",
+                      "serviceAccountName": "default",
+                      "serviceAccount": "default",
+                      "nodeName": "localhost.localdomain",
+                      "securityContext": {
+                        "seLinuxOptions": {
+                          "level": "s0:c7,c4"
+                        },
+                        "fsGroup": 1000050000
+                      },
+                      "imagePullSecrets": [
+                        {
+                          "name": "default-dockercfg-n3dif"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "phase": "Pending",
+                      "conditions": [
+                        {
+                          "type": "Ready",
+                          "status": "False",
+                          "lastProbeTime": null,
+                          "lastTransitionTime": "2016-06-20T15:47:24Z",
+                          "reason": "ContainersNotReady",
+                          "message": "containers with unready status: [test-container]"
+                        }
+                      ],
+                      "hostIP": "10.0.2.15",
+                      "podIP": "172.17.0.18",
+                      "startTime": "2016-06-20T15:47:24Z",
+                      "containerStatuses": [
+                        {
+                          "name": "test-container",
+                          "state": {
+                            "waiting": {
+                              "reason": "RunContainerError",
+                              "message": "GenerateRunContainerOptions: secrets \"test-secret\" not found"
+                            }
+                          },
+                          "lastState": {},
+                          "ready": false,
+                          "restartCount": 0,
+                          "image": "gcr.io/google_containers/busybox",
+                          "imageID": ""
+                        }
+                      ]
+                    }
+                  }
+                ]
+              });
             }
           }
         }
