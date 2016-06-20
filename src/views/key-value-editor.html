@@ -33,7 +33,7 @@
         ng-class="(keyValueEditor['value-' + $id].$invalid && keyValueEditor['value-' + $id].$dirty) ? 'has-error' : ''">
         <div class="input-group" ng-if="entry.containsSecret">
           <span class="input-group-addon">
-            <span class="{{secretValueIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{secretValueTooltip}}"></span>
+            <span class="{{entry.secretValueIcon || secretValueIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{entry.secretValueTooltip || secretValueTooltip}}"></span>
           </span>
           <input
             type="text"

@@ -1172,8 +1172,8 @@
                             {
                               "name": "KUBE_CONFIG_1",
                               "valueFrom": {
-                                "configMapKeyRef": {
-                                  "name": "test-configmap",
+                                "secretKeyRef": {
+                                  "name": "test-secret",
                                   "key": "data-1"
                                 }
                               }
@@ -1181,8 +1181,8 @@
                             {
                               "name": "KUBE_CONFIG_2",
                               "valueFrom": {
-                                "configMapKeyRef": {
-                                  "name": "test-configmap",
+                                "secretKeyRef": {
+                                  "name": "test-secret",
                                   "key": "data-2"
                                 }
                               }
@@ -1443,7 +1443,7 @@
                             {
                               "name": "MY_SECRET_DATA",
                               "valueFrom": {
-                                "secretKeyRef": {
+                                "other": {
                                   "name": "test-secret",
                                   "key": "data-1"
                                 }
