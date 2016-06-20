@@ -96,6 +96,7 @@
 
         dc
           .get()
+          // .getWithSpecialEnvs() // alternative env vars
           .then(function(response) {
             originalDC = response;
             console.log(response);
@@ -120,9 +121,18 @@
                             // this is cheap testing :)
                             env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
                             env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
+                            env.containsSecret = isEveryThird(i+1); //isEveryThird() ? true : false;
                             if(lessThanTwo(i+1)) {
                               env.keyValidatorError = 'Nope! You fail.';
                             }
+
+                            // support secrets, configmaps, etc
+                            if(env.valueFrom) {
+                              // env.icon = '';
+                              // env.tooltip = '';
+                              // env.displayValue = '';
+                            }
+
                             // for the key-value-editor, we will annotate these
                             // with is-readonly, etc.
                             return env;
@@ -140,6 +150,7 @@
         $scope.keyValidator =  commonRegex.strings.alphaNumericDashes; //commonRegex.raw.noWhiteSpace;
         $scope.valueValidator = commonRegex.strings.alphaNumericDashes; // commonRegex.raw.alphaNumericDashes;
 
+        $scope.secretValueTooltip = "This value is from a shared secret or config map and cannot be edited."
 
         // for the form
         var on = function() {
