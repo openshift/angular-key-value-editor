@@ -27,120 +27,58 @@
         novalidate
         name="test-form"
         ng-submit="onSubmit()">
-        <h2>As element</h2>
-        <p><strong>key-minlength</strong>: 3</p>
-        <p><strong>key-maxlength</strong>: 25</p>
-        <p><strong>value-minlength</strong>: 3</p>
-        <p><strong>value-maxlength</strong>: 25</p>
+        <h2>configMapKeyRef</h2>
         <div class="row">
           <div class="col-md-7">
             <key-value-editor
               entries="deploymentConfigs[0].containers[0].env"
               key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              key-validator="{{keyValidator}}"
-              value-validator="{{valueValidator}}"
-              key-minlength="3"
-              key-maxlength="25"
-              value-minlength="3"
-              value-maxlength="25"
-              value-validator="{{valueValidator}}"
-              secret-value-tooltip="{{secretValueTooltip}}"></key-value-editor>
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
           </div>
           <div class="col-md-5">
             <code>{{deploymentConfigs[0].containers[0].env | json}}</code>
           </div>
         </div>
-
-        <h3>Cannot Add</h3>
-        <p><strong>cannot-add</strong>: true</p>
+        <hr>
+        <h2>secretKeyRef</h2>
         <div class="row">
           <div class="col-md-7">
             <key-value-editor
               entries="deploymentConfigs[1].containers[0].env"
               key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              cannot-add></key-value-editor>
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
           </div>
           <div class="col-md-5">
             <code>{{deploymentConfigs[1].containers[0].env | json}}</code>
           </div>
         </div>
-        <h3>Cannot Delete</h3>
-        <p><strong>cannot-delete</strong>: true</p>
+        <hr>
+        <h2>fieldRef</h2>
         <div class="row">
           <div class="col-md-7">
             <key-value-editor
               entries="deploymentConfigs[2].containers[0].env"
               key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              cannot-delete></key-value-editor>
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
           </div>
           <div class="col-md-5">
             <code>{{deploymentConfigs[2].containers[0].env | json}}</code>
           </div>
         </div>
-        <h3>Cannot Sort</h3>
-        <p><strong>cannot-sort</strong>: true</p>
+        <hr>
+        <h2>Default</h2>
         <div class="row">
           <div class="col-md-7">
             <key-value-editor
               entries="deploymentConfigs[3].containers[0].env"
               key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              cannot-sort></key-value-editor>
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
           </div>
           <div class="col-md-5">
             <code>{{deploymentConfigs[3].containers[0].env | json}}</code>
           </div>
         </div>
-
         <hr>
-
-        <h2>As attribute</h2>
-        <p><strong>cannot-sort</strong>: true</p>
-        <p><strong>cannot-add</strong>: true</p>
-        <div class="row">
-          <div class="col-md-7">
-            <div
-              key-value-editor
-              entries="deploymentConfigs[4].containers[0].env"
-              key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              cannot-sort
-              cannot-add></div>
-          </div>
-          <div class="col-md-5">
-            <code>{{deploymentConfigs[4].containers[0].env | json}}</code>
-          </div>
-        </div>
-
-        <hr>
-
-        <h2>As attribute with data-* bindings</h2>
-        <h3>Cannot add, cannot delete, cannot sort, is readonly</h3>
-        <p><strong>cannot-add</strong>: true</p>
-        <p><strong>cannot-delete</strong>: true</p>
-        <p><strong>cannot-sort</strong>: true</p>
-        <p><strong>is-readonly</strong>: true</p>
-        <div class="row">
-          <div class="col-md-7">
-            <key-value-editor
-              data-entries="deploymentConfigs[5].containers[0].env"
-              data-key-placeholder="{{keyPlaceholder}}"
-              data-value-placeholder="{{valuePlaceholder}}"
-              data-is-readonly
-              data-cannot-add
-              data-cannot-sort
-              data-cannot-delete></key-value-editor>
-          </div>
-          <div class="col-md-5">
-            <code>{{deploymentConfigs[5].containers[0].env | json}}</code>
-          </div>
-        </div>
-
-        <hr>
-
         <button
           type="submit"
           id="submit"
@@ -168,6 +106,6 @@
     <script src="../dist/compiled-templates.js"></script>
     <script src="./app.js"></script>
     <script src="./dc.js"></script>
-    <script src="./ctrl.js"></script>
+    <script src="./ctrl-owc.js"></script>
   </body>
 </html>

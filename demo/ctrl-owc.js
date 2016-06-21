@@ -17,8 +17,8 @@
           return function() {
             counter++;
             return counter % num === remainder;
-          };
-        };
+          }
+        }
       }
     ])
     .factory('lessThan', [
@@ -26,8 +26,8 @@
         return function(num) {
           return function(compare) {
             return compare < num;
-          };
-        };
+          }
+        }
       }
     ])
     .factory('commonRegex', [
@@ -87,16 +87,9 @@
       function($scope, dc, mod, lessThan, commonRegex) {
         var originalDC;
 
-        // quick dummy functions for testing purposes
-        var isEven = mod(2, 0);
-        var isOdd = mod(2, 1);
-        var isEveryThird = mod(3, 0);
-        var lessThanTwo = lessThan(2);
-        var lessThanThree = lessThan(3);
-
         dc
-          .get()
-          // .getWithSpecialEnvs() // alternative env vars
+          // .get()
+          .getWithSpecialEnvs() // alternative env vars
           .then(function(response) {
             originalDC = response;
             console.log(response);
@@ -110,28 +103,34 @@
                 return {
                   name: _.get(deploymentConfig, 'metadata.name'),
                   containers: _.map(
-                    _.get(deploymentConfig, 'spec.template.spec.containers'),
+                    // _.get(deploymentConfig, 'spec.template.spec.containers'),
+                    _.get(deploymentConfig, 'spec.containers'),
                     function(container) {
                       return {
                         name: container.name,
                         env: _.map(
                           container.env,
                           function(env, i){
-                            // randomly add a few things to trigger UI changes
-                            // this is cheap testing :)
-                            env.isReadonly = lessThanTwo(i+1); //isEveryThird() ? true : false;
-                            env.cannotDelete = lessThanTwo(i+1); // isEveryThird() ? true : false;
-                            env.containsSecret = isEveryThird(); //isEveryThird() ? true : false;
-
-                            if(lessThanTwo(i+1)) {
-                              env.keyValidatorError = 'Nope! You fail.';
-                            }
 
                             // support secrets, configmaps, etc
                             if(env.valueFrom) {
-                              // env.icon = '';
-                              // env.tooltip = '';
-                              // env.displayValue = '';
+                              env.containsSecret = true;
+                              env.secretValueIcon = 'fa fa-external-link-square';
+                              env.secretValueTooltip = 'This is a referenced value that will be generated when a container is created.  On running pods you can check the resolved values by going to the Terminal tab and echoing the environment variable.';
+
+                              if(env.valueFrom.configMapKeyRef) {
+                                env.value = 'Set to the key "' + env.valueFrom.configMapKeyRef.key + '" in config map "' + env.valueFrom.configMapKeyRef.name + '".';
+                              }
+                              else if(env.valueFrom.secretKeyRef) {
+                                env.secretValueIcon = 'fa fa-user-secret';
+                                env.value = 'Set to the key "' + env.valueFrom.secretKeyRef.key + '" in secret "' + env.valueFrom.secretKeyRef.name + '".';
+                              }
+                              else if(env.valueFrom.fieldRef) {
+                                env.value = 'Set to the field "' + env.valueFrom.fieldRef.fieldPath + '" in the current object.';
+                              }
+                              else {
+                               env.value = 'Set to a reference on ' + _.keys(env.valueFrom)[0] + '.';
+                              }
                             }
 
                             // for the key-value-editor, we will annotate these
@@ -150,8 +149,6 @@
 
         $scope.keyValidator =  commonRegex.strings.alphaNumericDashes; //commonRegex.raw.noWhiteSpace;
         $scope.valueValidator = commonRegex.strings.alphaNumericDashes; // commonRegex.raw.alphaNumericDashes;
-
-        $scope.secretValueTooltip = "This value is from a shared secret and cannot be edited.";
 
         // for the form
         var on = function() {
