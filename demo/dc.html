@@ -20,7 +20,7 @@
   </head>
   <body>
 
-    <div class="container" data-ng-controller="demoCtrl">
+    <div class="container" data-ng-controller="demoCtrlDC">
       <div class="page-header">
         <h1>Angular Key Value Editor</h1>
       </div>
@@ -33,21 +33,24 @@
         <p><strong>key-maxlength</strong>: 25</p>
         <p><strong>value-minlength</strong>: 3</p>
         <p><strong>value-maxlength</strong>: 25</p>
-        <div class="row">
-          <div class="col-md-7">
-            <key-value-editor
-              entries="deploymentConfigs[0].containers[0].env"
-              key-placeholder="{{keyPlaceholder}}"
-              value-placeholder="{{valuePlaceholder}}"
-              key-validator="{{keyValidator}}"
-              value-validator="{{valueValidator}}"
-              key-minlength="3"
-              key-maxlength="25"
-              value-minlength="3"
-              value-maxlength="25"></key-value-editor>
-          </div>
-          <div class="col-md-5">
-            <code>{{deploymentConfigs[0].containers[0].env | json}}</code>
+        <div ng-repeat="dc in dcForUI.items">
+          <div class="row"><div class="col-md-12">Editor</div></div>
+          <div class="row" ng-repeat="container in dc.spec.template.spec.containers">
+            <div class="col-md-7">
+              <key-value-editor
+                entries="container.env"
+                key-placeholder="{{keyPlaceholder}}"
+                value-placeholder="{{valuePlaceholder}}"
+                key-validator="{{keyValidator}}"
+                value-validator="{{valueValidator}}"
+                key-minlength="3"
+                key-maxlength="25"
+                value-minlength="3"
+                value-maxlength="25"></key-value-editor>
+            </div>
+            <div class="col-md-5">
+              <code>{{container | json}}</code>
+            </div>
           </div>
         </div>
 
@@ -58,6 +61,13 @@
           class="btn btn-primary"
           ng-click="onClick()">Submit</button>
       </ng-form>
+
+
+      <div>
+        <h2>Edit diff</h2>
+        <pre ng-bind-html="dcDiffView"></pre>
+      </div>
+
 
     </div>
 
@@ -73,6 +83,6 @@
     <script src="./app.js"></script>
     <script src="./services.js"></script>
     <script src="./dc.js"></script>
-    <script src="./ctrl.js"></script>
+    <script src="./ctrl_dc.js"></script>
   </body>
 </html>
