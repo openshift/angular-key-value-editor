@@ -29,7 +29,7 @@
         };
 
         var last = function(entries) {
-          return entries[entries.length - 1];
+          return entries && entries[entries.length - 1];
         };
         // this is a minimal get w/o deep paths
         var get = function(obj, prop) {
