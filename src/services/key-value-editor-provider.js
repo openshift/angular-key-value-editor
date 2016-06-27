@@ -14,7 +14,9 @@
           keyValidatorError: undefined,           // default error message string
           valueValidatorError: undefined,         // default error message string
           secretValueTooltip: undefined,          // secret values have no default tooltip
-          secretValueIcon: 'fa fa-user-secret'    // default icon for secret values
+          secretValueIcon: 'fa fa-user-secret',    // default icon for secret values
+          keyPlaceholder: '',
+          valuePlaceholder: ''
         };
 
         // set a new default key value pair, or pass an object to replace

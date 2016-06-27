@@ -6,12 +6,15 @@
     .directive('keyValueEditor', [
       '$compile',
       '$templateCache',
+      '$timeout',
+      '$window',
       'keyValueEditorConfig',
       'keyValueEditorUtils',
-      function($compile, $templateCache, keyValueEditorConfig, keyValueEditorUtils) {
+      function($compile, $templateCache, $timeout, $window, keyValueEditorConfig, keyValueEditorUtils) {
 
-        var last = keyValueEditorUtils.last;
-        var get = keyValueEditorUtils.get;
+        var first = keyValueEditorUtils.first;
+        // var last = keyValueEditorUtils.last;
+        // var get = keyValueEditorUtils.get;
         // not used internally, however users can ask for keyValueEditorUtils and
         // use this function to clean out empty pairs from the list when they are ready
         // to save/preserve.  Also can just use _.compact() or any other library that
@@ -21,6 +24,17 @@
         // a few utils
         var addEmptyEntry = function(entries) {
           entries && entries.push({name: '', value: ''});
+        };
+
+        var setFocusLastEntry = function(selector) {
+          // $timeout just delays to ensure
+          // events/rendering resolve
+          $timeout(function() {
+            var element = first($window.document.querySelectorAll(selector));
+            if(element) {
+              element.focus();
+            }
+          });
         };
 
         return {
@@ -89,23 +103,27 @@
             // secret values
             $scope.secretValueTooltip = keyValueEditorConfig.secretValueTooltip || $attrs.secretValueTooltip;
             $scope.secretValueIcon = keyValueEditorConfig.secretValueIcon || $attrs.secretValueIcon;
-
+            // placeholders
+            $scope.keyPlaceholder = keyValueEditorConfig.keyPlaceholder || $attrs.keyPlaceholder;
+            $scope.valuePlaceholder = keyValueEditorConfig.valuePlaceholder || $attrs.valuePlaceholder;
             // manually compile and append to the DOM
             $elem.append($compile(tpl)($scope));
           },
           controller: [
             '$scope',
             function($scope) {
-              $scope.$watch('entries', function() {
-                if(!$scope.cannotAdd && (get(last($scope.entries), 'name') !== '')) {
-                  addEmptyEntry($scope.entries);
-                }
-              });
-              // will add a new text input every time the last
-              // set is selected.
+
+              // generate a unique class name for each editor, so that the
+              // onFocusLast() fn below can select the correct node with
+              // certainty if there are many instances of the key-value-editor
+              // on the page.
+              var setFocusClass = 'key-value-editor-set-focus-'+Date.now();
+              $scope.setFocusClass = setFocusClass;
+
               $scope.onFocusLast = function() {
                 if (!$scope.cannotAdd && !$scope.isReadonly) {
                   addEmptyEntry($scope.entries);
+                  setFocusLastEntry('.'+setFocusClass);
                 }
               };
               // clicking the delete button removes the pair
@@ -128,10 +146,6 @@
               };
             }
           ]
-          // as a fn in case we want to allow configurable templates
-          // templateUrl: function() {
-          //   return 'key-value-editor.html';
-          // }
         };
       }]);
 
