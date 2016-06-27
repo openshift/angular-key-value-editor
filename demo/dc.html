@@ -16,6 +16,7 @@
       strong {
         color: #6099D4;
       }
+
     </style>
   </head>
   <body>
@@ -39,11 +40,11 @@
             <div class="col-md-7">
               <key-value-editor
                 entries="container.env"
-                key-placeholder="{{keyPlaceholder}}"
-                value-placeholder="{{valuePlaceholder}}"
+                key-placeholder="Key"
+                value-placeholder="Value"
                 key-validator="{{keyValidator}}"
                 value-validator="{{valueValidator}}"
-                key-minlength="3"
+                key-minlength="0"
                 key-maxlength="25"
                 value-minlength="3"
                 value-maxlength="25"></key-value-editor>

@@ -70,6 +70,77 @@
           }
         };
       }
+    ])
+    // "service that helps edit environment variables on deployment configs"
+    // EnvironmentVarEditorService
+    //  - deployment config
+    //  - build config
+    //  - deployment
+    //  - build
+    //  - pod
+    //  - new project (?)
+    .factory('environmentVarEditor', [
+      // get the containers from the DC but maintain the tree structure...
+      // foo.containers.extract(dc);
+      // merge the edited tree structure back into a copy of the original...
+      // foo.containers.merge(orig, copy);
+
+      function() {
+        return {
+            dc: {
+              containers: {
+                extract: function(original) {
+                  return  _.reduce(
+                                  original.items,
+                                  function(dcList, dc) {
+                                    dcList.items.push({
+                                      spec: {
+                                        template: {
+                                          spec: {
+                                            containers: _.map(
+                                                          _.get(dc, 'spec.template.spec.containers'),
+                                                          function(container) {
+                                                            return {
+                                                              name: container.name,
+                                                              env: container.env
+                                                            };
+                                                          })
+                                          }
+                                        }
+                                      }
+                                    });
+                                    return dcList;
+                                  },
+                                  { apiVersion: original.apiVersion, items: []});
+                },
+                merge: function(clean, edited) {
+                  // replacing the containers for each DC should be sufficient
+                  //  item.spec.template.spec.containers
+                  return _.reduce(
+                            edited.items,
+                            function(memo, editedDC, i) {
+                              var containers = _.map(
+                                                _.get(editedDC, 'spec.template.spec.containers'),
+                                                function(container) {
+                                                    container.env = _.compact(
+                                                                      _.map(
+                                                                        container.env,
+                                                                        function(env) {
+                                                                          if(env.name) {
+                                                                            // eliminate all our added properties
+                                                                            return _.pick(env, ['name', 'value', 'valueFrom']);
+                                                                          }
+                                                                        }));
+                                                    return container;
+                                                });
+                              memo.items[i].spec.template.spec.containers = containers;
+                              return memo;
+                            }, clean);
+                }
+              }
+            }
+        };
+      }
     ]);
-    
+
 })();

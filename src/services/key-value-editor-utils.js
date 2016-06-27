@@ -31,6 +31,9 @@
         var last = function(entries) {
           return entries && entries[entries.length - 1];
         };
+        var first = function(entries) {
+          return entries && entries[0];
+        };
         // this is a minimal get w/o deep paths
         var get = function(obj, prop) {
           return obj && obj[prop];
@@ -38,6 +41,7 @@
 
         return {
           compact: compact,
+          first: first,
           last: last,
           get: get
         };
