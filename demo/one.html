@@ -40,6 +40,8 @@
               key-placeholder="{{keyPlaceholder}}"
               value-placeholder="{{valuePlaceholder}}"
               key-validator="{{keyValidator}}"
+              key-validator-error="{{keyValidatorError}}"
+              key-validator-error-tooltip="{{keyValidatorErrorTooltip}}"
               value-validator="{{valueValidator}}"
               key-minlength="3"
               key-maxlength="25"
@@ -64,6 +66,13 @@
     <!-- dependencies -->
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/lodash/dist/lodash.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
     <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
     <script src="../dist/angular-key-value-editor.js"></script>
     <script src="../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
@@ -71,8 +80,8 @@
     <!-- the built template files -->
     <script src="../dist/compiled-templates.js"></script>
     <script src="./app.js"></script>
-    <script src="./services.js"></script>
     <script src="./dc.js"></script>
+    <script src="./services.js"></script>
     <script src="./ctrl.js"></script>
   </body>
 </html>

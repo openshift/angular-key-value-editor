@@ -58,10 +58,12 @@
             entries: '=',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
-            keyValidator: '@',                // general key regex validation string
-            valueValidator: '@',              // general value regex validation string
-            keyValidatorError: '@',           // general key validation error message
-            valueValidatorError: '@',         // general value validation error message
+            keyValidator: '@',                        // general key regex validation string
+            valueValidator: '@',                      // general value regex validation string
+            keyValidatorError: '@',                   // general key validation error message
+            keyValidatorErrorTooltip: '@',
+            keyValidatorErrorTooltipIcon: '@',
+            valueValidatorError: '@',                 // general value validation error message
             secretValueTooltip: '@',
             secretValueIcon: '@',
             cannotAdd: '=?',
@@ -102,6 +104,9 @@
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+            // key value validator error tooltip
+            $scope.keyValidatorErrorTooltip = keyValueEditorConfig.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip;
+            $scope.keyValidatorErrorTooltipIcon = keyValueEditorConfig.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon;
             // secret values
             $scope.secretValueTooltip = keyValueEditorConfig.secretValueTooltip || $attrs.secretValueTooltip;
             $scope.secretValueIcon = keyValueEditorConfig.secretValueIcon || $attrs.secretValueIcon;

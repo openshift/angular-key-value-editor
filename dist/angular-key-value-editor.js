@@ -63,10 +63,12 @@
             entries: '=',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
-            keyValidator: '@',                // general key regex validation string
-            valueValidator: '@',              // general value regex validation string
-            keyValidatorError: '@',           // general key validation error message
-            valueValidatorError: '@',         // general value validation error message
+            keyValidator: '@',                        // general key regex validation string
+            valueValidator: '@',                      // general value regex validation string
+            keyValidatorError: '@',                   // general key validation error message
+            keyValidatorErrorTooltip: '@',
+            keyValidatorErrorTooltipIcon: '@',
+            valueValidatorError: '@',                 // general value validation error message
             secretValueTooltip: '@',
             secretValueIcon: '@',
             cannotAdd: '=?',
@@ -107,6 +109,9 @@
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+            // key value validator error tooltip
+            $scope.keyValidatorErrorTooltip = keyValueEditorConfig.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip;
+            $scope.keyValidatorErrorTooltipIcon = keyValueEditorConfig.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon;
             // secret values
             $scope.secretValueTooltip = keyValueEditorConfig.secretValueTooltip || $attrs.secretValueTooltip;
             $scope.secretValueIcon = keyValueEditorConfig.secretValueIcon || $attrs.secretValueIcon;
@@ -165,16 +170,18 @@
     .provider('keyValueEditorConfig', [
       function() {
         var defaults = {
-          keyMinlength: '',                       // min character length, falsy by default
-          keyMaxlength: '',                       // max character length, falsy by default
-          valueMinlength: '',                     // min character length, falsy by default
-          valueMaxlength: '',                     // max character length, falsy by default
-          keyValidator: '[a-zA-Z0-9-_]+',         // alphanumeric, with dash & underscores
-          valueValidator: '',                     // values have no default validation
-          keyValidatorError: undefined,           // default error message string
-          valueValidatorError: undefined,         // default error message string
-          secretValueTooltip: undefined,          // secret values have no default tooltip
-          secretValueIcon: 'fa fa-user-secret',    // default icon for secret values
+          keyMinlength: '',                                        // min character length, falsy by default
+          keyMaxlength: '',                                        // max character length, falsy by default
+          valueMinlength: '',                                      // min character length, falsy by default
+          valueMaxlength: '',                                      // max character length, falsy by default
+          keyValidator: '[a-zA-Z0-9-_]+',                          // alphanumeric, with dash & underscores
+          valueValidator: '',                                      // values have no default validation
+          keyValidatorError: undefined,                            // default error message string
+          keyValidatorErrorTooltip: undefined,                     // default error message tooltip string
+          keyValidatorErrorTooltipIcon: 'pficon pficon-help',      // default error message tooltip icon
+          valueValidatorError: undefined,                          // default error message string
+          secretValueTooltip: undefined,                           // secret values have no default tooltip
+          secretValueIcon: 'fa fa-user-secret',                    // default icon for secret values
           keyPlaceholder: '',
           valuePlaceholder: ''
         };
