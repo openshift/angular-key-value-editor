@@ -9,7 +9,7 @@
       as-sortable-item>
       <div
         class="form-group key-value-editor-input"
-        ng-class="{ 'has-error' :  (keyValueEditor['key-' + $id].$invalid) }">
+        ng-class="{ 'has-error' :  (forms.keyValueEditor['key-' + $id].$invalid) }">
         <input
           type="text"
           class="form-control"
@@ -25,7 +25,7 @@
           ng-value>
         <span
           class="help-block"
-          ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
+          ng-show="(forms.keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
           <span ng-if="entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip" class="help action-inline">
             <a aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip}}">
@@ -35,13 +35,13 @@
         </span>
         <span
           class="help-block"
-          ng-show="(keyValueEditor['key-' + $id].$error.minlength)">
+          ng-show="(forms.keyValueEditor['key-' + $id].$error.minlength)">
           <span>Minimum character count is {{keyMinlength}}</span>
         </span>
       </div>
       <div
         class="form-group key-value-editor-input"
-        ng-class="(keyValueEditor['value-' + $id].$invalid && keyValueEditor['value-' + $id].$dirty) ? 'has-error' : ''">
+        ng-class="(forms.keyValueEditor['value-' + $id].$invalid && forms.keyValueEditor['value-' + $id].$dirty) ? 'has-error' : ''">
         <div class="input-group" ng-if="entry.containsSecret">
           <span class="input-group-addon">
             <span class="{{entry.secretValueIcon || secretValueIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{entry.secretValueTooltip || secretValueTooltip}}"></span>
@@ -72,12 +72,12 @@
           ng-if="!entry.containsSecret">
         <span
           class="help-block"
-          ng-show="(keyValueEditor['value-' + $id].$error.pattern)">
+          ng-show="(forms.keyValueEditor['value-' + $id].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
         </span>
         <span
           class="help-block"
-          ng-show="(keyValueEditor['value-' + $id].$error.minlength)">
+          ng-show="(forms.keyValueEditor['value-' + $id].$error.minlength)">
           <span>Minimum character count is {{valueMinlength}}</span>
         </span>
       </div>
