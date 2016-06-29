@@ -10,12 +10,13 @@
     .module('key-value-editor')
     .directive('keyValueEditor', [
       '$compile',
+      '$log',
       '$templateCache',
       '$timeout',
       '$window',
       'keyValueEditorConfig',
       'keyValueEditorUtils',
-      function($compile, $templateCache, $timeout, $window, keyValueEditorConfig, keyValueEditorUtils) {
+      function($compile, $log, $templateCache, $timeout, $window, keyValueEditorConfig, keyValueEditorUtils) {
 
         var first = keyValueEditorUtils.first;
         // var last = keyValueEditorUtils.last;
@@ -59,7 +60,7 @@
             //  keyValidatorError: '',        // custom validation error
             //  valueValidatorError: ''       // custom validation error
             // }]
-            entries: '=?',
+            entries: '=',
             keyPlaceholder: '@',
             valuePlaceholder: '@',
             keyValidator: '@',                // general key regex validation string
@@ -77,8 +78,9 @@
             // manually retrieving here so we can manipulate and compile in JS
             var tpl = $templateCache.get('key-value-editor.html');
 
-            // ensure a default
-            $scope.entries = $scope.entries || [];
+            if(!$scope.entries) {
+              $log.error('<key-value-editor> requires "entries" attribute');
+            }
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {
               $scope.cannotAdd = true;
