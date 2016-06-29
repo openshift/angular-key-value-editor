@@ -27,6 +27,9 @@
           class="help-block"
           ng-show="(keyValueEditor['key-' + $id].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
+          <span ng-if"entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip" class="help action-inline">
+            <span class="{{entry.keyValidatorErrorTooltipIcon || keyValidatorErrorTooltipIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip}}"></span>
+          </span>
         </span>
         <span
           class="help-block"
