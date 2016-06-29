@@ -124,7 +124,7 @@
           controller: [
             '$scope',
             function($scope) {
-
+              $scope.forms = {};
               // generate a unique class name for each editor, so that the
               // onFocusLast() fn below can select the correct node with
               // certainty if there are many instances of the key-value-editor
@@ -141,6 +141,7 @@
               // clicking the delete button removes the pair
               $scope.deleteEntry = function(start, deleteCount) {
                 $scope.entries.splice(start, deleteCount);
+                $scope.forms.keyValueEditor.$setDirty();
               };
               $scope.dragControlListeners = {
                   // only allow sorting within the parent instance
@@ -153,8 +154,8 @@
                       event.dest.sortableScope.removeItem(event.dest.index);
                       event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
                     }
+                    $scope.forms.keyValueEditor.$setDirty();
                   }
-
               };
             }
           ]
