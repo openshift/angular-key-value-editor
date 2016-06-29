@@ -5,7 +5,7 @@ A simple UI for editing key-value pairs
 
 ## Basic usage:
 
-Add the `key-value-editor` in html and provide it some data:
+Add the `key-value-editor` in html and provide it some data via the entries attribute:
 
 ```html
 <!-- hard coded -->
@@ -13,6 +13,7 @@ Add the `key-value-editor` in html and provide it some data:
 <!-- via scope -->
 <key-value-editor entries="entries"></key-value-editor>
 ```
+Note that entries is *required* or `<key-value-editor>` will log an error!
 
 ## Attributes
 

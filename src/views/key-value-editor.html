@@ -1,4 +1,4 @@
-<ng-form name="keyValueEditor" novalidate>
+<ng-form name="keyValueEditor" novalidate ng-if="entries">
   <!-- may use ng-messages for better validation, if needed -->
   <div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-model="entries" as-sortable="dragControlListeners">
     <div
