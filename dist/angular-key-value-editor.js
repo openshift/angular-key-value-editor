@@ -160,6 +160,19 @@
               // cannotDelete and isReadonly are boolean or list values.
               // if boolean, they apply to all.
               // if arrays, they apply to the items passed.
+              // GOTCHA:
+              // we suppport:
+              //   <key-value-editor is-readonly cannot-delete>
+              // and:
+              //   <key-value-editor is-readonly="['foo']" cannot-delete="['foo','bar']">
+              // changing the is-readonly and cannot-delete to a list and then
+              // setting the list to undefined/null will not:
+              //   cannotDeleteAny = false;
+              // why?
+              //   we assume the presence of is-readonly similar to disabled and other html
+              //   attributes that are 'truthy' though they have no actual value.
+              // workaround?
+              //   potentially using ng-attr-cannot-delete=false?
               $scope.$watch('cannotDelete', function(newVal) {
                 if(angular.isArray(newVal)) {
                   $scope.cannotDeleteAny = false;
