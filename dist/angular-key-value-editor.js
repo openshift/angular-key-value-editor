@@ -19,6 +19,7 @@
       function($compile, $log, $templateCache, $timeout, $window, keyValueEditorConfig, keyValueEditorUtils) {
 
         var first = keyValueEditorUtils.first;
+        var contains = keyValueEditorUtils.contains;
         // var last = keyValueEditorUtils.last;
         // var get = keyValueEditorUtils.get;
         // not used internally, however users can ask for keyValueEditorUtils and
@@ -72,26 +73,23 @@
             secretValueTooltip: '@',
             secretValueIcon: '@',
             cannotAdd: '=?',
-            cannotDelete: '=?',
             cannotSort: '=?',
+            cannotDelete: '=?',
             isReadonly: '=?'
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
             var tpl = $templateCache.get('key-value-editor.html');
 
-            if(!$scope.entries) {
-              $log.error('<key-value-editor> requires "entries" attribute');
-            }
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {
               $scope.cannotAdd = true;
             }
             if('cannotDelete' in $attrs) {
-              $scope.cannotDelete = true;
+              $scope.cannotDeleteAny = true;
             }
             if('isReadonly' in $attrs) {
-              $scope.isReadonly = true;
+              $scope.isReadonlyAny = true;
             }
             if('cannotSort' in $attrs) {
               // uses a regex to essentially kill the as-sortable directives
@@ -125,6 +123,8 @@
             '$scope',
             function($scope) {
               $scope.forms = {};
+              var readOnlySome = [];
+              var cannotDeleteSome = [];
               // generate a unique class name for each editor, so that the
               // onFocusLast() fn below can select the correct node with
               // certainty if there are many instances of the key-value-editor
@@ -156,6 +156,27 @@
                     }
                     $scope.forms.keyValueEditor.$setDirty();
                   }
+              };
+              // cannotDelete and isReadonly are boolean or list values.
+              // if boolean, they apply to all.
+              // if arrays, they apply to the items passed.
+              $scope.$watch('cannotDelete', function(newVal) {
+                if(angular.isArray(newVal)) {
+                  $scope.cannotDeleteAny = false;
+                  cannotDeleteSome = newVal;
+                }
+              });
+              $scope.$watch('isReadonly', function(newVal) {
+                if(angular.isArray(newVal)) {
+                  $scope.isReadonlyAny = false;
+                  readOnlySome = newVal;
+                }
+              });
+              $scope.isReadonlySome = function(name) {
+                return contains(readOnlySome, name);
+              };
+              $scope.cannotDeleteSome = function(name) {
+                return contains(cannotDeleteSome, name);
               };
             }
           ]
@@ -243,6 +264,10 @@
                     []);
         };
 
+        var contains = function(list, item) {
+          return list.indexOf(item) !== -1;
+        };
+
         var last = function(entries) {
           return entries && entries[entries.length - 1];
         };
@@ -255,7 +280,9 @@
         };
 
         return {
+          reduce: reduce,
           compact: compact,
+          contains: contains,
           first: first,
           last: last,
           get: get

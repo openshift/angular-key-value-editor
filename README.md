@@ -3,6 +3,10 @@ A simple UI for editing key-value pairs
 
 ![key-value-editor screenshot](/docs/key-value-editor-screenshot.png)
 
+## Dependencies
+
+This key-value-editor is based on the bootstrap based framework [Patternfly](https://www.patternfly.org/#_).  Patternfly or a similar boostrap based framework should be present for proper layout rendering. Icons are from font awesome.  Alternative layouts with a different framework could be achieved by replacing the `key-value-editor.html` template which is pre-compiled into `compiled-templates.js` for convenience.
+
 ## Basic usage:
 
 Add the `key-value-editor` in html and provide it some data via the entries attribute:
@@ -25,6 +29,7 @@ Readonly:
   entries="entries"
   is-readonly></key-value-editor>
 ```
+(`is-readonly` can also be an array of string names `is-readonly="['foo']"` for selectively making individual entries readonly.  In addition, each `entry.isReadonly` can be set to `true||false`.)
 
 Disable adding new entries:
 ```html
@@ -46,6 +51,7 @@ Disable deleting entries:
   entries="entries"
   cannot-delete></key-value-editor>
 ```
+(`cannot-delete` can also be an array of string names `cannot-delete="['foo']"` for selectively making individual entries readonly.  In addition, each `entry.cannotDelete` can be set to `true||false`.)
 
 Use the attributes together:
 ```html
@@ -66,6 +72,34 @@ $scope.entries = [{
   cannotDelete: true
 }];
 ```
+All attributes for convenient reference.
+```html
+<key-value-editor
+  entries="[
+    {name: 'foo', value: 'stuff'},
+    {name: 'bar', value: 'things'},
+    {name: 'baz', value: '3', isReadonly: true, cannotDelete: true}
+  ]"
+  key-placeholder="name"
+  key-min-length="3"
+  key-max-length="25"
+  key-validator="[a-zA-Z0-9_]*"
+  key-validator-error="Invalid name"
+  key-validator-error-tooltip="Name must be alphanumeric including - and _"
+  key-validator-error-tooltip-icon="fa fa-exclamation-circle"
+  value-placeholder="value"
+  value-min-length="3"
+  value-max-length="25"
+  value-validator="[a-zA-Z0-9_]*"
+  value-validator-error="Invalid value"
+  secret-value-tooltip="This is a hidden value"
+  secret-value-icon="fa fa-external-link-square"
+  is-readonly="['can','be','a','list']"
+  cannot-delete="['can','be','a','list']"
+  cannot-add    
+  cannot-sort></key-value-editor>
+```
+
 
 ### Secret values
 
@@ -135,7 +169,7 @@ $scope.regex = {
 }
 ```
 
-### Setting global validation
+### Setting global validation via the provider
 
 Global defaults can be set via the provider:
 

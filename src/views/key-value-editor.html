@@ -1,6 +1,6 @@
 <ng-form name="forms.keyValueEditor" novalidate ng-if="entries">
   <!-- may use ng-messages for better validation, if needed -->
-  <div class="key-value-editor" ng-class="{'cannot-delete' : cannotDelete, 'cannot-sort' : cannotSort}" ng-model="entries" as-sortable="dragControlListeners">
+  <div class="key-value-editor" ng-class="{'cannot-delete' : cannotDeleteAny, 'cannot-sort' : cannotSort}" ng-model="entries" as-sortable="dragControlListeners">
     <div
       class="key-value-editor-entry"
       ng-class-odd="'odd'"
@@ -20,7 +20,7 @@
           ng-minlength="{{keyMinlength}}"
           maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
-          ng-readonly="isReadonly || entry.isReadonly || entry.containsSecret"
+          ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
           ng-pattern="keyValidator"
           ng-value>
         <span
@@ -55,7 +55,7 @@
             ng-minlength="{{valueMinlength}}"
             ng-maxlength="{{valueMaxlength}}"
             ng-model="entry.value"
-            ng-readonly="isReadonly || entry.isReadonly || entry.containsSecret"
+            ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
             ng-pattern="valueValidator">
         </div>
         <input
@@ -67,7 +67,7 @@
           ng-minlength="{{valueMinlength}}"
           maxlength="{{valueMaxlength}}"
           ng-model="entry.value"
-          ng-readonly="isReadonly || entry.isReadonly || entry.containsSecret"
+          ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
           ng-pattern="valueValidator"
           ng-if="!entry.containsSecret">
         <span
@@ -93,7 +93,7 @@
           class="pficon pficon-close as-sortable-item-delete"
           role="button"
           aria-label="Delete row"
-          ng-hide="cannotDelete || entry.cannotDelete"
+          ng-hide="cannotDeleteAny || cannotDeleteSome(entry.name) || entry.cannotDelete"
           ng-click="deleteEntry($index, 1)"></span>
       </div>
     </div>

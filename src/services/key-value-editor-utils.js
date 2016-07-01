@@ -28,6 +28,10 @@
                     []);
         };
 
+        var contains = function(list, item) {
+          return list.indexOf(item) !== -1;
+        };
+
         var last = function(entries) {
           return entries && entries[entries.length - 1];
         };
@@ -40,7 +44,9 @@
         };
 
         return {
+          reduce: reduce,
           compact: compact,
+          contains: contains,
           first: first,
           last: last,
           get: get
