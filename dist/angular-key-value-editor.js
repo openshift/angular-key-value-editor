@@ -104,7 +104,7 @@
             $scope.valueMaxlength = keyValueEditorConfig.valueMaxlength || $attrs.valueMaxlength;
             // validation regex
             $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
-            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
+            $scope.valueValidator = keyValueEditorConfig.valueValidator || $attrs.valueValidator;
             $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
             $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
             // key value validator error tooltip

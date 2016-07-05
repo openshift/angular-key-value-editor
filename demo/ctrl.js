@@ -13,11 +13,8 @@
         var originalDC;
 
         // quick dummy functions for testing purposes
-        var isEven = mod(2, 0);
-        var isOdd = mod(2, 1);
         var isEveryThird = mod(3, 0);
         var lessThanTwo = lessThan(2);
-        var lessThanThree = lessThan(3);
 
         dc
           .get()
@@ -82,7 +79,7 @@
 
         // for the form
         var on = function() {
-          console.log($scope.deploymentConfigs);
+          // console.log($scope.deploymentConfigs);
           // console.log('list1', $scope.list1);
           // console.log('list2', $scope.list2);
           // no way to get at the unnamed list in the 3rd directive
