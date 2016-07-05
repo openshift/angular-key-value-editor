@@ -15,6 +15,8 @@
           keyValidatorErrorTooltip: undefined,                     // default error message tooltip string
           keyValidatorErrorTooltipIcon: 'pficon pficon-help',      // default error message tooltip icon
           valueValidatorError: undefined,                          // default error message string
+          valueValidatorErrorTooltip: undefined,                   // default error message tooltip string
+          valueValidatorErrorTooltipIcon: 'pficon pficon-help',    // default error message tooltip icon
           secretValueTooltip: undefined,                           // secret values have no default tooltip
           secretValueIcon: 'fa fa-user-secret',                    // default icon for secret values
           keyPlaceholder: '',
