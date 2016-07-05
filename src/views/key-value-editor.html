@@ -74,6 +74,11 @@
           class="help-block"
           ng-show="(forms.keyValueEditor['value-' + $index].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
+          <span ng-if="entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip" class="help action-inline">
+            <a aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip}}">
+              <i class="{{entry.valueValidatorErrorTooltipIcon || valueValidatorErrorTooltipIcon}}"></i>
+            </a>
+          </span>
         </span>
         <span
           class="help-block"
