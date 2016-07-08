@@ -148,11 +148,6 @@
                     return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
                   },
                   orderChanged: function(event) {
-                    // don't allow sorting past the empty pair if empty pair exist
-                    if(event.dest.index === (event.dest.sortableScope.modelValue.length - 1) && !$scope.cannotAdd) {
-                      event.dest.sortableScope.removeItem(event.dest.index);
-                      event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
-                    }
                     $scope.forms.keyValueEditor.$setDirty();
                   }
               };
