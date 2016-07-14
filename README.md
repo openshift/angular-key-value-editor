@@ -31,6 +31,15 @@ Readonly:
 ```
 (`is-readonly` can also be an array of string names `is-readonly="['foo']"` for selectively making individual entries readonly.  In addition, each `entry.isReadonly` can be set to `true||false`.)
 
+Readonly keys:
+```html
+<key-value-editor
+  entries="entries"
+  is-readonly-keys></key-value-editor>
+```
+Makes the keys of the inital set of entries readonly. Does not affect added entries.
+(In implementation, this just sets `isReadonlyKey: true` on each of the entries in the initial set of entries for you.  `isReadonlyKey` can be directly controlled if preferred)
+
 Disable adding new entries:
 ```html
 <key-value-editor
@@ -68,7 +77,8 @@ Some of the above attributes can also be applied to individual entries to contro
 $scope.entries = [{
   key: 'foo',
   value: 'bar',
-  isReadonly: true,
+  isReadonly: true,      // key & value are readonly
+  isReadonlyKey: true,   // only key (name) is readonly
   cannotDelete: true
 }];
 ```
@@ -78,7 +88,13 @@ All attributes for convenient reference.
   entries="[
     {name: 'foo', value: 'stuff'},
     {name: 'bar', value: 'things'},
-    {name: 'baz', value: '3', isReadonly: true, cannotDelete: true}
+    {
+      name: 'baz',
+      value: '3',
+      isReadonly: true,
+      cannotDelete: true,
+      isReadonlyKey: true
+    }
   ]"
   key-placeholder="name"
   key-min-length="3"
@@ -95,6 +111,7 @@ All attributes for convenient reference.
   secret-value-tooltip="This is a hidden value"
   secret-value-icon="fa fa-external-link-square"
   is-readonly="['can','be','a','list']"
+  is-readonly-keys
   cannot-delete="['can','be','a','list']"
   cannot-add    
   cannot-sort></key-value-editor>
