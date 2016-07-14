@@ -15,6 +15,7 @@
 
         var first = keyValueEditorUtils.first;
         var contains = keyValueEditorUtils.contains;
+        var each = keyValueEditorUtils.each;
         // var last = keyValueEditorUtils.last;
         // var get = keyValueEditorUtils.get;
         // not used internally, however users can ask for keyValueEditorUtils and
@@ -50,6 +51,7 @@
             //  name: 'foo',
             //  value: 'bar',
             //  isReadOnly: true|| false      // individual entries may be readonly
+            //  isReadonlyKey: true || false  // key name on an individual entry is readonly
             //  cannotDelete: true || false   // individual entries can be permanent
             //  keyValidator: '',             // regex string
             //  valueValidator: ''            // regex string
@@ -72,7 +74,8 @@
             cannotAdd: '=?',
             cannotSort: '=?',
             cannotDelete: '=?',
-            isReadonly: '=?'
+            isReadonly: '=?',
+            isReadonlyKeys: '=?'                      // will only apply to existing keys
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
@@ -88,6 +91,14 @@
             if('isReadonly' in $attrs) {
               $scope.isReadonlyAny = true;
             }
+            // only applies to the initial set, if a user adds an entry the
+            // user must be allowed to set the key!
+            if('isReadonlyKeys' in $attrs) {
+              each($scope.entries, function(entry) {
+                entry.isReadonlyKey = true;
+              });
+            }
+
             if('cannotSort' in $attrs) {
               // uses a regex to essentially kill the as-sortable directives
               // before we compile the template
@@ -115,6 +126,7 @@
             // placeholders
             $scope.keyPlaceholder = keyValueEditorConfig.keyPlaceholder || $attrs.keyPlaceholder;
             $scope.valuePlaceholder = keyValueEditorConfig.valuePlaceholder || $attrs.valuePlaceholder;
+
             // manually compile and append to the DOM
             $elem.append($compile(tpl)($scope));
           },
@@ -147,7 +159,7 @@
                   accept: function (sourceItemHandleScope, destSortableScope) {
                     return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
                   },
-                  orderChanged: function(event) {
+                  orderChanged: function() {
                     $scope.forms.keyValueEditor.$setDirty();
                   }
               };
