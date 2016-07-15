@@ -207,3 +207,28 @@ angular
   ]);
 ```
 Globals are still overridden via attributes on the `<key-value-editor>` directive, or via the `entries="entries"` data objects passed to the directive.
+
+### Other utils
+
+There are two useful utility functions provided to help process the `entries`. The first will eliminate entries missing the name or value, the second will convert the list of entries to a map (object) of name-values (duplicate keys override values).
+
+```javascript
+angular
+  .module('app')
+  .controller([
+    'keyValueEditorUtils'
+    function(kveUtils) {
+      angular.extend($scope, {
+        entries: [{name: 'foo', value: 'bar'}],
+        // a 'save'function
+        onSubmit: function() {
+          // eliminates entries missing a key or val.
+          console.log('compact', kveUtils.compactEntries($scope.entries));
+          // transforms the array into an object.
+          console.log('map', kveUtils.mapEntries($scope.entries));
+        }
+      })
+    }
+  ]);
+```
+If other filtering/mapping abilities are needed user will have to write own utils or use a lib such as lodash.
