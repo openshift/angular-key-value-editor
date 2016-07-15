@@ -92,7 +92,8 @@
           '$scope',
           '$timeout',
           '$q',
-          function($scope, $timeout, $q) {
+          'keyValueEditorUtils',
+          function($scope, $timeout, $q, kveUtils) {
             var entries = [{
               name: 'MYSQL_USER',
               value: '12345'
@@ -112,7 +113,13 @@
               .then(function() {
 
                 // then small array
-                $scope.entries = entries;
+                angular.extend($scope, {
+                  entries: entries,
+                  onClick: function() {
+                    console.log('clean', kveUtils.compactEntries($scope.entries));
+                    console.log('clean', kveUtils.mapEntries($scope.entries));
+                  }
+                });
 
                 // then larger array
                 $timeout(function() {
