@@ -22,7 +22,8 @@
           ng-model="entry.name"
           ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly || entry.containsSecret"
           ng-pattern="keyValidator"
-          ng-value>
+          ng-value
+          ng-attr-key-value-editor-focus="{{$last}}">
         <span
           class="help-block"
           ng-show="(forms.keyValueEditor['key-' + $index].$error.pattern)">

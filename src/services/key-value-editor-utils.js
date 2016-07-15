@@ -15,7 +15,8 @@
         };
 
         var each = function(arr, fn) {
-          for(var i = 0; i < arr.length; i++) {
+          var length = (arr && arr.length) || 0;
+          for(var i = 0; i < length; i++) {
             fn(arr[i], i, arr);
           }
         };
