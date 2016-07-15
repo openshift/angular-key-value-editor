@@ -3,6 +3,40 @@
 
   angular
     .module('key-value-editor')
+    // to apply to inputs
+    // recommended use with ng-attr- for conditional application:
+    // <input ng-attr-key-value-editor-focus="{{$last}}">
+    .directive('keyValueEditorFocus', [
+      '$timeout',
+      function($timeout) {
+        return {
+          restrict: 'A',
+          link: function(scope, element) {
+            $timeout(function() {
+              element && element[0].focus();
+            });
+          }
+        };
+      }
+    ])
+    // alternatively, used like:
+    // <dom-node after-render="someFunc()">
+    .directive('keyValueEditorAfterRender', [
+      '$timeout',
+      function ($timeout) {
+        return {
+            restrict: 'A',
+            terminal: true,
+            scope: {
+              afterRender: '&afterRender'
+            },
+            link: function (scope) {
+              scope.afterRender = scope.afterRender || function() {};
+              $timeout(scope.afterRender, 0);
+            }
+        };
+      }
+    ])
     .directive('keyValueEditor', [
       '$compile',
       '$log',
