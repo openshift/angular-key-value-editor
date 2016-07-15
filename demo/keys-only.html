@@ -21,7 +21,7 @@
   </head>
   <body>
 
-    <div class="container" data-ng-controller="demoCtrlDC">
+    <div class="container" data-ng-controller="keysOnlyCtrl">
       <div class="page-header">
         <h1>Angular Key Value Editor</h1>
       </div>
@@ -34,12 +34,12 @@
         <p><strong>key-maxlength</strong>: 25</p>
         <p><strong>value-minlength</strong>: 3</p>
         <p><strong>value-maxlength</strong>: 25</p>
-        <div ng-repeat="dc in dcForUI.items">
+        <div>
           <div class="row"><div class="col-md-12">Editor</div></div>
-          <div class="row" ng-repeat="container in dc.spec.template.spec.containers">
+          <div class="row">
             <div class="col-md-7">
               <key-value-editor
-                entries="container.env"
+                entries="entries"
                 key-placeholder="Key"
                 value-placeholder="Value"
                 key-validator="{{keyValidator}}"
@@ -47,7 +47,8 @@
                 key-minlength="0"
                 key-maxlength="25"
                 value-minlength="3"
-                value-maxlength="25"></key-value-editor>
+                value-maxlength="25"
+                is-readonly-keys></key-value-editor>
             </div>
             <div class="col-md-5">
               <code>{{container | json}}</code>
@@ -84,6 +85,51 @@
     <script src="./app.js"></script>
     <script src="./services.js"></script>
     <script src="./dc.js"></script>
-    <script src="./ctrl_dc.js"></script>
+    <script>
+      angular
+        .module('demo')
+        .controller('keysOnlyCtrl', [
+          '$scope',
+          '$timeout',
+          '$q',
+          function($scope, $timeout, $q) {
+            var entries = [{
+              name: 'MYSQL_USER',
+              value: '12345'
+            }, {
+              name: 'MYSQL_PASSWORD',
+              value: '213'
+            }, {
+              name: 'MYSQL_DATABASE',
+              value: '6543'
+            }]
+
+            // first nothing.
+            $scope.entries = undefined;
+
+            $q
+              .when({})
+              .then(function() {
+
+                // then small array
+                $scope.entries = entries;
+
+                // then larger array
+                $timeout(function() {
+                  var more = entries.concat([{
+                    name: 'foo',
+                    value: 'bar'
+                  }, {
+                    name: 'stuff',
+                    value: 'things'
+                  }])
+                  angular.extend($scope, {
+                    entries: more
+                  });
+                }, 1000);
+              });
+          }
+        ]);
+    </script>
   </body>
 </html>

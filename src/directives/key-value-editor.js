@@ -114,6 +114,7 @@
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
             var tpl = $templateCache.get('key-value-editor.html');
+            var unwatchEntries;
 
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {
@@ -128,9 +129,18 @@
             // only applies to the initial set, if a user adds an entry the
             // user must be allowed to set the key!
             if('isReadonlyKeys' in $attrs) {
-              each($scope.entries, function(entry) {
-                entry.isReadonlyKey = true;
+              // the $scope.$watch here lets us wait until we are certain we get
+              // a legitimate first set, perhaps after a promise resolution, run the
+              // update, then unregister.
+              unwatchEntries = $scope.$watch('entries', function(newVal) {
+                if(newVal) {
+                  each($scope.entries, function(entry) {
+                    entry.isReadonlyKey = true;
+                  });
+                  unwatchEntries();
+                }
               });
+
             }
 
             if('cannotSort' in $attrs) {
