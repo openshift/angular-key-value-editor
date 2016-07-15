@@ -372,7 +372,7 @@
                   map(
                     entries,
                     function(entry) {
-                      return entry.name ? entry : undefined;
+                      return entry.name && entry.value ? entry : undefined;
                     }));
         };
 
