@@ -101,7 +101,9 @@
             keyPlaceholder: '@',
             valuePlaceholder: '@',
             keyValidator: '@',                        // general key regex validation string
+            keyValidatorRegex: '=',                   // a regex object
             valueValidator: '@',                      // general value regex validation string
+            valueValidatorRegex: '=',                 // a regex object
             keyValidatorError: '@',                   // general key validation error message
             keyValidatorErrorTooltip: '@',
             keyValidatorErrorTooltipIcon: '@',
@@ -120,6 +122,19 @@
             // manually retrieving here so we can manipulate and compile in JS
             var tpl = $templateCache.get('key-value-editor.html');
             var unwatchEntries;
+
+            // validation is irritating.
+            $scope.validation = {
+              key: $scope.keyValidator,
+              val: $scope.valueValidator
+            };
+            // override if we get a regex literal
+            if($attrs.keyValidatorRegex) {
+              $scope.validation.key = $scope.keyValidatorRegex;
+            }
+            if($attrs.valueValidatorRegex) {
+              $scope.validation.val = $scope.valueValidatorRegex;
+            }
 
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {

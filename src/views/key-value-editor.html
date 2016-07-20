@@ -21,7 +21,7 @@
           maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
           ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly || entry.containsSecret"
-          ng-pattern="keyValidator"
+          ng-pattern="validation.key"
           ng-value
           ng-attr-key-value-editor-focus="{{$last}}">
         <span
@@ -42,7 +42,7 @@
       </div>
       <div
         class="form-group key-value-editor-input"
-        ng-class="(forms.keyValueEditor['value-' + $index].$invalid && forms.keyValueEditor['value-' + $index].$dirty) ? 'has-error' : ''">
+        ng-class="forms.keyValueEditor['value-' + $index].$invalid ? 'has-error' : ''">
         <div class="input-group" ng-if="entry.containsSecret">
           <span class="input-group-addon">
             <span class="{{entry.secretValueIcon || secretValueIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{entry.secretValueTooltip || secretValueTooltip}}"></span>
@@ -57,7 +57,7 @@
             ng-maxlength="{{valueMaxlength}}"
             ng-model="entry.value"
             ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
-            ng-pattern="valueValidator">
+            ng-pattern="validation.val">
         </div>
         <input
           type="text"
@@ -69,7 +69,7 @@
           maxlength="{{valueMaxlength}}"
           ng-model="entry.value"
           ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
-          ng-pattern="valueValidator"
+          ng-pattern="validation.val"
           ng-if="!entry.containsSecret">
         <span
           class="help-block"
