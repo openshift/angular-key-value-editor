@@ -82,6 +82,39 @@ $scope.entries = [{
   cannotDelete: true
 }];
 ```
+
+Validator attributes and error messages:
+```html
+<key-value-editor
+  entries="entries"
+  key-validator="[a-zA-Z0-9_]*"
+  key-validator-error="Invalid name"  
+  value-validator="[a-zA-Z0-9_]*"
+  value-validator-error="Invalid value"></key-value-editor>
+```
+To pass a regex directly (or an object with a `.test()` method, simulating a regex), you can do something like the following:
+```javascript
+// controller code:
+$scope.validation = {
+  key: new RegExp('^[0-9]+$'), // numbers only
+  val: {
+    test: function(val) {
+      // some complicated test w/multiple regex or other insanity
+    }
+  }
+}
+```
+```html
+<!-- view code -->
+<key-value-editor
+  entries="entries"
+  key-validator-regex="validation.key"
+  key-validator-error="Invalid name, numbers only plz"  
+  value-validator-regex="validation.val"
+  value-validator-error="Invalid value, cuz *complicated* things"></key-value-editor>
+```
+
+
 All attributes for convenient reference.
 ```html
 <key-value-editor
