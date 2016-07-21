@@ -55,6 +55,7 @@
         var first = keyValueEditorUtils.first;
         var contains = keyValueEditorUtils.contains;
         var each = keyValueEditorUtils.each;
+        var unique = 1000;
         // var last = keyValueEditorUtils.last;
         // var get = keyValueEditorUtils.get;
         // not used internally, however users can ask for keyValueEditorUtils and
@@ -204,11 +205,11 @@
               // onFocusLast() fn below can select the correct node with
               // certainty if there are many instances of the key-value-editor
               // on the page.
-              var setFocusClass = 'key-value-editor-set-focus-'+Date.now();
+              var setFocusClass = 'key-value-editor-set-focus-' + unique++;
               $scope.setFocusClass = setFocusClass;
 
               $scope.onFocusLast = function() {
-                if (!$scope.cannotAdd && !$scope.isReadonly) {
+                if (!$scope.cannotAdd && !$scope.isReadonlyAny) {
                   addEmptyEntry($scope.entries);
                   setFocusLastEntry('.'+setFocusClass);
                 }

@@ -50,11 +50,20 @@
                 value-maxlength="25"
                 is-readonly-keys></key-value-editor>
             </div>
-            <div class="col-md-5">
-              <code>{{container | json}}</code>
+          </div>
+        </div>
+
+        <div>
+          <div class="row"><div class="col-md-12">Editor</div></div>
+          <div class="row">
+            <div class="col-md-7">
+              <key-value-editor
+                entries="entries2"
+                is-readonly="['MYSQL_USER']"></key-value-editor>
             </div>
           </div>
         </div>
+
 
         <button
           type="submit"
@@ -63,13 +72,6 @@
           class="btn btn-primary"
           ng-click="onClick()">Submit</button>
       </ng-form>
-
-
-      <div>
-        <h2>Edit diff</h2>
-        <pre ng-bind-html="dcDiffView"></pre>
-      </div>
-
 
     </div>
 
@@ -103,7 +105,18 @@
             }, {
               name: 'MYSQL_DATABASE',
               value: '6543'
-            }]
+            }];
+
+            var entries2 = [{
+              name: 'MYSQL_USER',
+              value: '12345'
+            }, {
+              name: 'MYSQL_PASSWORD',
+              value: '213'
+            }, {
+              name: 'MYSQL_DATABASE',
+              value: '6543'
+            }];
 
             // first nothing.
             $scope.entries = undefined;
@@ -115,6 +128,7 @@
                 // then small array
                 angular.extend($scope, {
                   entries: entries,
+                  entries2: entries2,
                   onClick: function() {
                     console.log('clean', kveUtils.compactEntries($scope.entries));
                     console.log('clean', kveUtils.mapEntries($scope.entries));
