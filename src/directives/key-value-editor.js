@@ -11,10 +11,12 @@
       function($timeout) {
         return {
           restrict: 'A',
-          link: function(scope, element) {
-            $timeout(function() {
-              element && element[0].focus();
-            });
+          link: function(scope, element, attrs) {
+            if(attrs.keyValueEditorFocus) {
+              $timeout(function() {
+                element && element[0].focus();
+              });
+            }
           }
         };
       }
@@ -132,6 +134,10 @@
               $scope.validation.val = $scope.valueValidatorRegex;
             }
 
+            if('grabFocus' in $attrs) {
+              $scope.grabFocus = true;
+            }
+
             // if an attribute exists, set its corresponding bool to true
             if('cannotAdd' in $attrs) {
               $scope.cannotAdd = true;
@@ -204,6 +210,7 @@
               $scope.setFocusClass = setFocusClass;
 
               $scope.onFocusLast = function() {
+                console.log('onFocusLast() called', '');
                 if (!$scope.cannotAdd && !$scope.isReadonlyAny) {
                   addEmptyEntry($scope.entries);
                   setFocusLastEntry('.'+setFocusClass);
