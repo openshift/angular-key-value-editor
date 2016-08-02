@@ -86,7 +86,7 @@
         <div class="row">
           <div class="col-md-7">
             <key-value-editor
-              entries="entries"
+              entries="entries2"
               key-placeholder="Key"
               value-placeholder="Value"
               key-validator="[a-zA-Z0-9_]+"
@@ -156,6 +156,17 @@
             angular.extend($scope, {
               // set 1
               entries: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // 2 sets, else data binding is confusing :)
+              entries2: [{
                 name: 'MYSQL_USER',
                 value: '12345'
               }, {

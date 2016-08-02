@@ -8,6 +8,7 @@
 
   angular
     .module('key-value-editor')
+    // @DEPRECATED, will be removed
     // to apply to inputs
     // recommended use with ng-attr- for conditional application:
     // <input ng-attr-key-value-editor-focus="{{$last}}">
@@ -26,6 +27,7 @@
         };
       }
     ])
+    // @DEPRECATED, will be removed
     // alternatively, used like:
     // <dom-node after-render="someFunc()">
     .directive('keyValueEditorAfterRender', [
@@ -67,17 +69,20 @@
         // var compact = keyValueEditorUtils.compact;
 
         // a few utils
-        var addEmptyEntry = function(entries) {
-          entries && entries.push({name: '', value: ''});
+        var addEntry = function(entries, entry) {
+          entries && entries.push(entry || {name: '', value: ''});
         };
 
-        var setFocusLastEntry = function(selector) {
+        var setFocusOn = function(selector, value) {
           // $timeout just delays to ensure
           // events/rendering resolve
           $timeout(function() {
             var element = first($window.document.querySelectorAll(selector));
             if(element) {
               element.focus();
+              if(value) {
+                element.value = value;
+              }
             }
           });
         };
@@ -141,6 +146,10 @@
 
             if('grabFocus' in $attrs) {
               $scope.grabFocus = true;
+              // after render set to undefined to ensure it doesn't keep trying to grab focus
+              $timeout(function() {
+                  $scope.grabFocus = undefined;
+              });
             }
 
             // if an attribute exists, set its corresponding bool to true
@@ -203,7 +212,8 @@
           },
           controller: [
             '$scope',
-            function($scope) {
+            '$timeout',
+            function($scope, $timeout) {
               $scope.forms = {};
               var readOnlySome = [];
               var cannotDeleteSome = [];
@@ -212,15 +222,38 @@
               // certainty if there are many instances of the key-value-editor
               // on the page.
               var setFocusClass = 'key-value-editor-set-focus-' + unique++;
-              $scope.setFocusClass = setFocusClass;
+              $scope.setFocusKeyClass = setFocusClass + '-key';
+              $scope.setFocusValClass = setFocusClass + '-val';
 
               $scope.onFocusLast = function() {
-                console.log('onFocusLast() called', '');
                 if (!$scope.cannotAdd && !$scope.isReadonlyAny) {
-                  addEmptyEntry($scope.entries);
-                  setFocusLastEntry('.'+setFocusClass);
+                  addEntry($scope.entries);
+                  setFocusOn('.'+setFocusClass);
                 }
               };
+
+              $scope.onKeypressLastKey = function(evt) {
+                addEntry($scope.entries, {
+                  name: evt.key,
+                  value: ''
+                });
+                setFocusOn('.'+ $scope.setFocusKeyClass, evt.key);
+                $timeout(function() {
+                  evt.target.value = '';
+                });
+              };
+
+              $scope.onKeypressLastValue = function(evt) {
+                addEntry($scope.entries, {
+                  name: '',
+                  value: evt.key
+                });
+                setFocusOn('.'+ $scope.setFocusValClass, evt.key);
+                $timeout(function() {
+                  evt.target.value = '';
+                });
+              };
+
               // clicking the delete button removes the pair
               $scope.deleteEntry = function(start, deleteCount) {
                 $scope.entries.splice(start, deleteCount);
