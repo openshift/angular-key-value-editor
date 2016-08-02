@@ -147,7 +147,8 @@ All attributes for convenient reference.
   is-readonly-keys
   cannot-delete="['can','be','a','list']"
   cannot-add    
-  cannot-sort></key-value-editor>
+  cannot-sort
+  grab-focus></key-value-editor>
 ```
 
 
