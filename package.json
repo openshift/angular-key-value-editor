@@ -1,6 +1,6 @@
 {
   "name": "angular-key-value-editor",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A simple UI for editing key-value pairs",
   "main": "index.js",
   "scripts": {
