@@ -152,33 +152,42 @@ All attributes for convenient reference.
 ```
 
 
-### Secret values
+### Non-standard Values
 
-![key-value-editor screenshot](/docs/key-value-editor-secret-screenshot.png)
+![key-value-editor screenshot](/docs/key-value-editor-alt-values-screenshot.png)
 
-Values that contain secrets display with a special presentation.  This display includes a configurable icon and tooltip.  The
-default icon is [Font Awesome's user-secret](http://fontawesome.io/icon/user-secret/).
+Some entry lists may include non-standard key-value pairs. If the value is not a string, or is a different object entirely, such as this:
 
-The default icon can be overridden using any of [PatternFly's icons](https://www.patternfly.org/styles/icons/#_) via an attribute
-
-```html
-<key-value-editor
-  entries="entries"
-  secret-value-icon="fa fa-lock"></key-value-editor>
+```javascript
+$scope.entries = [{
+                    name: 'entry_value',
+                    value: 'value'
+                  },{
+                    name: 'valueFrom-valueAlt',
+                    isReadonly: true,
+                    // non-standard
+                    valueFrom: {
+                      "configMapKeyRef": {
+                        "name": "test-configmap",
+                        "key": "data-1"
+                      }
+                    },
+                    // valueAlt to the rescue!
+                    valueAlt: 'valueFrom is a non-standard value',
+                  }];
 ```
+The `valueAlt` attribute can provide the user with some alt text for understanding that this key-value pair will not display properly. It is not necessary to set `isReadonly:true` as an input receiving `valueAlt` will auto to `readonly`.  The `valueValidator` property, `minLength` and `maxLength` properties are all ignored as `valueAlt` is help text and it is assumed that it will break typical validation rules for the rest of the values.
 
-or a global default.
 
-There is no default for the secret value tooltip, but one can be set via an
-attribute
+## Tooltip
 
-```html
-<key-value-editor
-  entries="entries"
-  secret-value-tooltip="This value is secret"></key-value-editor>
+NOTE: the default template provided with `<key-value-editor>` uses bootstrap tooltips via Patternfly/Bootstrap. Be sure to [initialize the tooltips](http://getbootstrap.com/javascript/#tooltips-examples) somewhere with code such as:
+
+```javascript
+// opt in to the bootstrap tooltips
+$('[data-toggle="tooltip"]').tooltip();
+
 ```
-
-or a global default.
 
 ## Validation
 

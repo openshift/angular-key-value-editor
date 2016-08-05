@@ -7,10 +7,40 @@
       ng-class-even="'even'"
       ng-repeat="entry in entries"
       as-sortable-item>
+      <!-- The name/key block -->
       <div
         class="form-group key-value-editor-input"
         ng-class="{ 'has-error' :  (forms.keyValueEditor['key-' + $index].$invalid) }">
+
+        <!-- name/key has icon -->
+        <div class="input-group" ng-if="entry.keyIcon">
+          <span class="input-group-addon">
+            <span
+              class="{{entry.keyIcon}}"
+              aria-hidden="true"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="{{entry.keyIconTooltip || keyIconTooltip}}"></span>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            ng-class="{ '{{setFocusKeyClass}}' : $last  }"
+            id="key-{{$index}}"
+            name="key-{{$index}}"
+            placeholder="{{keyPlaceholder}}"
+            ng-minlength="{{keyMinlength}}"
+            maxlength="{{keyMaxlength}}"
+            ng-model="entry.name"
+            ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly"
+            ng-pattern="validation.key"
+            ng-value
+            ng-attr-key-value-editor-focus="{{grabFocus && $last}}">
+        </div>
+
+        <!-- name/key has no icon -->
         <input
+          ng-if="(!entry.keyIcon)"
           type="text"
           class="form-control"
           ng-class="{ '{{setFocusKeyClass}}' : $last  }"
@@ -20,10 +50,11 @@
           ng-minlength="{{keyMinlength}}"
           maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
-          ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly || entry.containsSecret"
+          ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly"
           ng-pattern="validation.key"
           ng-value
           ng-attr-key-value-editor-focus="{{grabFocus && $last}}">
+        <!-- name/key help block -->
         <span
           class="help-block"
           ng-show="(forms.keyValueEditor['key-' + $index].$error.pattern)">
@@ -40,14 +71,37 @@
           <span>Minimum character count is {{keyMinlength}}</span>
         </span>
       </div>
+      <!-- the value block -->
       <div
         class="form-group key-value-editor-input"
         ng-class="forms.keyValueEditor['value-' + $index].$invalid ? 'has-error' : ''">
-        <div class="input-group" ng-if="entry.containsSecret">
+
+        <!-- value has icon -->
+        <div
+          class="input-group"
+          ng-if="entry.valueIcon">
           <span class="input-group-addon">
-            <span class="{{entry.secretValueIcon || secretValueIcon}}" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{entry.secretValueTooltip || secretValueTooltip}}"></span>
+            <span
+              class="{{entry.valueIcon}}"
+              aria-hidden="true"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="{{entry.valueIconTooltip || valueIconTooltip}}"></span>
           </span>
+          <!-- valueAlt when value is not present or is on a separate object key such as valueFrom: { something: 'else' } -->
           <input
+            ng-if="entry.valueAlt"
+            type="text"
+            class="form-control"
+            ng-class="{ '{{setFocusValClass}}' : $last  }"
+            id="value-{{$index}}"
+            name="value-{{$index}}"
+            placeholder="{{valuePlaceholder}}"
+            ng-model="entry.valueAlt"
+            readonly>
+          <!-- default value display -->
+          <input
+            ng-if="(!entry.valueAlt)"
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusValClass}}' : $last  }"
@@ -55,24 +109,43 @@
             name="value-{{$index}}"
             placeholder="{{valuePlaceholder}}"
             ng-minlength="{{valueMinlength}}"
-            ng-maxlength="{{valueMaxlength}}"
+            maxlength="{{valueMaxlength}}"
             ng-model="entry.value"
-            ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
+            ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly"
             ng-pattern="validation.val">
         </div>
-        <input
-          type="text"
-          class="form-control"
-          ng-class="{ '{{setFocusValClass}}' : $last  }"
-          id="value-{{$index}}"
-          name="value-{{$index}}"
-          placeholder="{{valuePlaceholder}}"
-          ng-minlength="{{valueMinlength}}"
-          maxlength="{{valueMaxlength}}"
-          ng-model="entry.value"
-          ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly || entry.containsSecret"
-          ng-pattern="validation.val"
-          ng-if="!entry.containsSecret">
+
+        <!-- value has no icon -->
+        <div ng-if="(!entry.valueIcon)">
+          <!-- valueAlt when value is not present or is on a separate object key such as valueFrom: { something: 'else' } -->
+          <input
+            ng-if="entry.valueAlt"
+            type="text"
+            class="form-control"
+            ng-class="{ '{{setFocusValClass}}' : $last  }"
+            id="value-{{$index}}"
+            name="value-{{$index}}"
+            placeholder="{{valuePlaceholder}}"
+            ng-model="entry.valueAlt"
+            readonly>
+
+          <!-- default value display -->
+          <input
+            ng-if="(!entry.valueAlt)"
+            type="text"
+            class="form-control"
+            ng-class="{ '{{setFocusValClass}}' : $last  }"
+            id="value-{{$index}}"
+            name="value-{{$index}}"
+            placeholder="{{valuePlaceholder}}"
+            ng-minlength="{{valueMinlength}}"
+            maxlength="{{valueMaxlength}}"
+            ng-model="entry.value"
+            ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly"
+            ng-pattern="validation.val">
+        </div>
+
+        <!-- value help block -->
         <span
           class="help-block"
           ng-show="(forms.keyValueEditor['value-' + $index].$error.pattern)">
