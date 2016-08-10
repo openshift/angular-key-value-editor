@@ -115,11 +115,11 @@
             keyValidatorError: '@',                   // general key validation error message
             keyValidatorErrorTooltip: '@',
             keyValidatorErrorTooltipIcon: '@',
+            keyIconTooltip: '@',                      // if the tooltip for the key icon is generic
             valueValidatorError: '@',                 // general value validation error message
             valueValidatorErrorTooltip: '@',
             valueValidatorErrorTooltipIcon: '@',
-            secretValueTooltip: '@',
-            secretValueIcon: '@',
+            valueIconTooltip: '@',                    // if the tooltip for the value icon is generic
             cannotAdd: '=?',
             cannotSort: '=?',
             cannotDelete: '=?',
@@ -182,6 +182,9 @@
             if('cannotSort' in $attrs) {
               // uses a regex to essentially kill the as-sortable directives
               // before we compile the template
+              // TODO: this is obviously not two-way databinding compatible as
+              // the template is then rendered once.  There is likely a
+              // better way to do this.
               tpl = tpl.replace(/as-sortable/g, 'as-sortable-DISABLED');
               $scope.cannotSort = true;
             }
