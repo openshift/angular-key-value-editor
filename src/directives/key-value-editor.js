@@ -3,44 +3,6 @@
 
   angular
     .module('key-value-editor')
-    // @DEPRECATED, will be removed
-    // to apply to inputs
-    // recommended use with ng-attr- for conditional application:
-    // <input ng-attr-key-value-editor-focus="{{$last}}">
-    .directive('keyValueEditorFocus', [
-      '$timeout',
-      function($timeout) {
-        return {
-          restrict: 'A',
-          link: function(scope, element, attrs) {
-            if(attrs.keyValueEditorFocus) {
-              $timeout(function() {
-                element && element[0].focus();
-              });
-            }
-          }
-        };
-      }
-    ])
-    // @DEPRECATED, will be removed
-    // alternatively, used like:
-    // <dom-node after-render="someFunc()">
-    .directive('keyValueEditorAfterRender', [
-      '$timeout',
-      function ($timeout) {
-        return {
-            restrict: 'A',
-            terminal: true,
-            scope: {
-              afterRender: '&afterRender'
-            },
-            link: function (scope) {
-              scope.afterRender = scope.afterRender || function() {};
-              $timeout(scope.afterRender, 0);
-            }
-        };
-      }
-    ])
     .directive('keyValueEditor', [
       '$compile',
       '$log',
@@ -64,8 +26,12 @@
         // var compact = keyValueEditorUtils.compact;
 
         // a few utils
+        var newEntry = function() {
+          return {name: '', value: ''};
+        };
+
         var addEntry = function(entries, entry) {
-          entries && entries.push(entry || {name: '', value: ''});
+          entries && entries.push(entry || newEntry());
         };
 
         var setFocusOn = function(selector, value) {
@@ -211,8 +177,9 @@
           controller: [
             '$scope',
             '$timeout',
-            function($scope, $timeout) {
+            function($scope) {
               $scope.forms = {};
+              $scope.placeholder = newEntry();
               var readOnlySome = [];
               var cannotDeleteSome = [];
               // generate a unique class name for each editor, so that the
@@ -223,33 +190,23 @@
               $scope.setFocusKeyClass = setFocusClass + '-key';
               $scope.setFocusValClass = setFocusClass + '-val';
 
-              $scope.onFocusLast = function() {
-                if (!$scope.cannotAdd && !$scope.isReadonlyAny) {
-                  addEntry($scope.entries);
-                  setFocusOn('.'+setFocusClass);
-                }
+
+              $scope.onKeyChange = function() {
+                addEntry($scope.entries, {
+                  name: $scope.placeholder.name,
+                  value: $scope.placeholder.value
+                });
+                setFocusOn('.'+ $scope.setFocusKeyClass, $scope.placeholder.name);
+                $scope.placeholder = newEntry();
               };
 
-              $scope.onKeypressLastKey = function(evt) {
+              $scope.onValChange = function() {
                 addEntry($scope.entries, {
-                  name: evt.key,
-                  value: ''
+                  name: $scope.placeholder.name,
+                  value: $scope.placeholder.value
                 });
-                setFocusOn('.'+ $scope.setFocusKeyClass, evt.key);
-                $timeout(function() {
-                  evt.target.value = '';
-                });
-              };
-
-              $scope.onKeypressLastValue = function(evt) {
-                addEntry($scope.entries, {
-                  name: '',
-                  value: evt.key
-                });
-                setFocusOn('.'+ $scope.setFocusValClass, evt.key);
-                $timeout(function() {
-                  evt.target.value = '';
-                });
+                setFocusOn('.'+ $scope.setFocusValClass, $scope.placeholder.value);
+                $scope.placeholder = newEntry();
               };
 
               // clicking the delete button removes the pair

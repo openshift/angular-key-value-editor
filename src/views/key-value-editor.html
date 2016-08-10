@@ -189,7 +189,8 @@
           type="text"
           class="form-control"
           placeholder="{{keyPlaceholder}}"
-          ng-keypress="onKeypressLastKey($event)">
+          ng-model="placeholder.name"
+          ng-change="onKeyChange()">
       </div>
       <div
         class="form-group key-value-editor-input">
@@ -197,7 +198,8 @@
           type="text"
           class="form-control"
           placeholder="{{valuePlaceholder}}"
-          ng-keypress="onKeypressLastValue($event)">
+          ng-model="placeholder.value"
+          ng-change="onValChange()">
       </div>
     </div>
   </div>
