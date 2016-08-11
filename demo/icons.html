@@ -149,8 +149,20 @@
             ]
             });
 
+            $timeout(function() {
+              console.log('reset', '');
+              //$scope.entries[2].valueIconTooltip = 'Foo Bar Baz';
+              $scope.entries[3].value = $scope.entries[3].value + ' hahahah';
+              $scope.entries[3].valueIconTooltip = 'Foo Bar Baz BAM';
+              $scope.entries[3].keyIconTooltip = 'key tooltip';
+              $scope.entries[4].value = $scope.entries[4].value + ' hahahah';
+              $scope.entries[4].valueIconTooltip = 'SHIZZLE';
+              $scope.entries[4].keyIconTooltip = 'key tooltip again';
+              $('[data-toggle="tooltip"]').tooltip('fixTitle');
+            }, 2000);
+
             // opt in to the bootstrap tooltips
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
 
 
           }
