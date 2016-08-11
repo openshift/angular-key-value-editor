@@ -20,6 +20,7 @@
               aria-hidden="true"
               data-toggle="tooltip"
               data-placement="top"
+              data-original-title="{{entry.keyIconTooltip || keyIconTooltip}}"
               title="{{entry.keyIconTooltip || keyIconTooltip}}"></span>
           </span>
           <input
@@ -60,7 +61,12 @@
           ng-show="(forms.keyValueEditor['key-' + $index].$error.pattern)">
           <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
           <span ng-if="entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip" class="help action-inline">
-            <a aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip}}">
+            <a
+              aria-hidden="true"
+              data-toggle="tooltip"
+              data-placement="top"
+              data-original-title="{{entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip}}"
+              title="{{entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip}}">
               <i class="{{entry.keyValidatorErrorTooltipIcon || keyValidatorErrorTooltipIcon}}"></i>
             </a>
           </span>
@@ -86,6 +92,7 @@
               aria-hidden="true"
               data-toggle="tooltip"
               data-placement="top"
+              data-original-title="{{entry.valueIconTooltip || valueIconTooltip}}"
               title="{{entry.valueIconTooltip || valueIconTooltip}}"></span>
           </span>
           <!-- valueAlt when value is not present or is on a separate object key such as valueFrom: { something: 'else' } -->
@@ -151,7 +158,12 @@
           ng-show="(forms.keyValueEditor['value-' + $index].$error.pattern)">
           <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
           <span ng-if="entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip" class="help action-inline">
-            <a aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip}}">
+            <a
+              aria-hidden="true"
+              data-toggle="tooltip"
+              data-placement="top"
+              data-original-title="{{entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip}}"
+              title="{{entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip}}">
               <i class="{{entry.valueValidatorErrorTooltipIcon || valueValidatorErrorTooltipIcon}}"></i>
             </a>
           </span>
