@@ -46,9 +46,10 @@
             var element = first($window.document.querySelectorAll(selector));
             if(element) {
               element.focus();
-              if(value) {
-                element.value = value;
-              }
+              // to put cursor at the end of the text after focus, must do the dance of
+              // setting the value to nothing, then applying
+              element.value = '';
+              element.value = value;
             }
           });
         };
@@ -70,6 +71,10 @@
             //  valueValidator: ''            // regex string
             //  keyValidatorError: '',        // custom validation error
             //  valueValidatorError: ''       // custom validation error
+            //  keyIcon: '',                  // icon class, such as 'fa fa-lock'
+            //  keyIconTooltip: '',           // text for tooltip
+            //  valueIcon: '',                // icon class, such as 'fa fa-lock'
+            //  valueIconTooltip: ''          // text for tooltip
             // }]
             entries: '=',
             keyPlaceholder: '@',
@@ -382,13 +387,49 @@
           return obj && obj[prop];
         };
 
-        // eliminates any empty key-value pairs from the entries list
+        // these keys are for kve and, if this function is used, will be removed.
+        var toClean = [
+          'valueAlt',
+          'isReadOnly',
+          'isReadonlyKey',
+          'cannotDelete',
+          'keyValidator',
+          'valueValidator',
+          'keyValidatorError',
+          'valueValidatorError',
+          'keyIcon',
+          'keyIconTooltip',
+          'valueIcon',
+          'valueIconTooltip',
+          'keyValidatorErrorTooltip',
+          'keyValidatorErrorTooltipIcon',
+          'valueValidatorErrorTooltip',
+          'valueValidatorErrorTooltipIcon'
+        ];
+        var cleanEntry = function(entry) {
+          each(toClean, function(key) {
+            delete entry[key];
+          });
+          return entry;
+        };
+
+        var cleanEntries = function(entries) {
+          return map(entries, cleanEntry);
+        };
+
+        // cleans each entry of kve known keys and
+        // drops any entry that has neither a key nor a value
+        // NOTE: if the input validator fails to pass, then an
+        // entry will not have a value and will be excluded. This
+        // is not the fault of this function.
         var compactEntries = function(entries) {
+          console.log('entries?', entries);
           return compact(
                   map(
                     entries,
                     function(entry) {
-                      return entry.name && entry.value ? entry : undefined;
+                      entry = cleanEntry(entry);
+                      return entry.name || entry.value ? entry : undefined;
                     }));
         };
 
@@ -414,6 +455,8 @@
           first: first,
           last: last,
           get: get,
+          cleanEntry: cleanEntry,
+          cleanEntries: cleanEntries,
           compactEntries: compactEntries,
           mapEntries: mapEntries
         };
