@@ -423,7 +423,6 @@
         // entry will not have a value and will be excluded. This
         // is not the fault of this function.
         var compactEntries = function(entries) {
-          console.log('entries?', entries);
           return compact(
                   map(
                     entries,
