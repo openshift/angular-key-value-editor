@@ -41,9 +41,10 @@
             var element = first($window.document.querySelectorAll(selector));
             if(element) {
               element.focus();
-              if(value) {
-                element.value = value;
-              }
+              // to put cursor at the end of the text after focus, must do the dance of
+              // setting the value to nothing, then applying
+              element.value = '';
+              element.value = value;
             }
           });
         };
@@ -65,6 +66,10 @@
             //  valueValidator: ''            // regex string
             //  keyValidatorError: '',        // custom validation error
             //  valueValidatorError: ''       // custom validation error
+            //  keyIcon: '',                  // icon class, such as 'fa fa-lock'
+            //  keyIconTooltip: '',           // text for tooltip
+            //  valueIcon: '',                // icon class, such as 'fa fa-lock'
+            //  valueIconTooltip: ''          // text for tooltip
             // }]
             entries: '=',
             keyPlaceholder: '@',

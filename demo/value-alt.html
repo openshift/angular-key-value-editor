@@ -28,7 +28,7 @@
 
       <ng-form
         novalidate
-        name="test-form"
+        name="testForm"
         ng-submit="onSubmit()">
 
         <h2>Icons:</h2>
@@ -66,6 +66,7 @@
               id="submit"
               value="submit"
               class="btn btn-primary"
+              ng-disabled="testForm.$invalid || testForm.$pristine"
               ng-click="onClick()">Submit</button>
           </div>
         </div>
@@ -115,12 +116,19 @@
 
             $timeout(function() {
 
+              var save = function() {
+                var compacted = kveUtils.compactEntries($scope.entries);
+                console.log(compacted);
+              }
+
               angular.extend($scope, {
+                onClick: save,
+                onSubmit: save,
                 entries: [
                   // 1.
                   {
-                    name: 'entry_value',
-                    value: 'value'
+                    name: 'entry_has_value',
+                    value: 'the_value'
                   },
                   // 2.
                   {
