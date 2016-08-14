@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/benjaminapetersen/angular-key-value-editor#readme",
   "devDependencies": {
+    "angular-mocks": "^1.5.8",
+    "angular-scenario": "^1.5.8",
     "browser-sync": "^2.12.8",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
@@ -31,7 +33,14 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
+    "jasmine": "^2.4.1",
+    "jasmine-core": "^2.4.1",
     "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.0"
+    "jshint-stylish": "^2.2.0",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
   }
 }

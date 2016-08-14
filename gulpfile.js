@@ -13,7 +13,8 @@ var gulp = require('gulp'),
     reload = browserSync.reload,
     templateCache = require('gulp-angular-templatecache'),
     less = require('gulp-less'),
-    path = require('path');
+    path = require('path'),
+    KarmaServer = require('karma').Server;
 
 // vars for finding directories
 var match = {
@@ -140,6 +141,22 @@ gulp.task('_tmp-min', ['_tmp-build', '_tmp-templates'], function() {
 // and validate that templates have been cached, js minified, etc.
 gulp.task('prep-diff', ['_tmp-min'], function() {
   // nothing here atm.
+});
+
+// for dev, watch for changes
+gulp.task('tdd', function(done) {
+  new KarmaServer({
+    configFile: __dirname + '/test/karma.conf.js',
+    autoWatch: true,
+    singleRUn: false
+  }, done).start();
+});
+
+// non dev, just run once
+gulp.task('test', function(done) {
+  new KarmaServer({
+    configFile: __dirname + '/test/karma.conf.js'
+  }, done).start();
 });
 
 
