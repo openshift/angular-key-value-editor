@@ -176,7 +176,7 @@
       </div>
       <div class="key-value-editor-buttons">
         <span
-          ng-if="(!cannotSort)"
+          ng-if="(!cannotSort) && (entries.length > 1)"
           class="fa fa-bars"
           role="button"
           aria-label="Move row"
@@ -191,18 +191,25 @@
       </div>
     </div>
 
+    <div
+      class="key-value-editor-entry"
+      ng-if="(!cannotAdd) && addRowLink">
+      <a
+        href=""
+        ng-click="onAddRow()">{{ addRowLink }}</a>
+    </div>
+
     <!-- the last one, placeholder -->
     <div
       class="key-value-editor-entry"
-      ng-if="!cannotAdd">
+      ng-if="!cannotAdd && (!addRowLink)">
       <div
         class="form-group key-value-editor-input">
         <input
           type="text"
           class="form-control"
           placeholder="{{keyPlaceholder}}"
-          ng-model="placeholder.name"
-          ng-change="onKeyChange()">
+          ng-focus="onFocusLastKey()">
       </div>
       <div
         class="form-group key-value-editor-input">
@@ -210,8 +217,7 @@
           type="text"
           class="form-control"
           placeholder="{{valuePlaceholder}}"
-          ng-model="placeholder.value"
-          ng-change="onValChange()">
+          ng-focus="onFocusLastValue()">
       </div>
     </div>
   </div>

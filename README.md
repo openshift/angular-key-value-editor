@@ -23,6 +23,20 @@ Note that entries is *required* or `<key-value-editor>` will log an error!
 
 For configuring the directive as a whole, use the following attributes.  
 
+Automatic vs manual rows:
+
+![key-value-editor screenshot](/docs/key-value-editor-add-row-link.png)
+
+Automatic row creation is the default, however this may not be the most accessible solution depending on the placement of your other form inputs and buttons.  For this reason, the attribute `add-row-link` is provided. If present, a link will appear that allows the user to manually create new pairs. The link text is set by passing a value to the attribute.
+
+```html
+<key-value-editor
+  entries="entries"
+  add-row-link="Add another key,value pair"></key-value-editor>
+```
+
+If the automatic row creation feature is used, a user cannot tab past the last input in the `<key-value-editor>`. If a mouse or track pad is unavailable, this is not ideal as inputs after the `<key-value-editor>` will be unreachable, perhaps including the form submit itself.
+
 Readonly:
 ```html
 <key-value-editor
@@ -53,6 +67,7 @@ Disable sorting entries:
   entries="entries"
   cannot-sort></key-value-editor>
 ```
+(Sort handle will only appear if there is more than one entry in the list.)
 
 Disable deleting entries:
 ```html

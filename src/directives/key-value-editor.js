@@ -11,21 +11,13 @@
       '$window',
       'keyValueEditorConfig',
       'keyValueEditorUtils',
-      function($compile, $log, $templateCache, $timeout, $window, keyValueEditorConfig, keyValueEditorUtils) {
+      function($compile, $log, $templateCache, $timeout, $window, config, utils) {
 
-        var first = keyValueEditorUtils.first;
-        var contains = keyValueEditorUtils.contains;
-        var each = keyValueEditorUtils.each;
+        var first = utils.first;
+        var contains = utils.contains;
+        var each = utils.each;
         var unique = 1000;
-        // var last = keyValueEditorUtils.last;
-        // var get = keyValueEditorUtils.get;
-        // not used internally, however users can ask for keyValueEditorUtils and
-        // use this function to clean out empty pairs from the list when they are ready
-        // to save/preserve.  Also can just use _.compact() or any other library that
-        // provides this util if it is already available.
-        // var compact = keyValueEditorUtils.compact;
 
-        // a few utils
         var newEntry = function() {
           return {name: '', value: ''};
         };
@@ -35,16 +27,16 @@
         };
 
         var setFocusOn = function(selector, value) {
-          // $timeout just delays to ensure
-          // events/rendering resolve
+          // $timeout just delays enough to ensure event/$digest resolution
           $timeout(function() {
             var element = first($window.document.querySelectorAll(selector));
             if(element) {
               element.focus();
-              // to put cursor at the end of the text after focus, must do the dance of
-              // setting the value to nothing, then applying
-              element.value = '';
-              element.value = value;
+              // if setting value, this will set the cursor at the end of the text in the value
+              if(value) {
+                element.value = '';
+                element.value = value;
+              }
             }
           });
         };
@@ -52,24 +44,24 @@
         return {
           restrict: 'AE',
           scope: {
-            keyMinlength: '@',                   // min character length
-            keyMaxlength: '@',                   // max character length
-            valueMinlength: '@',                   // min character length
-            valueMaxlength: '@',                   // max character length
+            keyMinlength: '@',                        // min character length
+            keyMaxlength: '@',                        // max character length
+            valueMinlength: '@',                      // min character length
+            valueMaxlength: '@',                      // max character length
             // entries: [{
             //  name: 'foo',
             //  value: 'bar',
-            //  isReadOnly: true|| false      // individual entries may be readonly
-            //  isReadonlyKey: true || false  // key name on an individual entry is readonly
-            //  cannotDelete: true || false   // individual entries can be permanent
-            //  keyValidator: '',             // regex string
-            //  valueValidator: ''            // regex string
-            //  keyValidatorError: '',        // custom validation error
-            //  valueValidatorError: ''       // custom validation error
-            //  keyIcon: '',                  // icon class, such as 'fa fa-lock'
-            //  keyIconTooltip: '',           // text for tooltip
-            //  valueIcon: '',                // icon class, such as 'fa fa-lock'
-            //  valueIconTooltip: ''          // text for tooltip
+            //  isReadOnly: true|| false              // individual entries may be readonly
+            //  isReadonlyKey: true || false          // key name on an individual entry is readonly
+            //  cannotDelete: true || false           // individual entries can be permanent
+            //  keyValidator: '',                     // regex string
+            //  valueValidator: ''                    // regex string
+            //  keyValidatorError: '',                // custom validation error
+            //  valueValidatorError: ''               // custom validation error
+            //  keyIcon: '',                          // icon class, such as 'fa fa-lock'
+            //  keyIconTooltip: '',                   // text for tooltip
+            //  valueIcon: '',                        // icon class, such as 'fa fa-lock'
+            //  valueIconTooltip: ''                  // text for tooltip
             // }]
             entries: '=',
             keyPlaceholder: '@',
@@ -90,7 +82,8 @@
             cannotSort: '=?',
             cannotDelete: '=?',
             isReadonly: '=?',
-            isReadonlyKeys: '=?'                      // will only apply to existing keys
+            isReadonlyKeys: '=?',                      // will only apply to existing keys,
+            addRowLink: '@'                            // creates a link to "add row" and sets its text label
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
@@ -142,7 +135,6 @@
                   unwatchEntries();
                 }
               });
-
             }
 
             if('cannotSort' in $attrs) {
@@ -155,26 +147,28 @@
               $scope.cannotSort = true;
             }
             // min/max lengths
-            $scope.keyMinlength = keyValueEditorConfig.keyMinlength || $attrs.keyMinlength;
-            $scope.keyMaxlength = keyValueEditorConfig.keyMaxlength || $attrs.keyMaxlength;
-            $scope.valueMinlength = keyValueEditorConfig.valueMinlength || $attrs.valueMinlength;
-            $scope.valueMaxlength = keyValueEditorConfig.valueMaxlength || $attrs.valueMaxlength;
-            // validation regex
-            $scope.keyValidator = keyValueEditorConfig.keyValidator || $attrs.keyValidator;
-            $scope.valueValidator = keyValueEditorConfig.valueValidator || $attrs.valueValidator;
-            $scope.keyValidatorError = keyValueEditorConfig.keyValidatorError || $attrs.keyValidatorError;
-            $scope.valueValidatorError = keyValueEditorConfig.valueValidatorError || $attrs.valueValidatorError;
-            // validation error tooltip
-            $scope.keyValidatorErrorTooltip = keyValueEditorConfig.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip;
-            $scope.keyValidatorErrorTooltipIcon = keyValueEditorConfig.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon;
-            $scope.valueValidatorErrorTooltip = keyValueEditorConfig.valueValidatorErrorTooltip || $attrs.valueValidatorErrorTooltip;
-            $scope.valueValidatorErrorTooltipIcon = keyValueEditorConfig.valueValidatorErrorTooltipIcon || $attrs.valueValidatorErrorTooltipIcon;
-            // secret values
-            $scope.secretValueTooltip = keyValueEditorConfig.secretValueTooltip || $attrs.secretValueTooltip;
-            $scope.secretValueIcon = keyValueEditorConfig.secretValueIcon || $attrs.secretValueIcon;
-            // placeholders
-            $scope.keyPlaceholder = keyValueEditorConfig.keyPlaceholder || $attrs.keyPlaceholder;
-            $scope.valuePlaceholder = keyValueEditorConfig.valuePlaceholder || $attrs.valuePlaceholder;
+            angular.extend($scope, {
+              keyMinlength: config.keyMinlength || $attrs.keyMinlength,
+              keyMaxlength: config.keyMaxlength || $attrs.keyMaxlength,
+              valueMinlength: config.valueMinlength || $attrs.valueMinlength,
+              valueMaxlength: config.valueMaxlength || $attrs.valueMaxlength,
+              // validation regex
+              keyValidator: config.keyValidator || $attrs.keyValidator,
+              valueValidator: config.valueValidator || $attrs.valueValidator,
+              keyValidatorError: config.keyValidatorError || $attrs.keyValidatorError,
+              valueValidatorError: config.valueValidatorError || $attrs.valueValidatorError,
+              // validation error tooltip
+              keyValidatorErrorTooltip: config.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip,
+              keyValidatorErrorTooltipIcon: config.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon,
+              valueValidatorErrorTooltip: config.valueValidatorErrorTooltip || $attrs.valueValidatorErrorTooltip,
+              valueValidatorErrorTooltipIcon: config.valueValidatorErrorTooltipIcon || $attrs.valueValidatorErrorTooltipIcon,
+              // secret values
+              secretValueTooltip: config.secretValueTooltip || $attrs.secretValueTooltip,
+              secretValueIcon: config.secretValueIcon || $attrs.secretValueIcon,
+              // placeholders
+              keyPlaceholder: config.keyPlaceholder || $attrs.keyPlaceholder,
+              valuePlaceholder: config.valuePlaceholder || $attrs.valuePlaceholder
+            });
 
             // manually compile and append to the DOM
             $elem.append($compile(tpl)($scope));
@@ -183,51 +177,50 @@
             '$scope',
             '$timeout',
             function($scope) {
-              $scope.forms = {};
-              $scope.placeholder = newEntry();
               var readOnlySome = [];
               var cannotDeleteSome = [];
-              // generate a unique class name for each editor, so that the
-              // onFocusLast() fn below can select the correct node with
-              // certainty if there are many instances of the key-value-editor
-              // on the page.
+              // base class name, unique to support multiple <key-value-editors> on one page
               var setFocusClass = 'key-value-editor-set-focus-' + unique++;
-              $scope.setFocusKeyClass = setFocusClass + '-key';
-              $scope.setFocusValClass = setFocusClass + '-val';
 
+              angular.extend($scope, {
+                forms: {},
+                placeholder: newEntry(),
+                setFocusKeyClass: setFocusClass + '-key',
+                setFocusValClass: setFocusClass + '-val',
+                dragControlListeners: {
+                    // only allow sorting within the parent instance
+                    accept: function (sourceItemHandleScope, destSortableScope) {
+                      return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+                    },
+                    orderChanged: function() {
+                      $scope.forms.keyValueEditor.$setDirty();
+                    }
+                },
+                deleteEntry: function(start, deleteCount) {
+                  $scope.entries.splice(start, deleteCount);
+                  $scope.forms.keyValueEditor.$setDirty();
+                },
+                isReadonlySome: function(name) {
+                  return contains(readOnlySome, name);
+                },
+                cannotDeleteSome: function(name) {
+                  return contains(cannotDeleteSome, name);
+                },
+                onFocusLastKey: function() {
+                  addEntry($scope.entries);
+                  setFocusOn('.'+ $scope.setFocusKeyClass);
+                },
+                onFocusLastValue: function() {
+                  addEntry($scope.entries);
+                  setFocusOn('.'+ $scope.setFocusValClass);
+                },
+                onAddRow: function() {
+                  addEntry($scope.entries);
+                }
+              });
 
-              $scope.onKeyChange = function() {
-                addEntry($scope.entries, {
-                  name: $scope.placeholder.name,
-                  value: $scope.placeholder.value
-                });
-                setFocusOn('.'+ $scope.setFocusKeyClass, $scope.placeholder.name);
-                $scope.placeholder = newEntry();
-              };
-
-              $scope.onValChange = function() {
-                addEntry($scope.entries, {
-                  name: $scope.placeholder.name,
-                  value: $scope.placeholder.value
-                });
-                setFocusOn('.'+ $scope.setFocusValClass, $scope.placeholder.value);
-                $scope.placeholder = newEntry();
-              };
-
-              // clicking the delete button removes the pair
-              $scope.deleteEntry = function(start, deleteCount) {
-                $scope.entries.splice(start, deleteCount);
-                $scope.forms.keyValueEditor.$setDirty();
-              };
-              $scope.dragControlListeners = {
-                  // only allow sorting within the parent instance
-                  accept: function (sourceItemHandleScope, destSortableScope) {
-                    return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
-                  },
-                  orderChanged: function() {
-                    $scope.forms.keyValueEditor.$setDirty();
-                  }
-              };
+              // Issue #78 todo:
+              // https://github.com/openshift/angular-key-value-editor/issues/78
               // cannotDelete and isReadonly are boolean or list values.
               // if boolean, they apply to all.
               // if arrays, they apply to the items passed.
@@ -256,12 +249,26 @@
                   readOnlySome = newVal;
                 }
               });
-              $scope.isReadonlySome = function(name) {
-                return contains(readOnlySome, name);
-              };
-              $scope.cannotDeleteSome = function(name) {
-                return contains(cannotDeleteSome, name);
-              };
+
+              // watching the attribute allows both:
+              // <key-value-editor add-row-link>
+              // <key-value-editor add-row-link="Add a pair">
+              $scope.$watch('addRowLink', function(newVal) {
+                if(angular.isDefined(newVal)) {
+                  $scope.addRowLink = newVal || 'Add row';
+                  if(!$scope.entries.length) {
+                    addEntry($scope.entries);
+                  }
+                }
+              });
+
+              // ensures we always have at least one set of inputs
+              $scope.$watch('entries', function(newVal) {
+                if(!newVal.length) {
+                  addEntry($scope.entries);
+                }
+              });
+
             }
           ]
         };
