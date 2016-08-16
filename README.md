@@ -25,7 +25,7 @@ For configuring the directive as a whole, use the following attributes.
 
 Automatic vs manual rows:
 
-![key-value-editor screenshot](/docs/key-value-editor-add-row-link.png)
+![key-value-editor screenshot](/docs/key-value-editor-add-row-link.gif)
 
 Automatic row creation is the default, however this may not be the most accessible solution depending on the placement of your other form inputs and buttons.  For this reason, the attribute `add-row-link` is provided. If present, a link will appear that allows the user to manually create new pairs. The link text is set by passing a value to the attribute.
 
