@@ -6,6 +6,9 @@
     .module('key-value-editor')
     .factory('keyValueEditorUtils', [
       function() {
+
+        var noop = function() {};
+
         // simple reduce fn
         var reduce = function(arr, fn, memo) {
           var length = (arr && arr.length) || 0;
@@ -120,6 +123,7 @@
         };
 
         return {
+          noop: noop,
           each: each,
           reduce: reduce,
           compact: compact,

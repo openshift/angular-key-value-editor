@@ -16,7 +16,11 @@
       strong {
         color: #6099D4;
       }
+      [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
+      .row {
+        margin-bottom: 50px;
+      }
     </style>
   </head>
   <body>
@@ -27,37 +31,58 @@
       </div>
 
       <ng-form
+        autocomplete="off"
         novalidate
         name="test-form"
         ng-submit="onSubmit()">
 
-        <h2>Icons:</h2>
-		    <p>Each entry should be able to set an icon if desired</p>
+        <h2>Add entry link:</h2>
+		    <p>Though it requires an additional user action per input, it is better for accessibilty.</p>
+        <p>The original method is not ideal as you cannot tab past the final input to click the save link. It will infinitely add new inputs</p>
+        <p>Forms that have a submit button before the key-value-editor (or on another part of the page) will not have do deal with this issue.</p>
+        <p>Please be mindful of usability issues!</p>
 
 
         <div class="row">
-          <div class="col-md-12">Default regex attrs</div>
-        </div>
-
-        <div class="row">
+          <div class="col-md-12">
+            <strong>Automatically add rows:</strong>
+          </div>
           <div class="col-md-7">
             <key-value-editor
               entries="entries"
               key-placeholder="Key"
-              value-placeholder="Value"
-              key-validator="[a-zA-Z0-9_-]+"
-              key-validator-error-tooltip="Name must be alphanumeric including - and _"
-              key-validator-error-tooltip-icon="fa fa-exclamation-circle"
-              key-icon-tooltip="This is a key that has an icon (default)"
-              value-validator-error-tooltip="Value must be alphanumeric including - and _"
-              value-validator-error-tooltip-icon="fa fa-exclamation-circle"
-              value-validator="[a-zA-Z0-9_]+"
-              value-icon-tooltip="this is a val that has an icon (default)"></key-value-editor>
+              value-placeholder="Value"></key-value-editor>
           </div>
         </div>
+
+
         <div class="row">
-          {{message}}
+          <div class="col-md-12">
+            <strong>Manually add rows:</strong>
+          </div>
+          <div class="col-md-7">
+            <key-value-editor
+              entries="entries2"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              add-row-link></key-value-editor>
+          </div>
         </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <strong>Manually add & custom label:</strong>
+          </div>
+          <div class="col-md-7">
+            <key-value-editor
+              entries="entries3"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              add-row-link="Add a new key,value pair"></key-value-editor>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-md-7">
 
@@ -69,6 +94,7 @@
               ng-click="onClick()">Submit</button>
           </div>
         </div>
+
       </ng-form>
 
     </div>
@@ -113,56 +139,28 @@
               // set 1
               entries: [{
                 name: 'MYSQL_USER',
-                value: '12345'
+                value: 'admin'
               }, {
-                name: 'MYSQL_PASSWORD1',
-                value: '213a'
-              }, {
-                name: 'READONLY',
-                value: '6543',
+                name: 'MYSQL_PASSWORD',
+                value: 'p@$$w0rd',
                 isReadonly: true,
                 keyIcon:'fa fa-lock'
-                // default key icon tooltip provided on directive attr
               }, {
                 name: 'READONLY_KEY',
                 value: '6543',
                 valueIcon: 'fa fa-user-secret',
                 valueIconTooltip: 'Locked value!',
-                isReadonlyKey: true
-              }, {
-                name: 'has icon',
-                value: 'shizzle',
-                isReadonly: true,
-                keyIcon: 'fa fa-eye-slash',
-                keyIconTooltip: 'Locked key!',
-                valueIcon: 'fa fa-lock',
-                valueIconTooltip: 'Locked value!'
-              },
-              {
-                name: 'has_icon',
-                valueAlt: 'Alt value, the value is unreadable',
-                complicatedValue: {isNotAString: 'too bad.' },
-                isReadonly: true,
-                keyIcon: 'fa fa-spinner fa-spin',
-                keyIconTooltip: 'Locked key!',
-                valueIcon: 'fa fa-github-alt'
-                // default value icon tooltip provided on directive attr
+                isReadonly: true
+              }],
+              entries2: [],
+              entries3: [{name: 'foo', value: 'bar'}],
+              onClick: function() {
+                $scope.entries = kveUtils.compactEntries($scope.entries);
+                $scope.entries2 = kveUtils.compactEntries($scope.entries2);
+                $scope.entries3 = kveUtils.compactEntries($scope.entries3);
+                console.log('save!');
               }
-            ]
             });
-
-            $timeout(function() {
-              console.log('timeout change inputs', '');
-              $scope.message = '$timeout() to change some values';
-              //$scope.entries[2].valueIconTooltip = 'Foo Bar Baz';
-              $scope.entries[3].value = $scope.entries[3].value + ' hahahah';
-              $scope.entries[3].valueIconTooltip = 'Foo Bar Baz BAM';
-              $scope.entries[3].keyIconTooltip = 'key tooltip';
-              $scope.entries[4].value = $scope.entries[4].value + ' hahahah';
-              $scope.entries[4].valueIconTooltip = 'SHIZZLE';
-              $scope.entries[4].keyIconTooltip = 'key tooltip again';
-              $('[data-toggle="tooltip"]').tooltip('fixTitle');
-            }, 2000);
 
             // opt in to the bootstrap tooltips
             $('[data-toggle="tooltip"]').tooltip();
