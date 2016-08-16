@@ -20,6 +20,7 @@
   "undef": true,
   "unused": true,
   "globals": {
+    "$": false,
     "angular": false,
     "alert" : false,
     "_": false,
