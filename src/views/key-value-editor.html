@@ -12,6 +12,8 @@
         class="form-group key-value-editor-input"
         ng-class="{ 'has-error' :  (forms.keyValueEditor['key-' + $index].$invalid) }">
 
+        <label for="key-value-editor-key-{{unique}}-{{$index}}" class="sr-only">{{keyPlaceholder}}</label>
+
         <!-- name/key has icon -->
         <div class="input-group" ng-if="entry.keyIcon">
           <span class="input-group-addon">
@@ -23,12 +25,13 @@
               data-original-title="{{entry.keyIconTooltip || keyIconTooltip}}"
               title="{{entry.keyIconTooltip || keyIconTooltip}}"></span>
           </span>
+
           <input
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusKeyClass}}' : $last  }"
-            id="key-{{$index}}"
-            name="key-{{$index}}"
+            id="key-value-editor-key-{{unique}}-{{$index}}"
+            name="key-value-editor-key-{{unique}}-{{$index}}"
             placeholder="{{keyPlaceholder}}"
             ng-minlength="{{keyMinlength}}"
             maxlength="{{keyMaxlength}}"
@@ -45,8 +48,8 @@
           type="text"
           class="form-control"
           ng-class="{ '{{setFocusKeyClass}}' : $last  }"
-          id="key-{{$index}}"
-          name="key-{{$index}}"
+          id="key-value-editor-key-{{unique}}-{{$index}}"
+          name="key-value-editor-key-{{unique}}-{{$index}}"
           placeholder="{{keyPlaceholder}}"
           ng-minlength="{{keyMinlength}}"
           maxlength="{{keyMaxlength}}"
@@ -82,6 +85,8 @@
         class="form-group key-value-editor-input"
         ng-class="forms.keyValueEditor['value-' + $index].$invalid ? 'has-error' : ''">
 
+        <label for="key-value-editor-value-{{unique}}-{{$index}}" class="sr-only">{{valuePlaceholder}}</label>
+
         <!-- value has icon -->
         <div
           class="input-group"
@@ -101,8 +106,8 @@
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusValClass}}' : $last  }"
-            id="value-{{$index}}"
-            name="value-{{$index}}"
+            id="key-value-editor-value-{{unique}}-{{$index}}"
+            name="key-value-editor-value-{{unique}}-{{$index}}"
             placeholder="{{valuePlaceholder}}"
             ng-model="entry.valueAlt"
             readonly>
@@ -112,8 +117,8 @@
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusValClass}}' : $last  }"
-            id="value-{{$index}}"
-            name="value-{{$index}}"
+            id="key-value-editor-value-{{unique}}-{{$index}}"
+            name="key-value-editor-value-{{unique}}-{{$index}}"
             placeholder="{{valuePlaceholder}}"
             ng-minlength="{{valueMinlength}}"
             maxlength="{{valueMaxlength}}"
@@ -130,8 +135,8 @@
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusValClass}}' : $last  }"
-            id="value-{{$index}}"
-            name="value-{{$index}}"
+            id="key-value-editor-value-{{unique}}-{{$index}}"
+            name="key-value-editor-value-{{unique}}-{{$index}}"
             placeholder="{{valuePlaceholder}}"
             ng-model="entry.valueAlt"
             readonly>
@@ -142,8 +147,8 @@
             type="text"
             class="form-control"
             ng-class="{ '{{setFocusValClass}}' : $last  }"
-            id="value-{{$index}}"
-            name="value-{{$index}}"
+            id="key-value-editor-value-{{unique}}-{{$index}}"
+            name="key-value-editor-value-{{unique}}-{{$index}}"
             placeholder="{{valuePlaceholder}}"
             ng-minlength="{{valueMinlength}}"
             maxlength="{{valueMaxlength}}"
@@ -182,12 +187,13 @@
           aria-label="Move row"
           aria-grabbed="false"
           as-sortable-item-handle></span>
-        <span
+        <a
+          href=""
           class="pficon pficon-close as-sortable-item-delete"
           role="button"
           aria-label="Delete row"
           ng-hide="cannotDeleteAny || cannotDeleteSome(entry.name) || entry.cannotDelete"
-          ng-click="deleteEntry($index, 1)"></span>
+          ng-click="deleteEntry($index, 1)"></a>
       </div>
     </div>
 
@@ -196,6 +202,8 @@
       ng-if="(!cannotAdd) && addRowLink">
       <a
         href=""
+        role="button"
+        aria-label="Add row"
         ng-click="onAddRow()">{{ addRowLink }}</a>
     </div>
 

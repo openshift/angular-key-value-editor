@@ -1,5 +1,5 @@
 // Angular Key Value Editor styles
-
+@import "../../bower_components/bootstrap/less/variables.less";
 @import "../../bower_components/patternfly/less/variables.less";
 
 @as-sortable-dragging-opacity:                             .65;
@@ -39,6 +39,15 @@
     opacity: @as-sortable-item-icon-opacity;
     padding: @as-sortable-item-icon-padding;
     vertical-align: middle;
+  }
+
+  .as-sortable-item-delete {
+    color: @text-color;
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+    }
   }
 
   .as-sortable-item-handle {

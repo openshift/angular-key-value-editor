@@ -18,6 +18,14 @@
   padding: 6px;
   vertical-align: middle;
 }
+.key-value-editor .as-sortable-item-delete {
+  color: #333333;
+}
+.key-value-editor .as-sortable-item-delete:hover,
+.key-value-editor .as-sortable-item-delete:focus,
+.key-value-editor .as-sortable-item-delete:active {
+  text-decoration: none;
+}
 .key-value-editor .as-sortable-item-handle {
   cursor: move;
 }
