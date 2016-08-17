@@ -179,14 +179,13 @@
             function($scope) {
               var readOnlySome = [];
               var cannotDeleteSome = [];
-              // base class name, unique to support multiple <key-value-editors> on one page
-              var setFocusClass = 'key-value-editor-set-focus-' + unique++;
 
               angular.extend($scope, {
+                unique: unique++,
                 forms: {},
                 placeholder: newEntry(),
-                setFocusKeyClass: setFocusClass + '-key',
-                setFocusValClass: setFocusClass + '-val',
+                setFocusKeyClass: 'key-value-editor-set-focus-key-' + $scope.unique,
+                setFocusValClass: 'key-value-editor-set-focus-value-' + $scope.unique,
                 dragControlListeners: {
                     // only allow sorting within the parent instance
                     accept: function (sourceItemHandleScope, destSortableScope) {
