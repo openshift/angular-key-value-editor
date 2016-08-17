@@ -1,5 +1,6 @@
 'use strict';
-
+// checking out tests here:
+// https://github.com/angular-ui/bootstrap/blob/master/src/tabs/test/tabs.spec.js
 describe('keyValueEditor', function() {
   var scope;
   var element;
