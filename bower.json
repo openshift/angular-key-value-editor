@@ -1,7 +1,7 @@
 {
   "name": "angular-key-value-editor",
   "description": "A simple UI for editing key-value pairs",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "main": [
     "dist/angular-key-value-editor.css",
     "dist/angular-key-value-editor.js",
