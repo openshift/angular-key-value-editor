@@ -33,5 +33,15 @@ describe('keyValueEditor', function() {
     });
   });
 
+  describe('when given a list of entries', function() {
+    it('should create one unique label for each unique input', function() {
+      var inputs = $('input');
+      var labels = [];
+      $.each(inputs, function(i, elem) {
+        labels.push($('label[for="' + elem.id + '"]'));
+      });
+      expect(inputs.length).toEqual(labels.length);
+    });
+  });
 
 });
