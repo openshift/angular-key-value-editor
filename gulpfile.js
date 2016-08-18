@@ -148,7 +148,7 @@ gulp.task('tdd', function(done) {
   new KarmaServer({
     configFile: __dirname + '/test/karma.conf.js',
     autoWatch: true,
-    singleRUn: false
+    singleRun: false
   }, done).start();
 });
 

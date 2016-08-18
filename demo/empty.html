@@ -1,0 +1,139 @@
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link type="text/css" href="../bower_components/angular-object-diff/dist/angular-object-diff.css" rel='stylesheet'>
+    <link href="../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+      [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+
+      .row {
+        margin-bottom: 50px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container" data-ng-controller="ctrl">
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+
+      <ng-form
+        autocomplete="off"
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
+
+        <h2>Empty:</h2>
+
+        <div class="row">
+          <div class="col-md-12">
+            <strong>Automatically add rows:</strong>
+          </div>
+          <div class="col-md-7">
+            <key-value-editor
+              entries="entries"
+              key-placeholder="Key"
+              value-placeholder="Value"></key-value-editor>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <strong>Manually add rows:</strong>
+          </div>
+          <div class="col-md-7">
+            <key-value-editor
+              entries="entries2"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              add-row-link></key-value-editor>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-7">
+
+            <button
+              type="submit"
+              id="submit"
+              value="submit"
+              class="btn btn-primary"
+              ng-click="onClick()">Submit</button>
+          </div>
+        </div>
+
+      </ng-form>
+
+    </div>
+
+    <!-- dependencies -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/lodash/dist/lodash.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+    <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
+    <script src="../dist/angular-key-value-editor.js"></script>
+    <script src="../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
+    <!-- the built template files -->
+    <script src="../dist/compiled-templates.js"></script>
+    <script src="./app.js"></script>
+    <script src="./services.js"></script>
+    <script src="./dc.js"></script>
+    <script>
+      angular
+        .module('demo')
+        .config([
+          'keyValueEditorConfigProvider',
+          function(config) {
+            // make default nothing
+            config.set('keyValidator', '');
+          }
+        ])
+        .controller('ctrl', [
+          '$scope',
+          '$timeout',
+          '$q',
+          'keyValueEditorUtils',
+          function($scope, $timeout, $q, kveUtils) {
+
+            angular.extend($scope, {
+              // set 1
+              entries: [],
+              entries2: [],
+              onClick: function() {
+                $scope.entries = kveUtils.compactEntries($scope.entries);
+                $scope.entries2 = kveUtils.compactEntries($scope.entries2);
+                $scope.entries3 = kveUtils.compactEntries($scope.entries3);
+                console.log('save!');
+              }
+            });
+
+            // opt in to the bootstrap tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+          }
+        ]);
+    </script>
+  </body>
+</html>

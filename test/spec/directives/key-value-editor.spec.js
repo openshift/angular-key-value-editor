@@ -21,6 +21,24 @@ describe('keyValueEditor', function() {
     $('body').empty();
   });
 
+  describe('when given a list of zero entries', function() {
+    describe('without the add-row-link', function() {
+      it('should display two empty inputs so the user can add the first entry', function() {
+        scope.$apply();
+        var inputs = $('input:text');
+        expect(inputs.length).toEqual(2);
+      });
+    });
+    describe('with the add-row-link', function() {
+      it('should display two empty inputs so the user can add the first entry', function() {
+        scope.addRowLink = true;
+        scope.$apply();
+        var inputs = $('input:text');
+        expect(inputs.length).toEqual(2);
+      });
+    });
+  });
+
   describe('when given a list of one entry', function() {
     it('should display the name and value of that entry', function() {
       scope.entries.push({
@@ -28,6 +46,8 @@ describe('keyValueEditor', function() {
         value: 'bar'
       });
       scope.$apply();
+      var inputs = $('input:text');
+      expect(inputs.length).toEqual(12);
       expect($('input:text').eq(0).val()).toEqual('foo');
       expect($('input:text').eq(1).val()).toEqual('bar');
     });
