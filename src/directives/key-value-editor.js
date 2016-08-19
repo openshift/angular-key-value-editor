@@ -151,7 +151,7 @@
             if('showHeader' in $attrs) {
               $scope.showHeader = true;
             }
-            
+
             // min/max lengths
             angular.extend($scope, {
               keyMinlength: config.keyMinlength || $attrs.keyMinlength,
@@ -203,6 +203,10 @@
                 },
                 deleteEntry: function(start, deleteCount) {
                   $scope.entries.splice(start, deleteCount);
+                  // if the link is used, add a new empty entry to ensure the inputs do not all disappear
+                  if(!$scope.entries.length && $scope.addRowLink) {
+                    addEntry($scope.entries);
+                  }
                   $scope.forms.keyValueEditor.$setDirty();
                 },
                 isReadonlySome: function(name) {
