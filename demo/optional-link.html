@@ -167,8 +167,6 @@
                 valueIconTooltip: 'Locked value!',
                 isReadonly: true
               }],
-              entries2: [],
-              entries3: [{name: 'foo', value: 'bar'}],
               onClick: function() {
                 $scope.entries = kveUtils.compactEntries($scope.entries);
                 $scope.entries2 = kveUtils.compactEntries($scope.entries2);
@@ -176,6 +174,16 @@
                 console.log('save!');
               }
             });
+
+
+            // ensure $watch doesnt break
+            // by delaying a few of these until later
+            $timeout(function() {
+              angular.extend($scope, {
+                entries2: [],
+                entries3: [{name: 'foo', value: 'bar'}]
+              });
+            }, 2000);
 
             // opt in to the bootstrap tooltips
             $('[data-toggle="tooltip"]').tooltip();

@@ -270,7 +270,7 @@
               $scope.$watch('addRowLink', function(newVal) {
                 if(angular.isDefined(newVal)) {
                   $scope.addRowLink = newVal || 'Add row';
-                  if(!$scope.entries.length) {
+                  if($scope.entries && !$scope.entries.length) {
                     addEntry($scope.entries);
                   }
                 }
@@ -278,7 +278,7 @@
 
               // ensures we always have at least one set of inputs
               $scope.$watch('entries', function(newVal) {
-                if(!newVal.length) {
+                if(newVal && !newVal.length) {
                   addEntry($scope.entries);
                 }
               });
