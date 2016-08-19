@@ -20,7 +20,7 @@
   </head>
   <body>
 
-    <div class="container" data-ng-controller="demoCtrl">
+    <div class="container" data-ng-controller="ctrl">
       <div class="page-header">
         <h1>Angular Key Value Editor</h1>
       </div>
@@ -84,6 +84,56 @@
     <script src="./app.js"></script>
     <script src="./dc.js"></script>
     <script src="./services.js"></script>
-    <script src="./ctrl.js"></script>
+    <script>
+      angular
+        .module('demo')
+        .config([
+          'keyValueEditorConfigProvider',
+          function(config) {
+            // make default nothing
+            config.set('keyValidator', '');
+          }
+        ])
+        .controller('ctrl', [
+          '$scope',
+          '$timeout',
+          '$q',
+          'keyValueEditorUtils',
+          function($scope, $timeout, $q, kveUtils) {
+
+            angular.extend($scope, {
+              // set 1
+              entries: [{
+                name: 'MYSQL_USER',
+                value: 'admin'
+              }, {
+                name: 'MYSQL_PASSWORD',
+                value: 'p@$$w0rd',
+                isReadonly: true,
+                keyIcon:'fa fa-lock'
+              }, {
+                name: 'READONLY_KEY',
+                value: '6543',
+                valueIcon: 'fa fa-user-secret',
+                valueIconTooltip: 'Locked value!',
+                isReadonly: true
+              }],
+              entries2: [],
+              entries3: [{name: 'foo', value: 'bar'}],
+              onClick: function() {
+                $scope.entries = kveUtils.compactEntries($scope.entries);
+                $scope.entries2 = kveUtils.compactEntries($scope.entries2);
+                $scope.entries3 = kveUtils.compactEntries($scope.entries3);
+                console.log('save!');
+              }
+            });
+
+            // opt in to the bootstrap tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+          }
+        ]);
+    </script>
   </body>
 </html>
