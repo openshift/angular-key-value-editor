@@ -47,7 +47,7 @@
             ng-class="{ '{{setFocusKeyClass}}' : $last  }"
             id="key-value-editor-key-{{unique}}-{{$index}}"
             name="key-value-editor-key-{{unique}}-{{$index}}"
-            placeholder="{{keyPlaceholder}}"
+            ng-attr-placeholder="{{ (!isReadonlyAny) && keyPlaceholder || ''}}"
             ng-minlength="{{keyMinlength}}"
             maxlength="{{keyMaxlength}}"
             ng-model="entry.name"
@@ -65,7 +65,7 @@
           ng-class="{ '{{setFocusKeyClass}}' : $last  }"
           id="key-value-editor-key-{{unique}}-{{$index}}"
           name="key-value-editor-key-{{unique}}-{{$index}}"
-          placeholder="{{keyPlaceholder}}"
+          ng-attr-placeholder="{{ (!isReadonlyAny) && keyPlaceholder || ''}}"
           ng-minlength="{{keyMinlength}}"
           maxlength="{{keyMaxlength}}"
           ng-model="entry.name"
@@ -123,7 +123,7 @@
             ng-class="{ '{{setFocusValClass}}' : $last  }"
             id="key-value-editor-value-{{unique}}-{{$index}}"
             name="key-value-editor-value-{{unique}}-{{$index}}"
-            placeholder="{{valuePlaceholder}}"
+            ng-attr-placeholder="{{ (!isReadonlyAny) && valuePlaceholder || ''}}"
             ng-model="entry.valueAlt"
             readonly>
           <!-- default value display -->
@@ -134,7 +134,7 @@
             ng-class="{ '{{setFocusValClass}}' : $last  }"
             id="key-value-editor-value-{{unique}}-{{$index}}"
             name="key-value-editor-value-{{unique}}-{{$index}}"
-            placeholder="{{valuePlaceholder}}"
+            ng-attr-placeholder="{{ (!isReadonlyAny) && valuePlaceholder || ''}}"
             ng-minlength="{{valueMinlength}}"
             maxlength="{{valueMaxlength}}"
             ng-model="entry.value"
@@ -152,7 +152,7 @@
             ng-class="{ '{{setFocusValClass}}' : $last  }"
             id="key-value-editor-value-{{unique}}-{{$index}}"
             name="key-value-editor-value-{{unique}}-{{$index}}"
-            placeholder="{{valuePlaceholder}}"
+            ng-attr-placeholder="{{ (!isReadonlyAny) && valuePlaceholder || ''}}"
             ng-model="entry.valueAlt"
             readonly>
 
@@ -164,7 +164,7 @@
             ng-class="{ '{{setFocusValClass}}' : $last  }"
             id="key-value-editor-value-{{unique}}-{{$index}}"
             name="key-value-editor-value-{{unique}}-{{$index}}"
-            placeholder="{{valuePlaceholder}}"
+            ng-attr-placeholder="{{ (!isReadonlyAny) && valuePlaceholder || ''}}"
             ng-minlength="{{valueMinlength}}"
             maxlength="{{valueMaxlength}}"
             ng-model="entry.value"
