@@ -88,7 +88,8 @@
             cannotDelete: '=?',
             isReadonly: '=?',
             isReadonlyKeys: '=?',                      // will only apply to existing keys,
-            addRowLink: '@'                            // creates a link to "add row" and sets its text label
+            addRowLink: '@',                           // creates a link to "add row" and sets its text label
+            showHeader: '=?'                           // show placeholder text as headers
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
@@ -151,6 +152,11 @@
               tpl = tpl.replace(/as-sortable/g, 'as-sortable-DISABLED');
               $scope.cannotSort = true;
             }
+
+            if('showHeader' in $attrs) {
+              $scope.showHeader = true;
+            }
+            
             // min/max lengths
             angular.extend($scope, {
               keyMinlength: config.keyMinlength || $attrs.keyMinlength,

@@ -49,7 +49,8 @@
   position: relative;
   width: 100%;
 }
-.key-value-editor .key-value-editor-input {
+.key-value-editor .key-value-editor-input,
+.key-value-editor .key-value-editor-header {
   float: left;
   padding-right: 5px;
   width: 50%;
