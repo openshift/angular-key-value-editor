@@ -153,16 +153,6 @@
                 isReadonly: true,
                 keyIcon:'fa fa-lock'
               }],
-              entries2: [{
-                name: 'MYSQL_USER',
-                value: 'admin'
-              }, {
-                name: 'MYSQL_PASSWORD',
-                value: 'p@$$w0rd',
-                isReadonly: true,
-                keyIcon:'fa fa-lock'
-              }],
-              entries3: [{name: 'foo', value: 'bar'}],
               onClick: function() {
                 $scope.entries = kveUtils.compactEntries($scope.entries);
                 $scope.entries2 = kveUtils.compactEntries($scope.entries2);
@@ -170,6 +160,22 @@
                 console.log('save!');
               }
             });
+
+            // async test
+            $timeout(function() {
+              angular.extend($scope, {
+                entries2: [{
+                  name: 'MYSQL_USER',
+                  value: 'admin'
+                }, {
+                  name: 'MYSQL_PASSWORD',
+                  value: 'p@$$w0rd',
+                  isReadonly: true,
+                  keyIcon:'fa fa-lock'
+                }],
+                entries3: [{name: 'foo', value: 'bar'}],
+              });
+            }, 1500);
 
             // opt in to the bootstrap tooltips
             $('[data-toggle="tooltip"]').tooltip();
