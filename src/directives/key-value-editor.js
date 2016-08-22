@@ -16,7 +16,7 @@
         var first = utils.first;
         var contains = utils.contains;
         var each = utils.each;
-        var unique = 1000;
+        var counter = 1000;
 
         var newEntry = function() {
           return {name: '', value: ''};
@@ -185,13 +185,14 @@
             function($scope) {
               var readOnlySome = [];
               var cannotDeleteSome = [];
+              var unique = counter++;
 
               angular.extend($scope, {
-                unique: unique++,
+                unique: unique,
                 forms: {},
                 placeholder: newEntry(),
-                setFocusKeyClass: 'key-value-editor-set-focus-key-' + $scope.unique,
-                setFocusValClass: 'key-value-editor-set-focus-value-' + $scope.unique,
+                setFocusKeyClass: 'key-value-editor-set-focus-key-' + unique,
+                setFocusValClass: 'key-value-editor-set-focus-value-' + unique,
                 dragControlListeners: {
                     // only allow sorting within the parent instance
                     accept: function (sourceItemHandleScope, destSortableScope) {
@@ -225,6 +226,7 @@
                 },
                 onAddRow: function() {
                   addEntry($scope.entries);
+                  setFocusOn('.'+ $scope.setFocusKeyClass);
                 }
               });
 
