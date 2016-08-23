@@ -22,6 +22,7 @@
         var contains = utils.contains;
         var each = utils.each;
         var counter = 1000;
+        var timeoutDelay = 25;
 
         var newEntry = function() {
           return {name: '', value: ''};
@@ -30,6 +31,7 @@
         var addEntry = function(entries, entry) {
           entries && entries.push(entry || newEntry());
         };
+
 
         var setFocusOn = function(selector, value) {
           // $timeout just delays enough to ensure event/$digest resolution
@@ -43,7 +45,7 @@
                 element.value = value;
               }
             }
-          });
+          }, timeoutDelay);
         };
 
         return {
@@ -224,10 +226,16 @@
                 onFocusLastKey: function() {
                   addEntry($scope.entries);
                   setFocusOn('.'+ $scope.setFocusKeyClass);
+                  $timeout(function() {
+                    $scope.placeholder.name = '';
+                  },timeoutDelay);
                 },
                 onFocusLastValue: function() {
                   addEntry($scope.entries);
                   setFocusOn('.'+ $scope.setFocusValClass);
+                  $timeout(function() {
+                    $scope.placeholder.value = '';
+                  },timeoutDelay);
                 },
                 onAddRow: function() {
                   addEntry($scope.entries);
