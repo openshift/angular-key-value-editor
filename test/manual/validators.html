@@ -1,0 +1,249 @@
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="container" data-ng-controller="ctrl">
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+      <ng-form
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
+
+
+        <h2>As element</h2>
+		    <p><strong>key</strong>: [a-zA-Z_]+ (alphanumeric + underscore)</p>
+        <p><strong>val</strong>: [0-9]+ (number only)</p>
+
+        <div>
+          <div class="row">
+            <div class="col-md-12">Default regex attrs</div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+
+              <key-value-editor
+                entries="entries"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-validator="[a-zA-Z_]+"
+                value-validator="[0-9]+"></key-value-editor>
+
+            </div>
+          </div>
+        </div>
+
+        <hr />
+        <!-- second entrie="entries2" -->
+        <h2>As element</h2>
+		    <p><strong>key</strong>: must be string</p>
+        <p><strong>val</strong>: must be number</p>
+        <key-value-editor
+          entries="entries2"
+          key-placeholder="Key"
+          value-placeholder="Value"
+          key-validator-regex="validator.key"
+          key-validator-error="Must be a string. all inputs are strings"
+          value-validator-regex="validator.val"
+          val-validator-error="Must be a num. but can't!"
+          thingy="thingy"></key-value-editor>
+
+      </div><!-- /container -->
+
+        <button
+          type="submit"
+          id="submit"
+          value="submit"
+          class="btn btn-primary"
+          ng-click="onClick()">Submit</button>
+      </ng-form>
+
+    </div>
+
+    <!-- dependencies -->
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/lodash/dist/lodash.js"></script>
+    <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
+    <script src="../../dist/angular-key-value-editor.js"></script>
+    <script src="../../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <!-- the built template files -->
+    <script src="../../dist/compiled-templates.js"></script>
+    <script src="./app.js"></script>
+    <script src="./services.js"></script>
+    <script src="./dc.js"></script>
+    <script>
+      angular
+        .module('demo')
+        .config([
+          'keyValueEditorConfigProvider',
+          function(config) {
+            // make default nothing
+            config.set('keyValidator', '');
+          }
+        ])
+        .controller('ctrl', [
+          '$scope',
+          '$timeout',
+          '$q',
+          'keyValueEditorUtils',
+          function($scope, $timeout, $q, kveUtils) {
+
+            angular.extend($scope, {
+              // set 1
+              entries: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // set 2
+              entries2: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // set 3
+              entries3: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              validator: {
+                key: {
+                  // just testing for string.
+                  test: function(val) {
+                    console.log('string test!', typeof val === 'string');
+                    return typeof val === 'string';
+                  }
+                },
+                val: {
+                  // meh, cant test for number, since its always a string.
+                  // this should always fail.
+                  test: function(val) {
+                    var num = Number(val)
+                    console.log('num test!', typeof num === 'number', !isNaN(num));
+                    return typeof num === 'number' && !isNaN(num);
+                  }
+                }
+              }
+
+              // keyValidator: new RegExp("ab+c"),
+              // valueValidator: new RegExp("ab+c"),
+
+              // keyValidator: (function() {
+              //   var LABEL_REGEXP = /^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$/;
+              //   var LABEL_MAXLENGTH = 63;
+              //   var SUBDOMAIN_REGEXP = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+              //   var SUBDOMAIN_MAXLENGTH = 253;
+              //
+              //   function validateSubdomain(str) {
+              //     if (str.length > SUBDOMAIN_MAXLENGTH) { return false; }
+              //     return SUBDOMAIN_REGEXP.test(str);
+              //   }
+              //
+              //   function validateLabel(str) {
+              //     if (str.length > LABEL_MAXLENGTH) { return false; }
+              //     return LABEL_REGEXP.test(str);
+              //   }
+              //
+              //   return {
+              //     test: function(val) {
+              //       console.log('val?', val);
+              //       if(!val) {
+              //         return;
+              //       }
+              //       var parts = val.split("/");
+              //       switch(parts.length) {
+              //         case 1:
+              //           return validateLabel(parts[0]);
+              //         case 2:
+              //           return validateSubdomain(parts[0]) && validateLabel(parts[1]);
+              //       }
+              //       return false;
+              //     }
+              //   }
+              // })(),
+              // valueValidator: {
+              //   test: function(viewVal) {
+              //     console.log('viewVal for valueValidator', viewVal);
+              //     var LABEL_REGEXP = /^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$/;
+              //     var LABEL_MAXLENGTH = 63;
+              //     var SUBDOMAIN_REGEXP = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+              //     var SUBDOMAIN_MAXLENGTH = 253;
+              //
+              //     function validateSubdomain(str) {
+              //       if (str.length > SUBDOMAIN_MAXLENGTH) { return false; }
+              //       return SUBDOMAIN_REGEXP.test(str);
+              //     }
+              //
+              //     function validateLabel(str) {
+              //       if (str.length > LABEL_MAXLENGTH) { return false; }
+              //       return LABEL_REGEXP.test(str);
+              //     }
+              //
+              //     // if (modelValue === undefined || modelValue === null || modelValue.trim().length === 0) {
+              //     //   return true;
+              //     // }
+              //     var parts = viewValue.split("/");
+              //     switch(parts.length) {
+              //       case 1:
+              //         return validateLabel(parts[0]);
+              //       case 2:
+              //         return validateSubdomain(parts[0]) && validateLabel(parts[1]);
+              //     }
+              //     return false;
+              //   }
+              // }
+            });
+
+            $q
+              .when({})
+              .then(function() {
+
+                // then small array
+                angular.extend($scope, {
+                  onClick: function() {
+                    console.log('clean', kveUtils.compactEntries($scope.entries));
+                    console.log('clean', kveUtils.mapEntries($scope.entries));
+                  }
+                });
+              });
+
+          }
+        ]);
+    </script>
+  </body>
+</html>

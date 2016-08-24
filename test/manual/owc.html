@@ -1,0 +1,113 @@
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container" data-ng-controller="demoCtrl">
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+      <ng-form
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
+        <h2>configMapKeyRef</h2>
+        <div class="row">
+          <div class="col-md-7">
+            <key-value-editor
+              entries="deploymentConfigs[0].containers[0].env"
+              key-placeholder="{{keyPlaceholder}}"
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
+          </div>
+          <div class="col-md-5">
+            <code>{{deploymentConfigs[0].containers[0].env | json}}</code>
+          </div>
+        </div>
+        <hr>
+        <h2>secretKeyRef</h2>
+        <div class="row">
+          <div class="col-md-7">
+            <key-value-editor
+              entries="deploymentConfigs[1].containers[0].env"
+              key-placeholder="{{keyPlaceholder}}"
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
+          </div>
+          <div class="col-md-5">
+            <code>{{deploymentConfigs[1].containers[0].env | json}}</code>
+          </div>
+        </div>
+        <hr>
+        <h2>fieldRef</h2>
+        <div class="row">
+          <div class="col-md-7">
+            <key-value-editor
+              entries="deploymentConfigs[2].containers[0].env"
+              key-placeholder="{{keyPlaceholder}}"
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
+          </div>
+          <div class="col-md-5">
+            <code>{{deploymentConfigs[2].containers[0].env | json}}</code>
+          </div>
+        </div>
+        <hr>
+        <h2>Default</h2>
+        <div class="row">
+          <div class="col-md-7">
+            <key-value-editor
+              entries="deploymentConfigs[3].containers[0].env"
+              key-placeholder="{{keyPlaceholder}}"
+              value-placeholder="{{valuePlaceholder}}"></key-value-editor>
+          </div>
+          <div class="col-md-5">
+            <code>{{deploymentConfigs[3].containers[0].env | json}}</code>
+          </div>
+        </div>
+        <hr>
+        <button
+          type="submit"
+          id="submit"
+          value="submit"
+          class="btn btn-primary"
+          ng-click="onClick()">Submit</button>
+      </ng-form>
+
+    </div>
+
+    <!-- dependencies -->
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/lodash/dist/lodash.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+    <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
+    <script src="../../dist/angular-key-value-editor.js"></script>
+    <script src="../../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <script type="text/javascript" src="../../bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
+    <!-- the built template files -->
+    <script src="../../dist/compiled-templates.js"></script>
+    <script src="./app.js"></script>
+    <script src="./dc.js"></script>
+    <script src="./services.js"></script>
+    <script src="./ctrl-owc.js"></script>
+  </body>
+</html>

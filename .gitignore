@@ -1,4 +1,4 @@
 .DS_Store
+.tmp
 /node_modules
 /bower_components
-

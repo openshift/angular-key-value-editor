@@ -13,18 +13,23 @@ var gulp = require('gulp'),
     reload = browserSync.reload,
     templateCache = require('gulp-angular-templatecache'),
     less = require('gulp-less'),
-    path = require('path');
+    path = require('path'),
+    gulpProtractorAngular = require('gulp-angular-protractor'),
+    KarmaServer = require('karma').Server;
 
 // vars for finding directories
 var match = {
   recurse: '**/*'
 };
 
-var src = './src/',
+var root = './',
+    src = './src/',
     dist = './dist/',
-    demos = './demo/',
     tmp = './.tmp/',
-    tmpBuild = tmp + 'build/';
+    tmpBuild = tmp + 'build/',
+    test = './test/',
+    testRelative = '/test/',
+    demos = test + 'manual/';
 
 var srcAll = src + match.recurse,
     distAll = dist +match.recurse,
@@ -46,6 +51,10 @@ var buildSource = [
 
 var angularModuleName = 'key-value-editor';
 
+var protocol = 'http://',
+    host = 'localhost',
+    serverPort = 9005,
+    baseUrl = protocol + host + ':' + serverPort;
 
 var concatSource = function(outputDest) {
   return gulp
@@ -75,6 +84,15 @@ var cacheTemplates = function(outputDest) {
           .pipe(gulp.dest(outputDest || dist));
 };
 
+var buildCSS = function(outputDest) {
+  return gulp
+          .src(srcLess)
+          .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+          }))
+          .pipe(gulp.dest(outputDest || dist));
+};
+
 gulp.task('clean', function() {
   return del([distAll, tmpAll], function(err, paths) {
     return gutil.log('cleaned files/folders:\n', paths.join('\n'), gutil.colors.green());
@@ -94,12 +112,7 @@ gulp.task('templates', ['clean'], function () {
 });
 
 gulp.task('less', ['clean'], function () {
-  return gulp
-          .src(srcLess)
-          .pipe(less({
-            paths: [ path.join(__dirname, 'less', 'includes') ]
-          }))
-          .pipe(gulp.dest(dist));
+  return buildCSS();
 });
 
 gulp.task('build', ['clean','templates', 'jshint', 'less'], function () {
@@ -113,10 +126,12 @@ gulp.task('min', ['build', 'templates'], function() {
 gulp.task('min-and-reload', ['min'], reload);
 
 gulp.task('serve', function() {
+  // https://www.browsersync.io/docs/options
   browserSync({
-     server: {
-       baseDir: './'
-     }
+    port: serverPort,
+    server: {
+      baseDir: root
+    }
    });
 
    // TODO: live-reloading for demo not working yet.
@@ -131,7 +146,11 @@ gulp.task('_tmp-templates', function() {
   return cacheTemplates(tmpBuild);
 });
 
-gulp.task('_tmp-min', ['_tmp-build', '_tmp-templates'], function() {
+gulp.task('_tmp-less', function() {
+  return buildCSS(tmpBuild);
+})
+
+gulp.task('_tmp-min', ['_tmp-build', '_tmp-templates', '_tmp-less'], function() {
   return minifyDist(tmpBuild);
 });
 
@@ -142,5 +161,45 @@ gulp.task('prep-diff', ['_tmp-min'], function() {
   // nothing here atm.
 });
 
+gulp.task('test-e2e', ['serve'], function(callback) {
+    gulp
+        .src(['example_spec.js'])
+        .pipe(gulpProtractorAngular({
+            configFile: test + 'protractor.conf.js',
+            // baseUrl is needed for tests to navigate via relative paths
+            args: ['--baseUrl', baseUrl],
+            debug: false,
+            autoStartStopServer: true
+        }))
+        .on('error', function(e) {
+            console.log(e);
+        })
+        .on('end', callback);
+});
+
+// for integration testing, uses phantomJS
+gulp.task('test-unit', function(done) {
+    new KarmaServer({
+      configFile:  __dirname  + testRelative + 'karma.conf.js',
+      port: serverPort,
+      browsers: ['PhantomJS']
+    }, done).start();
+});
+
+// run all the tests, unit first, then e2e
+gulp.task('test', ['test-unit', 'test-e2e'], function() {
+  // just runs the other tests
+});
+
+// for development, uses Chrome
+// equivalent task to `test-unit`, but long running, watching file changes
+gulp.task('tdd', function(done) {
+  new KarmaServer({
+    configFile: __dirname + testRelative + 'karma.conf.js',
+    autoWatch: true,
+    singleRun: false,
+    port: serverPort
+  }, done).start();
+});
 
 gulp.task('default', ['min', 'serve']);
