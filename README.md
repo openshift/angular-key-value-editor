@@ -7,6 +7,10 @@ A simple UI for editing key-value pairs
 
 This key-value-editor is based on the bootstrap based framework [Patternfly](https://www.patternfly.org/#_).  Patternfly or a similar boostrap based framework should be present for proper layout rendering. Icons are from font awesome.  Alternative layouts with a different framework could be achieved by replacing the `key-value-editor.html` template which is pre-compiled into `compiled-templates.js` for convenience.
 
+## Tests
+
+See the [Test Readme.md file](test/README.md) for details about running tests.
+
 ## Basic usage:
 
 Add the `key-value-editor` in html and provide it some data via the entries attribute:

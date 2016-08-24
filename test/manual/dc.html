@@ -1,0 +1,80 @@
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="container" data-ng-controller="demoCtrlDC">
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+      <ng-form
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
+        <h2>As element</h2>
+		    <p><strong>key-minlength</strong>: 3</p>
+        <p><strong>key-maxlength</strong>: 25</p>
+        <p><strong>value-minlength</strong>: 3</p>
+        <p><strong>value-maxlength</strong>: 25</p>
+        <div ng-repeat="dc in dcForUI.items">
+          <div class="row"><div class="col-md-12">Editor</div></div>
+          <div class="row" ng-repeat="container in dc.spec.template.spec.containers">
+            <div class="col-md-7">
+              <key-value-editor
+                entries="container.env"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-validator="{{keyValidator}}"
+                value-validator="{{valueValidator}}"
+                key-minlength="0"
+                key-maxlength="25"
+                value-minlength="3"
+                value-maxlength="25"></key-value-editor>
+            </div>
+            <div class="col-md-5">
+              <code>{{container | json}}</code>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          id="submit"
+          value="submit"
+          class="btn btn-primary"
+          ng-click="onClick()">Submit</button>
+      </ng-form>
+
+    </div>
+
+    <!-- dependencies -->
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/lodash/dist/lodash.js"></script>
+    <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
+    <script src="../../dist/angular-key-value-editor.js"></script>
+    <script src="../../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <!-- the built template files -->
+    <script src="../../dist/compiled-templates.js"></script>
+    <script src="./app.js"></script>
+    <script src="./services.js"></script>
+    <script src="./dc.js"></script>
+    <script src="./ctrl_dc.js"></script>
+  </body>
+</html>
