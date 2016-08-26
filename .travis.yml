@@ -1,0 +1,12 @@
+# TODO:
+# - use travis to verify gulp min has been run & there is no diff
+# - use travis to run gulp test (once we have tests)
+language: node_js
+
+before_script:
+- npm install -g gulp
+# creates ./.tmp/build to test against ./dist
+- gulp prep-diff
+
+# Only in ./dist: errors mean the prep-diff task has not run
+script: ./validate.sh
