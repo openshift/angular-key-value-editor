@@ -1,6 +1,6 @@
 {
   "name": "angular-key-value-editor",
-  "version": "2.7.4",
+  "version": "2.8.0",
   "description": "A simple UI for editing key-value pairs",
   "main": "index.js",
   "scripts": {
@@ -20,18 +20,29 @@
   },
   "homepage": "https://github.com/benjaminapetersen/angular-key-value-editor#readme",
   "devDependencies": {
+    "angular-mocks": "^1.5.8",
     "browser-sync": "^2.12.8",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
+    "gulp-angular-protractor": "^0.1.4",
     "gulp-angular-templatecache": "^1.8.0",
     "gulp-concat": "^2.6.0",
     "gulp-filesize": "0.0.6",
     "gulp-jshint": "^2.0.1",
     "gulp-less": "^3.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-shell": "^0.5.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.0"
+    "jshint-stylish": "^2.2.0",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.26"
   }
 }

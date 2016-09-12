@@ -283,6 +283,10 @@
 
               // ensures we always have at least one set of inputs
               $scope.$watch('entries', function(newVal) {
+                // entries MUST be an array. if we get an empty array,
+                // we add an empty entry to ensure the inputs snow.
+                // NOTE: entries must be an array, with a .push() method
+                // else addEntry() will fail.
                 if(newVal && !newVal.length) {
                   addEntry($scope.entries);
                 }

@@ -1,0 +1,266 @@
+<!doctype html>
+<html data-ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Key Value Editor</title>
+    <link href="../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../../dist/angular-key-value-editor.css" rel="stylesheet">
+    <style>
+      p {
+        background-color: #EFEFEF;
+        padding: 2px;
+      }
+      strong {
+        color: #6099D4;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="container" data-ng-controller="ctrl">
+      <div class="page-header">
+        <h1>Angular Key Value Editor</h1>
+      </div>
+      <ng-form
+        novalidate
+        name="test-form"
+        ng-submit="onSubmit()">
+
+
+        <h2>As element</h2>
+		    <p><strong>key</strong>: [a-zA-Z_]+ (alphanumeric + underscore)</p>
+        <p><strong>val</strong>: [0-9]+ (number only)</p>
+
+        <div>
+          <div class="row">
+            <div class="col-md-12">Default string validator</div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+
+              <key-value-editor
+                entries="entries"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-minlength="3"
+                key-maxlength="25"
+                key-validator="^[a-zA-Z0-9-_]+$"
+                value-validator="^[a-zA-Z0-9-_]+$"
+                key-validator-error="Please enter a valid key"
+                value-validator-error="Please enter a valid value"
+                key-validator-error-tooltip="A valid environment variable name is an alphanumeric (a-z and 0-9) string beginning with a letter that may contain underscores."
+                value-validator-error-tooltip="A valid environment variable name is an alphanumeric (a-z and 0-9) string beginning with a letter that may contain underscores."></key-value-editor>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div>
+          <div class="row">
+            <div class="col-md-12">String from controller</div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+
+              <key-value-editor
+                entries="entries2"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-validator="{{validatorString.key}}"
+                value-validator="{{validatorString.value}}"></key-value-editor>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div>
+          <div class="row">
+            <div class="col-md-12">With regex</div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+
+              <key-value-editor
+                entries="entries3"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-validator-regex="validatorRegex.key"
+                value-validator-regex="validatorRegex.value"></key-value-editor>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div>
+          <div class="row">
+            <div class="col-md-12">With pseudo-regex</div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+
+              <key-value-editor
+                entries="entries4"
+                key-placeholder="Key"
+                value-placeholder="Value"
+                key-validator-regex="validatorPseudoRegex.key"
+                value-validator-regex="validatorPseudoRegex.value"></key-value-editor>
+
+            </div>
+          </div>
+        </div>
+
+        <hr />
+        <!-- second entrie="entries2" -->
+        <h2>As element</h2>
+
+        <key-value-editor
+          entries="entries2"
+          key-placeholder="Key"
+          value-placeholder="Value"
+          key-validator-regex="validator.key"
+          key-validator-error="Must be a string. all inputs are strings"
+          value-validator-regex="validator.val"
+          val-validator-error="Must be a num. but can't!"
+          thingy="thingy"></key-value-editor>
+
+      </div><!-- /container -->
+
+        <button
+          type="submit"
+          id="submit"
+          value="submit"
+          class="btn btn-primary"
+          ng-click="onClick()">Submit</button>
+      </ng-form>
+
+    </div>
+
+    <!-- dependencies -->
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/lodash/dist/lodash.js"></script>
+    <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
+    <script src="../../dist/angular-key-value-editor.js"></script>
+    <script src="../../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <!-- the built template files -->
+    <script src="../../dist/compiled-templates.js"></script>
+    <script src="./app.js"></script>
+    <script src="./services.js"></script>
+    <script src="./dc.js"></script>
+    <script>
+      angular
+        .module('demo')
+        .config([
+          'keyValueEditorConfigProvider',
+          function(config) {
+            // make default nothing
+            config.set('keyValidator', '');
+          }
+        ])
+        .controller('ctrl', [
+          '$scope',
+          '$timeout',
+          '$q',
+          'keyValueEditorUtils',
+          function($scope, $timeout, $q, kveUtils) {
+
+            // acting as if this is more than a regex
+            var someComplexTest = function(val) {
+              return /^[a-zA-Z0-9_]*$/.test(val);
+            };
+
+            angular.extend($scope, {
+              // set 1
+              entries: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // set 2
+              entries2: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // set 3
+              entries3: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              // set 4
+              entries4: [{
+                name: 'MYSQL_USER',
+                value: '12345'
+              }, {
+                name: 'MYSQL_PASSWORD1',
+                value: '213a'
+              }, {
+                name: 'MYSQL_DATABASE',
+                value: '6543'
+              }],
+              validatorString: {
+                // note the subtle difference in regex formatting this way
+                // compared to an inline html string or the regex below
+                key: '[a-zA-Z0-9_]*',
+                value: '[a-zA-Z0-9_]*'
+              },
+              validatorRegex: {
+                key: new RegExp('^[a-zA-Z0-9-_]+$'),
+                value: new RegExp('^[a-zA-Z0-9-_]+$'),
+              },
+              validatorPseudoRegex: {
+                key: {
+                  // just testing for string.
+                  test: function(val) {
+                      return someComplexTest(val);
+                  }
+                },
+                val: {
+                  // meh, cant test for number, since its always a string.
+                  // this should always fail.
+                  test: function(val) {
+                    return /^[a-zA-Z0-9_]*$/.test(val);
+                  }
+                }
+              }
+            });
+
+            $q
+              .when({})
+              .then(function() {
+
+                // then small array
+                angular.extend($scope, {
+                  onClick: function() {
+                    console.log('clean', kveUtils.compactEntries($scope.entries));
+                    console.log('clean', kveUtils.mapEntries($scope.entries));
+                  }
+                });
+              });
+
+          }
+        ]);
+    </script>
+  </body>
+</html>

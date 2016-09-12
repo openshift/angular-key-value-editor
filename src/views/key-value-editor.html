@@ -4,12 +4,12 @@
     <div
       ng-if="showHeader"
       class="key-value-editor-entry">
-      <div class="form-group key-value-editor-header">
+      <div class="form-group key-value-editor-header key-header">
         <div class="input-group">
           <span class="help-block">{{keyPlaceholder}}</span>
         </div>
       </div>
-      <div class="form-group key-value-editor-header">
+      <div class="form-group key-value-editor-header value-header">
         <div class="input-group">
           <span class="help-block">{{valuePlaceholder}}</span>
         </div>
@@ -75,9 +75,9 @@
           ng-attr-key-value-editor-focus="{{grabFocus && $last}}">
         <!-- name/key help block -->
         <span
-          class="help-block"
+          class="help-block key-validation-error"
           ng-show="(forms.keyValueEditor['key-value-editor-key-' + unique + '-' + $index].$error.pattern)">
-          <span>{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
+          <span class="validation-text">{{ entry.keyValidatorError || keyValidatorError ||  'validation error' }}</span>
           <span ng-if="entry.keyValidatorErrorTooltip || keyValidatorErrorTooltip" class="help action-inline">
             <a
               aria-hidden="true"
@@ -90,9 +90,9 @@
           </span>
         </span>
         <span
-          class="help-block"
+          class="help-block key-min-length"
           ng-show="(forms.keyValueEditor['key-value-editor-key-' + unique + '-' + $index].$error.minlength)">
-          <span>Minimum character count is {{keyMinlength}}</span>
+          <span class="validation-text">Minimum character count is {{keyMinlength}}</span>
         </span>
       </div>
       <!-- the value block -->
@@ -174,9 +174,9 @@
 
         <!-- value help block -->
         <span
-          class="help-block"
+          class="help-block value-validation-error"
           ng-show="(forms.keyValueEditor['key-value-editor-value-' + unique + '-' + $index].$error.pattern)">
-          <span>{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
+          <span class="validation-text">{{ entry.valueValidatorError || valueValidatorError ||  'validation error' }}</span>
           <span ng-if="entry.valueValidatorErrorTooltip || valueValidatorErrorTooltip" class="help action-inline">
             <a
               aria-hidden="true"
@@ -189,22 +189,22 @@
           </span>
         </span>
         <span
-          class="help-block"
+          class="help-block value-min-length"
           ng-show="(forms.keyValueEditor['key-value-editor-value-' + unique + '-' + $index].$error.minlength)">
-          <span>Minimum character count is {{valueMinlength}}</span>
+          <span class="validation-text">Minimum character count is {{valueMinlength}}</span>
         </span>
       </div>
       <div class="key-value-editor-buttons">
         <span
           ng-if="(!cannotSort) && (entries.length > 1)"
-          class="fa fa-bars"
+          class="fa fa-bars sort-row"
           role="button"
           aria-label="Move row"
           aria-grabbed="false"
           as-sortable-item-handle></span>
         <a
           href=""
-          class="pficon pficon-close as-sortable-item-delete"
+          class="pficon pficon-close delete-row as-sortable-item-delete"
           role="button"
           aria-label="Delete row"
           ng-hide="cannotDeleteAny || cannotDeleteSome(entry.name) || entry.cannotDelete"
@@ -217,6 +217,7 @@
       ng-if="(!cannotAdd) && addRowLink">
       <a
         href=""
+        class="add-row-link"
         role="button"
         aria-label="Add row"
         ng-click="onAddRow()">{{ addRowLink }}</a>
@@ -230,7 +231,7 @@
         class="form-group key-value-editor-input">
         <input
           type="text"
-          class="form-control"
+          class="form-control add-row-input"
           placeholder="{{keyPlaceholder}}"
           ng-model="placeholder.name"
           ng-focus="onFocusLastKey()">
@@ -239,7 +240,7 @@
         class="form-group key-value-editor-input">
         <input
           type="text"
-          class="form-control"
+          class="form-control add-row-input"
           placeholder="{{valuePlaceholder}}"
           ng-model="placeholder.value"
           ng-focus="onFocusLastValue()">
