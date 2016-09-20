@@ -108,10 +108,10 @@ describe('key-value-editor validation', function() {
       var first = kve.getFirstKeyInput(editor);
       first.clear().sendKeys('ab');
       // should be valid, no help blocks
-      expect(kve.getHelpBlock(editor, 'validation error').count()).toEqual(0);
+      expect(kve.getHelpBlock(editor, 'Validation error').count()).toEqual(0);
       expect(kve.getInvalidFormGroups(editor).count()).toEqual(0);
       first.clear().sendKeys('$%#');
-      expect(kve.getHelpBlock(editor, 'validation error').count()).toEqual(1);
+      expect(kve.getHelpBlock(editor, 'Validation error').count()).toEqual(1);
       expect(kve.getInvalidFormGroups(editor).count()).toEqual(1);
     });
   });
@@ -122,10 +122,10 @@ describe('key-value-editor validation', function() {
       var first = kve.getFirstKeyInput(editor);
       first.clear().sendKeys('ab');
       // should be valid, no help blocks
-      expect(kve.getHelpBlock(editor, 'validation error').count()).toEqual(0);
+      expect(kve.getHelpBlock(editor, 'Validation error').count()).toEqual(0);
       expect(kve.getInvalidFormGroups(editor).count()).toEqual(0);
       first.clear().sendKeys('$%#');
-      expect(kve.getHelpBlock(editor, 'validation error').count()).toEqual(1);
+      expect(kve.getHelpBlock(editor, 'Validation error').count()).toEqual(1);
       expect(kve.getInvalidFormGroups(editor).count()).toEqual(1);
     });
   });

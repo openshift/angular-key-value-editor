@@ -48,6 +48,14 @@
           }, timeoutDelay);
         };
 
+        var uniqueForKey = function(unique, $index) {
+          return 'key-value-editor-key-' + unique + '-' + $index;
+        };
+
+        var uniqueForValue = function(unique, $index) {
+          return 'key-value-editor-value-' + unique + '-' + $index;
+        };
+
         return {
           restrict: 'AE',
           scope: {
@@ -91,7 +99,9 @@
             isReadonly: '=?',
             isReadonlyKeys: '=?',                      // will only apply to existing keys,
             addRowLink: '@',                           // creates a link to "add row" and sets its text label
-            showHeader: '=?'                           // show placeholder text as headers
+            showHeader: '=?',                           // show placeholder text as headers
+            allowEmptyKeys: '=?',
+            keyRequiredError: '@'
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
@@ -158,6 +168,9 @@
             if('showHeader' in $attrs) {
               $scope.showHeader = true;
             }
+            if('allowEmptyKeys' in $attrs) {
+              $scope.allowEmptyKeys = true;
+            }
 
             // min/max lengths
             angular.extend($scope, {
@@ -170,6 +183,7 @@
               valueValidator: config.valueValidator || $attrs.valueValidator,
               keyValidatorError: config.keyValidatorError || $attrs.keyValidatorError,
               valueValidatorError: config.valueValidatorError || $attrs.valueValidatorError,
+              keyRequiredError: config.keyRequiredError || $attrs.keyRequiredError,
               // validation error tooltip
               keyValidatorErrorTooltip: config.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip,
               keyValidatorErrorTooltipIcon: config.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon,
@@ -200,6 +214,8 @@
                 placeholder: newEntry(),
                 setFocusKeyClass: 'key-value-editor-set-focus-key-' + unique,
                 setFocusValClass: 'key-value-editor-set-focus-value-' + unique,
+                uniqueForKey: uniqueForKey,
+                uniqueForValue: uniqueForValue,
                 dragControlListeners: {
                     // only allow sorting within the parent instance
                     accept: function (sourceItemHandleScope, destSortableScope) {
@@ -240,6 +256,17 @@
                 onAddRow: function() {
                   addEntry($scope.entries);
                   setFocusOn('.'+ $scope.setFocusKeyClass);
+                },
+                hasKey: function(entry, $index) {
+                  if($scope.allowEmptyKeys) {
+                    return;
+                  }
+                  var viewValue = $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$viewValue;
+                  if(!!viewValue) {
+                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', true);
+                  } else {
+                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', false);
+                  }
                 }
               });
 
@@ -288,6 +315,10 @@
 
               // ensures we always have at least one set of inputs
               $scope.$watch('entries', function(newVal) {
+                // entries MUST be an array. if we get an empty array,
+                // we add an empty entry to ensure the inputs snow.
+                // NOTE: entries must be an array, with a .push() method
+                // else addEntry() will fail.
                 if(newVal && !newVal.length) {
                   addEntry($scope.entries);
                 }
@@ -313,16 +344,17 @@
           valueMaxlength: '',                                      // max character length, falsy by default
           keyValidator: '[a-zA-Z0-9-_]+',                          // alphanumeric, with dash & underscores
           valueValidator: '',                                      // values have no default validation
-          keyValidatorError: undefined,                            // default error message string
+          keyValidatorError: 'Validation error',                   // default error message string
           keyValidatorErrorTooltip: undefined,                     // default error message tooltip string
           keyValidatorErrorTooltipIcon: 'pficon pficon-help',      // default error message tooltip icon
-          valueValidatorError: undefined,                          // default error message string
+          valueValidatorError: 'Validation error',                 // default error message string
           valueValidatorErrorTooltip: undefined,                   // default error message tooltip string
           valueValidatorErrorTooltipIcon: 'pficon pficon-help',    // default error message tooltip icon
           secretValueTooltip: undefined,                           // secret values have no default tooltip
           secretValueIcon: 'fa fa-user-secret',                    // default icon for secret values
           keyPlaceholder: '',
-          valuePlaceholder: ''
+          valuePlaceholder: '',
+          keyRequiredError: 'Key is required'
         };
 
         // set a new default key value pair, or pass an object to replace

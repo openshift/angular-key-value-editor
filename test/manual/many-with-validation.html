@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>Angular Key Value Editor</title>
-    <link href="../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
-    <link href="../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
-    <link href="../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
-    <link href="../../dist/angular-key-value-editor.css" rel="stylesheet">
+    <link href="../../../bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet">
+    <link href="../../../bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet">
+    <link href="../../../bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+    <link href="../../../dist/angular-key-value-editor.css" rel="stylesheet">
     <style>
       p {
         background-color: #EFEFEF;
@@ -142,8 +142,10 @@
     </div>
 
     <!-- dependencies -->
-    <script src="../../bower_components/angular/angular.js"></script>
-    <script src="../../bower_components/lodash/dist/lodash.js"></script>
+    <script src="../../../bower_components/angular/angular.js"></script>
+    <script src="../../../bower_components/lodash/dist/lodash.js"></script>
+    <script src="../../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- /dist files, so long as `gulp serve` is running should be automatically built -->
     <script src="../../dist/angular-key-value-editor.js"></script>
     <script src="../../bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
@@ -152,6 +154,11 @@
     <script src="./app.js"></script>
     <script src="./services.js"></script>
     <script src="./dc.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
     <script>
       angular
         .module('demo')
@@ -249,7 +256,6 @@
             $q
               .when({})
               .then(function() {
-
                 // then small array
                 angular.extend($scope, {
                   onClick: function() {

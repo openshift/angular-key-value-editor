@@ -26,7 +26,7 @@
       </div>
       <ng-form
         novalidate
-        name="test-form"
+        name="testForm"
         ng-submit="onSubmit()">
         <h2>As element</h2>
 		    <p><strong>key-minlength</strong>: 3</p>
@@ -69,6 +69,7 @@
           id="submit"
           value="submit"
           class="btn btn-primary"
+          ng-disabled="testForm.$invalid || testForm.$pristine"
           ng-click="onClick()">Submit</button>
       </ng-form>
 
