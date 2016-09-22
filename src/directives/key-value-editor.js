@@ -43,6 +43,14 @@
           }, timeoutDelay);
         };
 
+        var uniqueForKey = function(unique, $index) {
+          return 'key-value-editor-key-' + unique + '-' + $index;
+        };
+
+        var uniqueForValue = function(unique, $index) {
+          return 'key-value-editor-value-' + unique + '-' + $index;
+        };
+
         return {
           restrict: 'AE',
           scope: {
@@ -86,7 +94,9 @@
             isReadonly: '=?',
             isReadonlyKeys: '=?',                      // will only apply to existing keys,
             addRowLink: '@',                           // creates a link to "add row" and sets its text label
-            showHeader: '=?'                           // show placeholder text as headers
+            showHeader: '=?',                           // show placeholder text as headers
+            allowEmptyKeys: '=?',
+            keyRequiredError: '@'
           },
           link: function($scope, $elem, $attrs) {
             // manually retrieving here so we can manipulate and compile in JS
@@ -153,6 +163,9 @@
             if('showHeader' in $attrs) {
               $scope.showHeader = true;
             }
+            if('allowEmptyKeys' in $attrs) {
+              $scope.allowEmptyKeys = true;
+            }
 
             // min/max lengths
             angular.extend($scope, {
@@ -165,6 +178,7 @@
               valueValidator: config.valueValidator || $attrs.valueValidator,
               keyValidatorError: config.keyValidatorError || $attrs.keyValidatorError,
               valueValidatorError: config.valueValidatorError || $attrs.valueValidatorError,
+              keyRequiredError: config.keyRequiredError || $attrs.keyRequiredError,
               // validation error tooltip
               keyValidatorErrorTooltip: config.keyValidatorErrorTooltip || $attrs.keyValidatorErrorTooltip,
               keyValidatorErrorTooltipIcon: config.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon,
@@ -195,6 +209,8 @@
                 placeholder: newEntry(),
                 setFocusKeyClass: 'key-value-editor-set-focus-key-' + unique,
                 setFocusValClass: 'key-value-editor-set-focus-value-' + unique,
+                uniqueForKey: uniqueForKey,
+                uniqueForValue: uniqueForValue,
                 dragControlListeners: {
                     // only allow sorting within the parent instance
                     accept: function (sourceItemHandleScope, destSortableScope) {
@@ -235,6 +251,17 @@
                 onAddRow: function() {
                   addEntry($scope.entries);
                   setFocusOn('.'+ $scope.setFocusKeyClass);
+                },
+                hasKey: function(entry, $index) {
+                  if($scope.allowEmptyKeys) {
+                    return;
+                  }
+                  var viewValue = $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$viewValue;
+                  if(!!viewValue) {
+                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', true);
+                  } else {
+                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', false);
+                  }
                 }
               });
 

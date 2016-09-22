@@ -17,9 +17,14 @@
       }
       [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
-      .row {
+      .pad-bottom {
         margin-bottom: 50px;
       }
+
+      [outline] {
+        outline: 1px solid #666;
+      }
+
     </style>
   </head>
   <body>
@@ -32,80 +37,60 @@
       <ng-form
         autocomplete="off"
         novalidate
-        name="testForm"
+        name="test-form"
         ng-submit="onSubmit()">
 
-        <h2>Add entry link:</h2>
-		    <p>Though it requires an additional user action per input, it is better for accessibilty.</p>
-        <p>The original method is not ideal as you cannot tab past the final input to click the save link. It will infinitely add new inputs</p>
-        <p>Forms that have a submit button before the key-value-editor (or on another part of the page) will not have do deal with this issue.</p>
-        <p>Please be mindful of usability issues!</p>
-
+        <h2>Empty Keys (allow/disallow)</h2>
 
         <div class="row">
           <div class="col-md-12">
-            <strong>Automatically add rows:</strong>
+            <strong>Default</strong>
           </div>
+        </div>
+        <div class="row pad-bottom">
           <div class="col-md-7">
             <key-value-editor
-              entries="entries"
-              key-placeholder="Key"
-              value-placeholder="Value"></key-value-editor>
+              entries="entries"></key-value-editor>
           </div>
         </div>
 
-
         <div class="row">
           <div class="col-md-12">
-            <strong>Manually add rows:</strong>
+            <strong>Custom Error</strong>
           </div>
+        </div>
+        <div class="row pad-bottom">
           <div class="col-md-7">
             <key-value-editor
               entries="entries2"
-              key-placeholder="Key"
-              value-placeholder="Value"
-              add-row-link></key-value-editor>
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-md-12">
-            <strong>Manually add & custom label:</strong>
-          </div>
-          <div class="col-md-7">
-            <key-value-editor
-              entries="entries3"
-              key-placeholder="Key"
-              value-placeholder="Value"
-              add-row-link="Add a new key,value pair"></key-value-editor>
+              key-required-error="Hey, Its gotta have a key"></key-value-editor>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-12">
-            <strong>Manually add & custom label:</strong>
+            <strong>Allow Empty Keys</strong>
           </div>
+        </div>
+        <div class="row pad-bottom">
           <div class="col-md-7">
             <key-value-editor
               entries="entries3"
               key-placeholder="Key"
               value-placeholder="Value"
               add-row-link
-              is-readonly></key-value-editor>
+              show-header
+              allow-empty-keys></key-value-editor>
           </div>
         </div>
 
-
         <div class="row">
           <div class="col-md-7">
-
             <button
               type="submit"
               id="submit"
               value="submit"
               class="btn btn-primary"
-              ng-disabled="testForm.$invalid || testForm.$pristine"
               ng-click="onClick()">Submit</button>
           </div>
         </div>
@@ -151,21 +136,9 @@
 
             angular.extend($scope, {
               // set 1
-              entries: [{
-                name: 'MYSQL_USER',
-                value: 'admin'
-              }, {
-                name: 'MYSQL_PASSWORD',
-                value: 'p@$$w0rd',
-                isReadonly: true,
-                keyIcon:'fa fa-lock'
-              }, {
-                name: 'READONLY_KEY',
-                value: '6543',
-                valueIcon: 'fa fa-user-secret',
-                valueIconTooltip: 'Locked value!',
-                isReadonly: true
-              }],
+              entries: [],
+              entries2: [],
+              entries3: [],
               onClick: function() {
                 $scope.entries = kveUtils.compactEntries($scope.entries);
                 $scope.entries2 = kveUtils.compactEntries($scope.entries2);
@@ -174,19 +147,8 @@
               }
             });
 
-
-            // ensure $watch doesnt break
-            // by delaying a few of these until later
-            $timeout(function() {
-              angular.extend($scope, {
-                entries2: [],
-                entries3: [{name: 'foo', value: 'bar'}]
-              });
-            }, 2000);
-
             // opt in to the bootstrap tooltips
             $('[data-toggle="tooltip"]').tooltip();
-
 
           }
         ]);
