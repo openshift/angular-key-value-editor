@@ -251,17 +251,6 @@
                 onAddRow: function() {
                   addEntry($scope.entries);
                   setFocusOn('.'+ $scope.setFocusKeyClass);
-                },
-                hasKey: function(entry, $index) {
-                  if($scope.allowEmptyKeys) {
-                    return;
-                  }
-                  var viewValue = $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$viewValue;
-                  if(!!viewValue) {
-                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', true);
-                  } else {
-                    $scope.forms.keyValueEditor[uniqueForKey(unique, $index)].$setValidity('noKey', false);
-                  }
                 }
               });
 

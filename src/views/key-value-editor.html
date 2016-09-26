@@ -55,7 +55,7 @@
             ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly"
             ng-pattern="validation.key"
             ng-value
-            ng-keyup="hasKey(entry, $index)"
+            ng-required="!allowEmptyKeys && entry.value"
             ng-attr-key-value-editor-focus="{{grabFocus && $last}}">
         </div>
 
@@ -74,10 +74,9 @@
           ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonlyKey || entry.isReadonly"
           ng-pattern="validation.key"
           ng-value
-          ng-keyup="hasKey(entry, $index)"
+          ng-required="!allowEmptyKeys && entry.value"
           ng-attr-key-value-editor-focus="{{grabFocus && $last}}">
         <!-- name/key help block -->
-
         <span
           class="help-block key-validation-error"
           ng-show="(forms.keyValueEditor[uniqueForKey(unique, $index)].$error.pattern)">
@@ -101,7 +100,7 @@
 
         <span
           class="help-block key-validation-error"
-          ng-show="(forms.keyValueEditor[uniqueForKey(unique, $index)].$error.noKey)">
+          ng-show="(forms.keyValueEditor[uniqueForKey(unique, $index)].$error.required)">
           <span class="validation-text">{{keyRequiredError}}</span>
         </span>
       </div>
@@ -150,7 +149,7 @@
             ng-model="entry.value"
             ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly"
             ng-pattern="validation.val"
-            ng-keyup="hasKey(entry, $index)">
+            ng-required="!allowEmptyKeys && entry.value">
         </div>
 
         <!-- value has no icon -->
@@ -181,7 +180,7 @@
             ng-model="entry.value"
             ng-readonly="isReadonlyAny || isReadonlySome(entry.name) || entry.isReadonly"
             ng-pattern="validation.val"
-            ng-keyup="hasKey(entry, $index)">
+            ng-required="!allowEmptyKeys && entry.value">
         </div>
 
         <!-- value help block -->
