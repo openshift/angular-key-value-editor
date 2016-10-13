@@ -47,11 +47,37 @@
             <strong>1 (data shared)</strong>
           </div>
           <div class="col-md-7">
+            <strong>cannot-add</strong>
             <key-value-editor
               entries="entries"
               key-placeholder="Key"
               value-placeholder="Value"
               cannot-add></key-value-editor>
+
+            <hr />
+            <strong>cannot-add="false"</strong>
+            <key-value-editor
+              entries="entries"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              cannot-add="false"></key-value-editor>
+
+            <hr />
+            <strong>cannot-add="true"</strong>
+            <key-value-editor
+              entries="entries"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              cannot-add="true"></key-value-editor>
+
+            <hr />
+            <strong>cannot-add="toggleCannotAdd"</strong>
+            <key-value-editor
+              entries="entries"
+              key-placeholder="Key"
+              value-placeholder="Value"
+              cannot-add="toggleCannotAdd"></key-value-editor>
+
           </div>
         </div>
 
@@ -100,11 +126,12 @@
           }
         ])
         .controller('ctrl', [
+          '$interval',
           '$scope',
           '$timeout',
           '$q',
           'keyValueEditorUtils',
-          function($scope, $timeout, $q, kveUtils) {
+          function($interval, $scope, $timeout, $q, kveUtils) {
 
             angular.extend($scope, {
               // set 1
@@ -121,6 +148,7 @@
                 valueIcon: 'fa fa-user-secret',
                 valueIconTooltip: 'Locked value!'
               }],
+              toggleCannotAdd: false,
               onClick: function() {
                 $scope.entries = kveUtils.compactEntries($scope.entries);
                 $scope.entries2 = kveUtils.compactEntries($scope.entries2);
@@ -129,6 +157,9 @@
               }
             });
 
+            $interval(function() {
+              $scope.toggleCannotAdd = !$scope.toggleCannotAdd;
+            }, 1000);
 
             // ensure $watch doesnt break
             // by delaying a few of these until later

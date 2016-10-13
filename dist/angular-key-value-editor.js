@@ -56,6 +56,20 @@
           return 'key-value-editor-value-' + unique + '-' + $index;
         };
 
+        // enables any of these:
+        // <key-value-editor cannot-add>
+        // <key-value-editor cannot-add="true">
+        // <key-value-editor cannot-add="false">
+        // <key-value-editor cannot-add="toggleBoolean">
+        var defaultTrueIfDefined = function(attrName, $attrs, $scope) {
+          if(attrName in $attrs) {
+            if(!$attrs[attrName]) {
+              $scope[attrName] = true;
+            }
+          }
+        };
+
+
         return {
           restrict: 'AE',
           scope: {
@@ -129,10 +143,11 @@
               });
             }
 
-            // if an attribute exists, set its corresponding bool to true
-            if('cannotAdd' in $attrs) {
-              $scope.cannotAdd = true;
-            }
+            defaultTrueIfDefined('cannotAdd', $attrs, $scope);
+            defaultTrueIfDefined('showHeader', $attrs, $scope);
+            defaultTrueIfDefined('allowEmptyKeys', $attrs, $scope);
+
+            // TODO: cannotDelete is a proxy to cannotDeleteAny, needs a $watch...
             if('cannotDelete' in $attrs) {
               $scope.cannotDeleteAny = true;
             }
@@ -163,13 +178,6 @@
               // better way to do this.
               tpl = tpl.replace(/as-sortable/g, 'as-sortable-DISABLED');
               $scope.cannotSort = true;
-            }
-
-            if('showHeader' in $attrs) {
-              $scope.showHeader = true;
-            }
-            if('allowEmptyKeys' in $attrs) {
-              $scope.allowEmptyKeys = true;
             }
 
             // min/max lengths
