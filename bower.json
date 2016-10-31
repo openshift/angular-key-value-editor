@@ -1,7 +1,7 @@
 {
   "name": "angular-key-value-editor",
   "description": "A simple UI for editing key-value pairs",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "main": [
     "dist/angular-key-value-editor.css",
     "dist/angular-key-value-editor.js",
@@ -21,13 +21,12 @@
     "tests"
   ],
   "dependencies": {
-    "patternfly": "~3.5.1",
+    "patternfly": "~3.10.0",
     "ng-sortable": "~1.3.4"
   },
   "devDependencies": {
     "angular": "~1.3.20",
     "lodash": "~4.13.1",
-    "patternfly": "~3.3.5",
     "angular-object-diff": "~1.0.3"
   }
 }
