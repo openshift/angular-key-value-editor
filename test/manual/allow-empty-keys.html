@@ -37,7 +37,7 @@
       <ng-form
         autocomplete="off"
         novalidate
-        name="test-form"
+        name="testForm"
         ng-submit="onSubmit()">
 
         <h2>Empty Keys (allow/disallow)</h2>
@@ -69,6 +69,20 @@
 
         <div class="row">
           <div class="col-md-12">
+            <strong>Custom Error</strong>
+          </div>
+        </div>
+        <div class="row pad-bottom">
+          <div class="col-md-7">
+            <key-value-editor
+              entries="entries2"
+              add-row-link
+              key-required-error="Hey, Its gotta have a key"></key-value-editor>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
             <strong>Allow Empty Keys</strong>
           </div>
         </div>
@@ -91,6 +105,7 @@
               id="submit"
               value="submit"
               class="btn btn-primary"
+              ng-disabled="testForm.$invalid || testForm.$pristine"
               ng-click="onClick()">Submit</button>
           </div>
         </div>
