@@ -24,7 +24,7 @@ describe('key-value-editor allow-empty-keys', function() {
 
   //describe('with allow-empty-keys attrib', function() {
     it('should allow the row to remain vaild if it is added w/o a key', function() {
-      var editor = kve.findAll().get(1);
+      var editor = kve.findAll().get(3);
       var input = kve.getFirstValueInput(editor);
       input.sendKeys('12345');
       var invalidInputs = kve.getInvalidInputs(editor);
