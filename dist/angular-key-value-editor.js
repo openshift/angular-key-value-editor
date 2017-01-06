@@ -189,9 +189,6 @@
               keyValidatorErrorTooltipIcon: config.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon,
               valueValidatorErrorTooltip: config.valueValidatorErrorTooltip || $attrs.valueValidatorErrorTooltip,
               valueValidatorErrorTooltipIcon: config.valueValidatorErrorTooltipIcon || $attrs.valueValidatorErrorTooltipIcon,
-              // secret values
-              secretValueTooltip: config.secretValueTooltip || $attrs.secretValueTooltip,
-              secretValueIcon: config.secretValueIcon || $attrs.secretValueIcon,
               // placeholders
               keyPlaceholder: config.keyPlaceholder || $attrs.keyPlaceholder,
               valuePlaceholder: config.valuePlaceholder || $attrs.valuePlaceholder
@@ -339,8 +336,6 @@
           valueValidatorError: 'Validation error',                 // default error message string
           valueValidatorErrorTooltip: undefined,                   // default error message tooltip string
           valueValidatorErrorTooltipIcon: 'pficon pficon-help',    // default error message tooltip icon
-          secretValueTooltip: undefined,                           // secret values have no default tooltip
-          secretValueIcon: 'fa fa-user-secret',                    // default icon for secret values
           keyPlaceholder: '',
           valuePlaceholder: '',
           keyRequiredError: 'Key is required'

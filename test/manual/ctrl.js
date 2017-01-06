@@ -71,8 +71,6 @@
         $scope.valueValidatorError = 'Please enter a valid value';
         $scope.valueValidatorErrorTooltip = 'A valid environment variable name is an alphanumeric (a-z and 0-9) string beginning with a letter that may contain underscores.';
 
-        $scope.secretValueTooltip = "This value is from a shared secret and cannot be edited.";
-
         // for the form
         var on = function() {
           // console.log($scope.deploymentConfigs);

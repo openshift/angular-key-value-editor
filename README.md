@@ -160,8 +160,6 @@ All attributes for convenient reference.
   value-max-length="25"
   value-validator="[a-zA-Z0-9_]*"
   value-validator-error="Invalid value"
-  secret-value-tooltip="This is a hidden value"
-  secret-value-icon="fa fa-external-link-square"
   is-readonly="['can','be','a','list']"
   is-readonly-keys
   cannot-delete="['can','be','a','list']"
