@@ -184,9 +184,6 @@
               keyValidatorErrorTooltipIcon: config.keyValidatorErrorTooltipIcon || $attrs.keyValidatorErrorTooltipIcon,
               valueValidatorErrorTooltip: config.valueValidatorErrorTooltip || $attrs.valueValidatorErrorTooltip,
               valueValidatorErrorTooltipIcon: config.valueValidatorErrorTooltipIcon || $attrs.valueValidatorErrorTooltipIcon,
-              // secret values
-              secretValueTooltip: config.secretValueTooltip || $attrs.secretValueTooltip,
-              secretValueIcon: config.secretValueIcon || $attrs.secretValueIcon,
               // placeholders
               keyPlaceholder: config.keyPlaceholder || $attrs.keyPlaceholder,
               valuePlaceholder: config.valuePlaceholder || $attrs.valuePlaceholder
