@@ -1,6 +1,6 @@
 {
   "name": "angular-key-value-editor",
-  "version": "2.9.3",
+  "version": "3.0.0",
   "description": "A simple UI for editing key-value pairs",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-safari-launcher": "^1.0.0",
-    "karma-spec-reporter": "0.0.26"
+    "karma-spec-reporter": "0.0.26",
+    "jasmine-core": "^2.5.2"
   }
 }
